@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+
 
 namespace WpfWindowsLib {
 
@@ -21,14 +23,13 @@ namespace WpfWindowsLib {
     int notSelectedIndex;
 
 
-    public virtual void Init(bool isRequired = false, int notSelectedIndex = int.MinValue) {
+    public virtual void Init(bool isRequired = false, int notSelectedIndex = -1) {
       initSelectedIndex = SelectedIndex;
       this.notSelectedIndex = notSelectedIndex;
       IsRequired = isRequired;
       this.SelectionChanged += checkedComboBox_SelectionChanged;
       if (isRequired) {
         IsAvailable = SelectedIndex!=notSelectedIndex;
-        setBackground(IsAvailable);
       }
 
       FrameworkElement element = this;
@@ -41,6 +42,23 @@ namespace WpfWindowsLib {
           break;
         }
       } while (true);
+
+      Loaded += CheckedComboBox_Loaded;
+    }
+
+
+    Brush? defaultBackground;
+    Border? comboBoxBorder;
+
+
+    private void CheckedComboBox_Loaded(object sender, RoutedEventArgs e) {
+      //contentPresenter = (ContentPresenter)Template.FindName("contentPresenter", this);
+      //textBlock = (TextBlock)VisualTreeHelper.GetChild(contentPresenter, 0);
+      //defaultBackground = textBlock.Background;
+      var toggleButton = (ToggleButton)Template.FindName("toggleButton", this);
+      comboBoxBorder = (Border)VisualTreeHelper.GetChild(toggleButton, 0);
+      defaultBackground = comboBoxBorder.Background;
+      showAvailability();
     }
 
 
@@ -61,32 +79,31 @@ namespace WpfWindowsLib {
         var newIsAvailable = SelectedIndex!=notSelectedIndex;
         if (IsAvailable!=newIsAvailable) {
           IsAvailable = newIsAvailable;
-          setBackground(newIsAvailable);
+          showAvailability();
           IsAvailableEvent?.Invoke();
         }
       }
     }
 
 
-    private void setBackground(bool isAvailable) {
+    private void showAvailability() {
+      if (!IsRequired) return;
+
       if (IsAvailable) {
-        Background = Brushes.White;
+        comboBoxBorder!.Background = defaultBackground;
       } else {
-        Background = Styling.RequiredBrush;
+        comboBoxBorder!.Background = Styling.RequiredBrush;
       }
     }
 
 
-    Brush? oldBackgroundBrush;
-
-
-    public void ShowChanged(bool isChanged) {
+    public void ShowChanged(bool isShowChanged) {
+      //the combobox contains a ToggleButton which contains a Border which paints the Combobox' background
       if (HasChanged) {
-        if (isChanged) {
-          oldBackgroundBrush = Background;
-          Background = Styling.HasChangedBackgroundBrush;
+        if (isShowChanged) {
+          comboBoxBorder!.Background = Styling.HasChangedBackgroundBrush;
         } else {
-          Background = oldBackgroundBrush;
+          comboBoxBorder!.Background = defaultBackground;
         }
       }
     }

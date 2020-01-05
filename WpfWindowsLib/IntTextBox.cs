@@ -4,24 +4,25 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
+
 namespace WpfWindowsLib {
 
 
   public class IntTextBox: CheckedTextBox {
 
 
-    public int? Wert {
-      get { return wert; }
+    public int? IntValue {
+      get { return intValue; }
       set {
-        wert = value;
+        intValue = value;
         Text = value.ToString();
       }
     }
-    private int? wert;
+    private int? intValue;
 
 
-    public virtual void Init(int? wert, bool isRequired = false) {
-      Wert = wert;
+    public virtual void Init(int? wert = null, bool isRequired = false) {
+      IntValue = wert;
       Init(Text, isRequired);
     }
 
@@ -44,14 +45,14 @@ namespace WpfWindowsLib {
 
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
       if (Text.Length==0) {
-        Wert = null;
+        IntValue = null;
         return;
       }
 
       if (int.TryParse(Text, out int result)) {
-        Wert = result;
+        IntValue = result;
       } else {
-        MessageBox.Show($"{Text} ist keine gültige Zahl.", "Ungültige Zahl", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"{Text} is not a vlid integer.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       }
       base.OnPreviewLostKeyboardFocus(e);

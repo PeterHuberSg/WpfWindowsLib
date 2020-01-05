@@ -26,25 +26,26 @@ namespace WpfWindowsLib {
       requireds = new List<ICheck>();
       IsAvailable = true;
       Closing += checkedWindow_Closing;
+      Closed += checkedWindow_Closed;
     }
 
 
     private void checkedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
       if (HasICheckChanged) {
         MessageBoxResult result;
-        if (IsAvailable) {
-          ShowChanged(true);
-          result = MessageBox.Show("Drücke OK um das Window ohne speichern zu schliesen, Cancel um mit der Dateneingabe fortzufahren.",
-          "Window schliessen ? Die Daten wurden geändert.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
-          ShowChanged(false);
-        } else {
-          result = MessageBox.Show("Drücke OK um das Window ohne speichern zu schliesen, Cancel um mit der Dateneingabe fortzufahren.",
-          "Window schliessen ? Daten geändert, vorgeschriebene Felder fehlen.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
-        }
+        ShowChanged(true);
+        result = MessageBox.Show("Press OK to close the Window without saving the data, Cancel to continue with data entry.",
+        "Closing the Window ? Data has changed.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
+        ShowChanged(false);
         if (result==MessageBoxResult.OK) return;
 
         e.Cancel = true;
       }
+    }
+
+
+    private void checkedWindow_Closed(object? sender, EventArgs e) {
+      Owner?.Activate();
     }
 
 

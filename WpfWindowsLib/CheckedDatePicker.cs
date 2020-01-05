@@ -5,10 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+
 namespace WpfWindowsLib {
 
 
-  public class CheckedCheckBox: CheckBox, ICheck {
+  public class CheckedDatePicker: DatePicker, ICheck {
+
     public bool HasChanged { get; private set; }
     public event Action?  HasChangedEvent;
     public bool IsRequired { get; private set; }
@@ -16,20 +18,19 @@ namespace WpfWindowsLib {
     public event Action?  IsAvailableEvent;
 
 
-    bool? initValue;
+    DateTime? initDate;
     Brush? defaultBackground;
 
 
-    public void Init(bool? checkValue = null, bool isRequired = false) {
 
-      initValue = checkValue;
-      IsChecked = checkValue;
+    public virtual void Init(DateTime? date = null, bool isRequired = false) {
+      initDate = date;
+      SelectedDate = date;
       IsRequired = isRequired;
       defaultBackground = Background;
-      Checked += checkedCheckBox_Checked;
-      Unchecked += checkedCheckBox_Checked;
+      SelectedDateChanged += CheckedDatePicker_SelectedDateChanged;
       if (isRequired) {
-        IsAvailable = checkValue.HasValue;
+        IsAvailable = Text.Length>0;
         showAvailability();
       }
 
@@ -46,20 +47,20 @@ namespace WpfWindowsLib {
 
 
     public void ResetHasChanged() {
-      initValue = IsChecked;
+      initDate = SelectedDate;
       HasChanged = false;
     }
 
 
-    private void checkedCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e) {
-      var newHasChanged = initValue!=IsChecked;
-      if (HasChanged != newHasChanged) {
+    private void CheckedDatePicker_SelectedDateChanged(object? sender, SelectionChangedEventArgs e) {
+      var newHasChanged = initDate!=SelectedDate;
+      if (HasChanged!=newHasChanged) {
         HasChanged = newHasChanged;
         HasChangedEvent?.Invoke();
       }
 
       if (IsRequired) {
-        var newIsAvailable = IsChecked.HasValue;
+        var newIsAvailable = SelectedDate != null;
         if (IsAvailable!=newIsAvailable) {
           IsAvailable = newIsAvailable;
           showAvailability();

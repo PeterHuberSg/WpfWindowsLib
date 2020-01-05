@@ -46,21 +46,20 @@ namespace WpfWindowsLib {
 
 
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
-      if (!Ueberpruefen() && Text.Length>0) {
+      if (!Verify() && Text.Length>0) {
         e.Handled = true;
-        MessageBox.Show($"Ungültige Emailadresse: '{Text}'.", "Eingabefehler", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"Invalid Emailaddress: '{Text}'.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
       }
 
       base.OnPreviewLostKeyboardFocus(e);
     }
 
 
-    public bool Ueberpruefen() {
+    public bool Verify() {
       if (!IstNoetig && Text.Length==0) {
         Background = Brushes.White;
         return true;
       }
-      //if (!emailValidator.IsValid(Text)) {
       if (IsValidEmail(Text)) {
         Background = Brushes.White;
         return true;

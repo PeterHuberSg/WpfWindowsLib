@@ -16,12 +16,12 @@ namespace WpfWindowsLib {
     }
 
 
-    public override void Init(string text, bool isRequired = false) {
+    public override void Init(string? text, bool isRequired = false) {
       base.Init(ToFormatedPhoneString(text?.Replace(" ", "")), isRequired);
     }
 
 
-    public string? TelefonNrOhneLeerzeichen;
+    public string? TelefonNrWithoutBlanks;
 
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e) {
@@ -37,15 +37,15 @@ namespace WpfWindowsLib {
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
       if (Text.Length>0) {
         if (Text[0]!='0') {
-          MessageBox.Show($"Die erste Ziffer sollte eine 0 sein in '{Text}'.", "Ungültige Telefonnummer", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show($"The first digit should be a 0 '{Text}'.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
           e.Handled = true;
         } else {
-          TelefonNrOhneLeerzeichen = Text.Replace(" ", "");
-          if (TelefonNrOhneLeerzeichen.Length!=10) {
-            MessageBox.Show($"Die Telefonnummer '{Text}' sollte 10 Ziffern haben.", "Ungültige Telefonnummer", MessageBoxButton.OK, MessageBoxImage.Error);
+          TelefonNrWithoutBlanks = Text.Replace(" ", "");
+          if (TelefonNrWithoutBlanks.Length!=10) {
+            MessageBox.Show($"The phone nummber '{Text}' should ahve 10 digits.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             e.Handled = true;
           } else {
-            format(TelefonNrOhneLeerzeichen);
+            format(TelefonNrWithoutBlanks);
           }
         }
       }

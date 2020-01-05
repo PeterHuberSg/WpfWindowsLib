@@ -5,10 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+
 namespace WpfWindowsLib {
 
 
-  public class CheckedCheckBox: CheckBox, ICheck {
+  public class CheckedAutoCompleteBox: AutoCompleteBox, ICheck {
+
     public bool HasChanged { get; private set; }
     public event Action?  HasChangedEvent;
     public bool IsRequired { get; private set; }
@@ -16,20 +18,17 @@ namespace WpfWindowsLib {
     public event Action?  IsAvailableEvent;
 
 
-    bool? initValue;
+    object? initSelectedItem = null;
     Brush? defaultBackground;
 
 
-    public void Init(bool? checkValue = null, bool isRequired = false) {
-
-      initValue = checkValue;
-      IsChecked = checkValue;
+    public virtual void Init(bool isRequired = false) {
+      initSelectedItem = SelectedItem;
       IsRequired = isRequired;
       defaultBackground = Background;
-      Checked += checkedCheckBox_Checked;
-      Unchecked += checkedCheckBox_Checked;
+      this.SelectionChanged += checkedAutoCompleteBox_SelectionChanged;
       if (isRequired) {
-        IsAvailable = checkValue.HasValue;
+        IsAvailable = SelectedItem!=null;
         showAvailability();
       }
 
@@ -37,6 +36,7 @@ namespace WpfWindowsLib {
       do {
         element = (FrameworkElement)element.Parent;
         if (element==null) break;
+
         if (element is CheckedWindow window) {
           window.Register(this);
           break;
@@ -46,20 +46,20 @@ namespace WpfWindowsLib {
 
 
     public void ResetHasChanged() {
-      initValue = IsChecked;
+      initSelectedItem = SelectedItem;
       HasChanged = false;
     }
 
 
-    private void checkedCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e) {
-      var newHasChanged = initValue!=IsChecked;
+    private void checkedAutoCompleteBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      var newHasChanged = initSelectedItem!=SelectedItem;
       if (HasChanged != newHasChanged) {
         HasChanged = newHasChanged;
         HasChangedEvent?.Invoke();
       }
 
       if (IsRequired) {
-        var newIsAvailable = IsChecked.HasValue;
+        var newIsAvailable = SelectedItem!=null;
         if (IsAvailable!=newIsAvailable) {
           IsAvailable = newIsAvailable;
           showAvailability();

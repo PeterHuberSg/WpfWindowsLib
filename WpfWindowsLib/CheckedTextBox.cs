@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+
 namespace WpfWindowsLib {
 
 
@@ -18,18 +19,20 @@ namespace WpfWindowsLib {
 
 
     string? initText;
+    Brush? defaultBackground;
 
 
-    public virtual void Init(string text, bool isRequired = false) {
+    public virtual void Init(string? text="", bool isRequired = false) {
       if (text==null) text = "";
 
       initText = text;
       Text = text;
       IsRequired = isRequired;
+      defaultBackground = Background;
       TextChanged += checkedTextBox_TextChanged;
       if (isRequired) {
         IsAvailable = Text.Length>0;
-        setBackground(IsAvailable);
+        showAvailability();
       }
 
       FrameworkElement element = this;
@@ -61,32 +64,30 @@ namespace WpfWindowsLib {
         var newIsAvailable = Text.Length>0;
         if (IsAvailable!=newIsAvailable) {
           IsAvailable = newIsAvailable;
-          setBackground(newIsAvailable);
+          showAvailability();
           IsAvailableEvent?.Invoke();
         }
       }
     }
 
 
-    private void setBackground(bool isAvailable) {
+    private void showAvailability() {
+      if (!IsRequired) return;
+
       if (IsAvailable) {
-        Background = Brushes.White;
+        Background = defaultBackground;
       } else {
         Background = Styling.RequiredBrush;
       }
     }
 
 
-    Brush? oldBackgroundBrush;
-
-
     public void ShowChanged(bool isChanged) {
       if (HasChanged) {
         if (isChanged) {
-          oldBackgroundBrush = Background;
           Background = Styling.HasChangedBackgroundBrush;
         } else {
-          Background = oldBackgroundBrush;
+          Background = defaultBackground;
         }
       }
     }

@@ -8,18 +8,18 @@ namespace WpfWindowsLib {
   public class DecimalTextBox: CheckedTextBox {
 
 
-    public decimal? Wert {
-      get { return wert; }
+    public decimal? DecimalValue {
+      get { return decimalValue; }
       set {
-        wert = value;
+        decimalValue = value;
         Text = value?.ToString("N")??"";
       }
     }
-    private decimal? wert;
+    private decimal? decimalValue;
 
 
-    public virtual void Init(decimal? wert, bool isRequired = false) {
-      Wert = wert;
+    public virtual void Init(decimal? wert = null, bool isRequired = false) {
+      DecimalValue = wert;
       Init(Text, isRequired);
     }
 
@@ -28,16 +28,6 @@ namespace WpfWindowsLib {
       e.Handled = e.Key == Key.Space;//forbid " " here, because it doesn't show up in OnPreviewTextInput
       base.OnPreviewKeyDown(e);
     }
-    //private void DecimalTextBox_PreviewKeyDown(object sender, KeyEventArgs e) {
-    //  var hasPunkt = Text.Contains('.');
-    //  e.Handled = 
-    //    !(e.Key >= Key.D0 && e.Key <= Key.D9 || 
-    //    e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 ||
-    //    (!hasPunkt && (e.Key == Key.Decimal ||e.Key == Key.OemPeriod)) ||
-    //    e.Key == Key.Back || e.Key == Key.Delete ||
-    //    e.Key == Key.Left || e.Key == Key.Right ||
-    //    e.Key == Key.Tab);
-    //}
 
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e) {
@@ -58,14 +48,14 @@ namespace WpfWindowsLib {
 
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
       if (Text.Length==0) {
-        Wert = null;
+        DecimalValue = null;
         return;
       }
 
       if (decimal.TryParse(Text, out decimal result)) {
-        Wert = result;
+        DecimalValue = result;
       } else {
-        MessageBox.Show($"{Text} ist keine gültige Zahl.", "Ungültige Zahl", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"{Text} is not a valid decimal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       }
       base.OnPreviewLostKeyboardFocus(e);
