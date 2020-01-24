@@ -1,4 +1,4 @@
-# WpfWindowsLib: Library with basic WPF Window functionality
+# Base WPF Window for data entry
 
 ## About
 
@@ -8,7 +8,7 @@ enabled and to check if all required data is entered. The controls in this
 library detect themselves if there was a change and inform the window
 automatically.
 
-Few other methods are in this library, which are helpful when writing
+A Few other methods are in this library, which are helpful when writing
 WPF applications, like `GlyphDrawer` which allows to measure text length and
 writing text directly to a DrawingContext.
 
@@ -17,17 +17,25 @@ writing text directly to a DrawingContext.
 The project `SampleApp` shows the various controls available and demonstrates
 how the user will interact with them:
 
-![Alt Text](SampleApp.png)
+![Sample Application](SampleApp.png)
 
  There are 3 columns. The first shows controls with no data, the second controls
 with no data, but the user has to fill in some data because they are required for 
-saving and the third column shows control with some initial data.
+saving (note the different background color) and the third column shows control 
+with some initial data.
 
 The Save button gets only enabled once the user has entered some data for 
 all required controls. If he tries to close the window before doing so, a warning
 message gets displayed. If everything is saved, but 1 control gets changed 
 again, the same thing happens. The user needs to save before he can close the
 window.
+
+![User has changed data, cannot close window](CannotClose.png)
+
+Here the user saved successfully the data, then changed 2 integer values and
+tried to close the window. An error message shows him which data has changed and 
+if he really wants to lose that change by closing or save it by clicking the Save
+button.
 
 ## Coding
 
