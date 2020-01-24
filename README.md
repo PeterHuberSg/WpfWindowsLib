@@ -1,4 +1,4 @@
-# Base WPF Window for data entry
+# Base WPF Window functionality for data entry
 
 ## About
 
@@ -39,9 +39,9 @@ button.
 
 ## Coding
 
-A control has to implement `ICheck`. It can then be placed in a Window inheriting
-from `CheckedWindow`. The initial value and setting `IsRequired` is done from
-code behind:
+A control has to implement `ICheck` to support automatic detection of changes. It 
+can then be placed in a Window inheriting from `CheckedWindow`. The initial value and 
+setting `IsRequired` is done from code behind:
 
     RequiredDecimalTextBox.Init(1.23, isRequired: true);
 
