@@ -17,7 +17,6 @@ namespace SampleApp {
       InitializeComponent();
 
       SaveButton.Click += saveButton_Click;
-      CloseButton.Click += closeButton_Click;
 
       string?[] nullChangedValues = {null, "Changed"};
       NormalAutoCompleteBox.FilterMode = AutoCompleteFilterMode.Contains;
@@ -88,19 +87,10 @@ namespace SampleApp {
 
 
     private void saveButton_Click(object sender, RoutedEventArgs e) {
-      throw new NotImplementedException();
-    }
-
-
-    private void closeButton_Click(object sender, RoutedEventArgs e) {
-      //same code as in checkedWindow_Closing. Only needed in the sample to simulate closing.
-      if (HasICheckChanged) {
-        MessageBoxResult result;
-        ShowChanged(true);
-        result = MessageBox.Show("Press OK to close the Window without saving the data, Cancel to continue with data entry.",
-        "Closing the Window ? Data has changed.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
-        ShowChanged(false);
-      }
+      this.ResetHasChanged();
+      updateSaveButtonIsEnabled();
+      MessageBox.Show("Data would now be saved.", "Save data", MessageBoxButton.OK, MessageBoxImage.Information);
+      //signal that data has changed. user needs to change anything before saving is possible again
     }
   }
 }

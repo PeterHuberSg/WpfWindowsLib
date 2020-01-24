@@ -1,4 +1,23 @@
-﻿using System;
+﻿/**************************************************************************************
+
+WpfWindowsLib.FilterStackPanel
+==============================
+
+Can hold some controls for filtering, usually used at the top of the window before 
+displaying a DataGrid
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -10,7 +29,7 @@ namespace WpfWindowsLib {
 
   /// <summary>
   /// Used in the upper part of a window hosting the filter buttons and stuff. It sets
-  /// styles for textboxes, buttons, labels, etc.
+  /// styles for TextBoxes, buttons, labels, etc.
   /// </summary>
   public class FilterStackPanel: StackPanel {
 
@@ -30,8 +49,8 @@ namespace WpfWindowsLib {
       var buttonMargin = new Thickness(5,3,5,3); //no labels, need left margin
       var checkBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin.
       var comboBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin.
-      var datePickerMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to allign text with textblocks
-      var textBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to allign text with textblocks
+      var datePickerMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to align text with TextBlocks
+      var textBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to align text with TextBlocks
 
       var buttonStyle = new Style(typeof(Button));
       buttonStyle.Setters.Add(new Setter(Button.VerticalAlignmentProperty, VerticalAlignment.Center));

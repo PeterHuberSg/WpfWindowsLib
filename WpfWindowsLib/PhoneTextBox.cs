@@ -1,8 +1,27 @@
-﻿using System;
+﻿/**************************************************************************************
+
+WpfWindowsLib.PhoneTextBox
+==========================
+
+TextBox accepting only phone numbers and implementing ICheck
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+
 
 namespace WpfWindowsLib {
 
@@ -42,7 +61,7 @@ namespace WpfWindowsLib {
         } else {
           TelefonNrWithoutBlanks = Text.Replace(" ", "");
           if (TelefonNrWithoutBlanks.Length!=10) {
-            MessageBox.Show($"The phone nummber '{Text}' should ahve 10 digits.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"The phone number '{Text}' should have 10 digits.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             e.Handled = true;
           } else {
             format(TelefonNrWithoutBlanks);

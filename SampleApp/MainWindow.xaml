@@ -1,9 +1,26 @@
-﻿<wwl:CheckedWindow x:Class="SampleApp.MainWindow"
+﻿<!--***********************************************************************************
+
+SampleApp.MainWindow
+====================
+
+Sample of a Window which automatically detect if the user has changed the value of any
+control implementing ICheck.
+  
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+************************************************************************************-->
+  <wwl:CheckedWindow x:Class="SampleApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SampleApp"
         xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
         mc:Ignorable="d"
         Title="Checked Controls Sample" Width="500" SizeToContent="Height">
@@ -115,10 +132,6 @@
 
     <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Normal" TextWrapping="Wrap"
                Text="Save button is only enabled when all required controls have a value."/>
-    <Button Grid.Row="9" Grid.Column="2" x:Name="SaveButton" Content="_Save"/>
-    <Button Grid.Row="9" Grid.Column="3" x:Name="CloseButton" Content="_Close"
-            ToolTip="Pretents to close the window, which will highlight the controls which have changed."/>
-    
-
+    <Button Grid.Row="9" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

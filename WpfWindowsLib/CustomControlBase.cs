@@ -1,4 +1,22 @@
-﻿//http://tech.pro/tutorial/856/wpf-tutorial-using-a-visual-collection
+﻿/**************************************************************************************
+
+WpfWindowsLib.CustomControlBase
+===============================
+
+CustomControl with functionality added for Padding, Border and Background.
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+
+//http://tech.pro/tutorial/856/wpf-tutorial-using-a-visual-collection
 //http://wpftutorial.net/HowToCreateACustomControl.html
 
 using System;
@@ -10,11 +28,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+
 namespace WpfWindowsLib {
 
 
   /// <summary>
-  /// Base class for custom controls. Since it inherits from Control, it provids standard proeprties like Font and Background. However,
+  /// Base class for custom controls. Since it inherits from Control, it provides standard properties like Font and Background. However,
   /// those properties are not doing anything. CustomControlBase adds the code for Padding, Border and Background. Inheritors should not override 
   /// MeasureOverride and ArrangeOverride but MeasureContentOverride and ArrangeContentOverride
   /// </summary>
@@ -24,7 +43,7 @@ namespace WpfWindowsLib {
     //      ----------
 #if DEBUG
     /// <summary>
-    /// Should for debugging the layout data like Margin, Padding, mesurement size, arrange size, render size and actual size get
+    /// Should for debugging the layout data like Margin, Padding, measurement size, arrange size, render size and actual size get
     /// displayed over actual content ?
     /// Default: false
     /// </summary>
@@ -181,7 +200,7 @@ namespace WpfWindowsLib {
       //+ before calling MeasurementCore() , InvalidateArrange() gets called
       //FrameworkElement.MeasurementCore(availableSize) does the following before calling MeasureOverride():
       //+ removing Margin from availableSize
-      //+ taking care of height, minHeight and maxHeight and the same witdh properties
+      //+ taking care of height, minHeight and maxHeight and the same width properties
       //after calling MeasureOverride(), MeasurementCore() adjusts the value returned by MeasureOverride() to calculate DesiredSize:
       //+ DesiredSize must be within MinWidth and MaxWidth
       //+ add margin to DesiredSize
@@ -191,7 +210,7 @@ namespace WpfWindowsLib {
 
 #if DEBUG
       measureConstraintSize = constraint;
-      //curious if the following ever occures ?
+      //curious if the following ever occurs ?
       if (!double.IsNaN(Width)) {
         if (constraint.Width!=Width) throw new Exception("MeasurementOverride should set constraint.Width = FrameworkElement.Width if Width is a number.");
       }
@@ -219,7 +238,7 @@ namespace WpfWindowsLib {
 
     /// <summary>
     /// Inheritors: Override MeasureContentOverride instead of MeasureOverride. MeasureContentOverride provides the size left
-    /// after applying Border and Padding. Can be between 0 and infinte, but not negative.
+    /// after applying Border and Padding. Can be between 0 and infinite, but not negative.
     /// </summary>
     protected abstract Size MeasureContentOverride(Size constraint);
 
@@ -287,7 +306,7 @@ namespace WpfWindowsLib {
       //+ if (arrangeSize<DesiredSize){
       //+   arrangeSize = DesiredSize; NeedsClipBounds = true
       //+ }
-      //+ if (not strechted){
+      //+ if (not stretched){
       //+   arrangeSize = DesiredSize; //NeedsClipBounds doesn't change
       //+ }
       //+ Size MaxSize = new Size(MaxWidth, MaxHeight)
@@ -341,7 +360,7 @@ namespace WpfWindowsLib {
 
     /// <summary>
     /// Inheritors: Override ArrangeContentOverride instead of ArrangeOverride. ArrangeContentOverride provides the remaining size 
-    /// after applying Border and Padding. Can between infinte and 0, but not negative.<para/>
+    /// after applying Border and Padding. Can between infinite and 0, but not negative.<para/>
     /// Note that the parameter is a rectangle, not a size, because there might be an offset when ContentAlignment is not stretched. Use
     /// ContentArrange() instead of Arrange().
     /// </summary>
@@ -387,7 +406,7 @@ namespace WpfWindowsLib {
     protected bool IsSizingWidthToFixedContent() {
       if (!double.IsNaN(Width) || HorizontalAlignment==HorizontalAlignment.Stretch) {
         //width is defined or control is stretched
-        //content should use all available space space
+        //content should use all available space
         return false;
       }
       //width is not defined and control is not stretched
@@ -403,7 +422,7 @@ namespace WpfWindowsLib {
     protected bool IsSizingHeightToFixedContent() {
       if (!double.IsNaN(Height) || VerticalAlignment==VerticalAlignment.Stretch) {
         //height is defined or control is stretched
-        //content should use all available space space
+        //content should use all available space 
         return false;
       }
       //height is not defined and control is not stretched
@@ -474,7 +493,7 @@ namespace WpfWindowsLib {
             layoutDataBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
           }
           String layoutDataString =
-            "Allignment H:" + HorizontalAlignment + ", V: " + VerticalAlignment + Environment.NewLine +
+            "Alignment H: " + HorizontalAlignment + ", V: " + VerticalAlignment + Environment.NewLine +
             "Margin        L:" + format5(Margin.Left) + ", T: " + format5(Margin.Top) + ", R: " + format5(Margin.Right) + ", B: " + format5(Margin.Bottom) + Environment.NewLine +
             "Border        L:" + format5(BorderThickness.Left) + ", T: " + format5(BorderThickness.Top) + ", R: " + format5(BorderThickness.Right) + ", B: " + format5(BorderThickness.Bottom) + Environment.NewLine +
             "Padding       L:" + format5(Padding.Left) + ", T: " + format5(Padding.Top) + ", R: " + format5(Padding.Right) + ", B: " + format5(Padding.Bottom) + Environment.NewLine +
@@ -540,13 +559,13 @@ namespace WpfWindowsLib {
 #if DEBUG
         System.Diagnostics.Debugger.Break();
 #endif
-        throw new Exception("Custom Control ArrangeContentOverride(): Offest X " + x + " cannot be NAN (not a number).");
+        throw new Exception("Custom Control ArrangeContentOverride(): Offset X " + x + " cannot be NAN (not a number).");
       }
       if (double.IsNaN(y)) {
 #if DEBUG
         System.Diagnostics.Debugger.Break();
 #endif
-        throw new Exception("Custom Control ArrangeContentOverride(): Offest Y " + y + " cannot be NAN (not a number).");
+        throw new Exception("Custom Control ArrangeContentOverride(): Offset Y " + y + " cannot be NAN (not a number).");
       }
       //new Rect() will throw an exception if width or height is negative, infinitive or NAN
 #if DEBUG

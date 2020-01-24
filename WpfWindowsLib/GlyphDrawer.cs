@@ -1,16 +1,36 @@
-﻿using System;
+﻿/**************************************************************************************
+
+WpfWindowsLib.GlyphDrawer
+=========================
+
+Writes text to a DrawingContext. Can also be used to calculate the length of text.
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace WpfWindowsLib {
 
 
   /// <summary>
-  /// Draws glyphs to a DrawingContext. From the font information in the constructor, GlyphDrawer creates and stores the GlyphTypeface, which
-  /// is used everytime for the drawing of the string.
+  /// Draws glyphs to a DrawingContext. From the font information in the constructor, GlyphDrawer creates and stores 
+  /// the GlyphTypeface, which is used every time for the drawing of the string. Can also be used to calculate the
+  /// length of text.
   /// </summary>
   public class GlyphDrawer {
 
@@ -29,7 +49,7 @@ namespace WpfWindowsLib {
     public GlyphDrawer(FontFamily fontFamily, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, double pixelsPerDip) {
       typeface = new Typeface(fontFamily, fontStyle, fontWeight, fontStretch);
       if (!typeface.TryGetGlyphTypeface(out glyphTypeface))
-        throw new InvalidOperationException("No glyphtypeface found");
+        throw new InvalidOperationException("No GlyphTypeface found");
 
       PixelsPerDip = (float)pixelsPerDip;
     }
@@ -68,7 +88,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Writes a string to a DrawingContext, using the GlyphTypeface stored in the GlyphDrawer. The text will be right alligned. The
+    /// Writes a string to a DrawingContext, using the GlyphTypeface stored in the GlyphDrawer. The text will be right aligned. The
     /// last character will be at Origin, all other characters in front.
     /// </summary>
     /// <param name="drawingContext"></param>

@@ -1,4 +1,22 @@
-﻿using System;
+﻿/**************************************************************************************
+
+WpfWindowsLib.DatePicker
+========================
+
+DatePicker implementing ICheck
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -28,7 +46,7 @@ namespace WpfWindowsLib {
       SelectedDate = date;
       IsRequired = isRequired;
       defaultBackground = Background;
-      SelectedDateChanged += CheckedDatePicker_SelectedDateChanged;
+      SelectedDateChanged += checkedDatePicker_SelectedDateChanged;
       if (isRequired) {
         IsAvailable = Text.Length>0;
         showAvailability();
@@ -52,7 +70,7 @@ namespace WpfWindowsLib {
     }
 
 
-    private void CheckedDatePicker_SelectedDateChanged(object? sender, SelectionChangedEventArgs e) {
+    private void checkedDatePicker_SelectedDateChanged(object? sender, SelectionChangedEventArgs e) {
       var newHasChanged = initDate!=SelectedDate;
       if (HasChanged!=newHasChanged) {
         HasChanged = newHasChanged;

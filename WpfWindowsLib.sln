@@ -5,7 +5,14 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLib", "WpfWindowsLib\WpfWindowsLib.csproj", "{B537826C-C790-49D4-B5C6-39287D8603AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "SampleApp\SampleApp.csproj", "{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFEF8C43-1A05-4AC8-A7E0-01BEA5E3DABB}"
+	ProjectSection(SolutionItems) = preProject
+		COPYING.txt = COPYING.txt
+		README.md = README.md
+		SampleApp.png = SampleApp.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
