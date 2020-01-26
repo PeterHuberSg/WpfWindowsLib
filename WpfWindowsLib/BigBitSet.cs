@@ -26,6 +26,8 @@ namespace WpfWindowsLib {
 
   public class BigBitSet {
 
+    #region Properties
+    //      ----------
 
     public int BitsCount { get; private set; }
 
@@ -123,5 +125,6 @@ namespace WpfWindowsLib {
       }
 
     }
+    #endregion
   }
 }

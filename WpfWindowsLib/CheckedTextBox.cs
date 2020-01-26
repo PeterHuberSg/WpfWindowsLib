@@ -1,7 +1,7 @@
 ﻿/**************************************************************************************
 
-WpfWindowsLib.TextBox
-=====================
+WpfWindowsLib.CheckedTextBox
+============================
 
 TextBox implementing ICheck
 
@@ -27,26 +27,66 @@ using System.Windows.Media;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// If this TextBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+  /// any value change.
+  /// </summary>
   public class CheckedTextBox: TextBox, ICheck {
 
+    #region Properties
+    //      ----------
+
+    /// <summary>
+    /// Has the value of this control changed ?
+    /// </summary>
     public bool HasChanged { get; private set; }
+
+    /// <summary>
+    /// Raised when control gets changed or the user undoes the change
+    /// </summary>
     public event Action?  HasChangedEvent;
+
+    /// <summary>
+    /// Needs the user to provide this control with a value ?
+    /// </summary>
     public bool IsRequired { get; private set; }
+
+    /// <summary>
+    /// Has the user provided a value ?
+    /// </summary>
     public bool IsAvailable { get; private set; }
+
+    /// <summary>
+    /// The availability of the control has changed
+    /// </summary>
     public event Action?  IsAvailableEvent;
 
 
+    /// <summary>
+    /// Background of control after initialisation. Useful for inheriting class which needs to change
+    /// the background to highlight the control and then wants to change back
+    /// </summary>
+    protected Brush? DefaultBackground { get; private set;}
+
+    #endregion
+
+
+    #region Initialisation
+    //      --------------
+
     string? initText;
-    Brush? defaultBackground;
 
-
+    /// <summary>
+    /// Called from Windows constructor to set the initial value and to indicate
+    /// if the user is required to enter a value
+    /// </summary>
     public virtual void Init(string? text="", bool isRequired = false) {
       if (text==null) text = "";
 
       initText = text;
       Text = text;
       IsRequired = isRequired;
-      defaultBackground = Background;
+      DefaultBackground = Background;
       TextChanged += checkedTextBox_TextChanged;
       if (isRequired) {
         IsAvailable = Text.Length>0;
@@ -63,8 +103,15 @@ namespace WpfWindowsLib {
         }
       } while (true);
     }
+    #endregion
 
 
+    #region Methods
+    //      -------
+
+    /// <summary>
+    /// Called from CheckedWindow after a save, sets Text as initial value
+    /// </summary>
     public void ResetHasChanged() {
       initText = Text;
       HasChanged = false;
@@ -93,21 +140,25 @@ namespace WpfWindowsLib {
       if (!IsRequired) return;
 
       if (IsAvailable) {
-        Background = defaultBackground;
+        Background = DefaultBackground;
       } else {
         Background = Styling.RequiredBrush;
       }
     }
 
 
+    /// <summary>
+    /// Change the background color of this control if the user has changed its value
+    /// </summary>
     public void ShowChanged(bool isChanged) {
       if (HasChanged) {
         if (isChanged) {
           Background = Styling.HasChangedBackgroundBrush;
         } else {
-          Background = defaultBackground;
+          Background = DefaultBackground;
         }
       }
     }
+    #endregion
   }
 }

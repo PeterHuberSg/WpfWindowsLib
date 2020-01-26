@@ -17,8 +17,6 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,18 +25,53 @@ using System.Windows.Media;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// If this CheckBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+  /// any value change.
+  /// </summary>
   public class CheckedCheckBox: CheckBox, ICheck {
-    public bool HasChanged { get; private set; }
-    public event Action?  HasChangedEvent;
-    public bool IsRequired { get; private set; }
-    public bool IsAvailable { get; private set; }
-    public event Action?  IsAvailableEvent;
 
+    #region Properties
+    //      ----------
+
+    /// <summary>
+    /// Has the value of this control changed ?
+    /// </summary>
+    public bool HasChanged { get; private set; }
+
+    /// <summary>
+    /// Raised when control gets changed or the user undoes the change
+    /// </summary>
+    public event Action?  HasChangedEvent;
+
+    /// <summary>
+    /// Needs the user to provide this control with a value ?
+    /// </summary>
+    public bool IsRequired { get; private set; }
+
+    /// <summary>
+    /// Has the user provided a value ?
+    /// </summary>
+    public bool IsAvailable { get; private set; }
+
+    /// <summary>
+    /// The availability of the control has changed
+    /// </summary>
+    public event Action?  IsAvailableEvent;
+    #endregion
+
+
+    #region Initialisation
+    //      --------------
 
     bool? initValue;
     Brush? defaultBackground;
 
 
+    /// <summary>
+    /// Called from Windows constructor to set the initial value and to indicate
+    /// if the user is required to enter a value
+    /// </summary>
     public void Init(bool? checkValue = null, bool isRequired = false) {
 
       initValue = checkValue;
@@ -62,8 +95,15 @@ namespace WpfWindowsLib {
         }
       } while (true);
     }
+    #endregion
 
 
+    #region Methods
+    //      -------
+
+    /// <summary>
+    /// Called from CheckedWindow after a save, sets the present value as initial value
+    /// </summary>
     public void ResetHasChanged() {
       initValue = IsChecked;
       HasChanged = false;
@@ -99,6 +139,9 @@ namespace WpfWindowsLib {
     }
 
 
+    /// <summary>
+    /// Change the background color of this control if the user has changed its value
+    /// </summary>
     public void ShowChanged(bool isChanged) {
       if (HasChanged) {
         if (isChanged) {
@@ -108,5 +151,6 @@ namespace WpfWindowsLib {
         }
       }
     }
+    #endregion
   }
 }

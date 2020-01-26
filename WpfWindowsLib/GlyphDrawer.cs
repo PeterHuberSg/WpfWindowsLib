@@ -37,16 +37,27 @@ namespace WpfWindowsLib {
     readonly Typeface typeface;
 
 
+    /// <summary>
+    /// Contains the measurement information of one particular font and the specified font properties
+    /// </summary>
     public GlyphTypeface GlyphTypeface {
       get { return glyphTypeface; }
     }
     readonly GlyphTypeface glyphTypeface;
 
 
+    /// <summary>
+    /// Screen resolution. 
+    /// </summary>
     public float PixelsPerDip { get; }
 
 
-    public GlyphDrawer(FontFamily fontFamily, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch, double pixelsPerDip) {
+    /// <summary>
+    /// Construct a GlyphTypeface with the specified font properties
+    /// </summary>
+    public GlyphDrawer(FontFamily fontFamily, FontStyle fontStyle, FontWeight fontWeight, 
+      FontStretch fontStretch, double pixelsPerDip) 
+    {
       typeface = new Typeface(fontFamily, fontStyle, fontWeight, fontStretch);
       if (!typeface.TryGetGlyphTypeface(out glyphTypeface))
         throw new InvalidOperationException("No GlyphTypeface found");
@@ -139,9 +150,12 @@ namespace WpfWindowsLib {
     }
 
 
-    public double GetMaxLength(IEnumerable<string> texte, double size) {
+    /// <summary>
+    /// calculates the width of each string in strings and returns the longest length.
+    /// </summary>
+    public double GetMaxLength(IEnumerable<string> strings, double size) {
       var maxLength = 0.0;
-      foreach (var text in texte) {
+      foreach (var text in strings) {
         double length = 0;
         for (int charIndex = 0; charIndex<text.Length; charIndex++) {
           ushort glyphIndex = glyphTypeface.CharacterToGlyphMap[text[charIndex]];
@@ -154,6 +168,9 @@ namespace WpfWindowsLib {
     }
 
 
+    /// <summary>
+    /// Returns width and height of text
+    /// </summary>
     public Size MeasureString(string text, double size) {
       var formattedText = new FormattedText(text, CultureInfo.CurrentUICulture,
                                               FlowDirection.LeftToRight,

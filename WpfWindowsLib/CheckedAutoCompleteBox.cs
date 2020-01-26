@@ -17,8 +17,6 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -26,20 +24,54 @@ using System.Windows.Media;
 
 namespace WpfWindowsLib {
 
-
+  /// <summary>
+  /// A control that provides a text box for user input and a drop-down that contains 
+  /// possible matches based on the input in the text box. If placed in a Window inherited
+  /// from CheckedWindow, the control reports automatically any value change.
+  /// </summary>
   public class CheckedAutoCompleteBox: AutoCompleteBox, ICheck {
 
-    public bool HasChanged { get; private set; }
-    public event Action?  HasChangedEvent;
-    public bool IsRequired { get; private set; }
-    public bool IsAvailable { get; private set; }
-    public event Action?  IsAvailableEvent;
+    #region Properties
+    //      ----------
 
+    /// <summary>
+    /// Has the value of this control changed ?
+    /// </summary>
+    public bool HasChanged { get; private set; }
+
+    /// <summary>
+    /// Raised when control gets changed or the user undoes the change
+    /// </summary>
+    public event Action?  HasChangedEvent;
+
+    /// <summary>
+    /// Needs the user to provide this control with a value ?
+    /// </summary>
+    public bool IsRequired { get; private set; }
+
+    /// <summary>
+    /// Has the user provided a value ?
+    /// </summary>
+    public bool IsAvailable { get; private set; }
+
+    /// <summary>
+    /// The availability of the control has changed
+    /// </summary>
+    public event Action?  IsAvailableEvent;
+    #endregion
+
+
+    #region Initialisation
+    //      --------------
 
     object? initSelectedItem = null;
     Brush? defaultBackground;
 
 
+    /// <summary>
+    /// Called from Windows constructor to set the SelectedItem as not changed value and to indicate
+    /// if the user is required to enter a value
+    /// </summary>
     public virtual void Init(bool isRequired = false) {
       initSelectedItem = SelectedItem;
       IsRequired = isRequired;
@@ -61,8 +93,15 @@ namespace WpfWindowsLib {
         }
       } while (true);
     }
+    #endregion
 
 
+    #region Methods
+    //      -------
+
+    /// <summary>
+    /// Called from CheckedWindow after a save. Sets the SelectedItem as not changed value
+    /// </summary>
     public void ResetHasChanged() {
       initSelectedItem = SelectedItem;
       HasChanged = false;
@@ -98,6 +137,9 @@ namespace WpfWindowsLib {
     }
 
 
+    /// <summary>
+    /// Change the background color of this control if the user has changed its value
+    /// </summary>
     public void ShowChanged(bool isChanged) {
       if (HasChanged) {
         if (isChanged) {
@@ -107,5 +149,6 @@ namespace WpfWindowsLib {
         }
       }
     }
+    #endregion
   }
 }

@@ -12,12 +12,12 @@ A Few other methods are in this library, which are helpful when writing
 WPF applications, like `GlyphDrawer` which allows to measure text length and
 writing text directly to a DrawingContext.
 
-## Sample Application
+## CheckedControl Sample Application
 
-The project `SampleApp` shows the various controls available and demonstrates
+The project `CheckedControlSample` shows the various controls available and demonstrates
 how the user will interact with them:
 
-![Sample Application](SampleApp.png)
+![CheckedControlSample](CheckedControlSample.png)
 
  There are 3 columns. The first shows controls with no data, the second controls
 with no data, but the user has to fill in some data because they are required for 
@@ -47,7 +47,8 @@ setting `IsRequired` is done from code behind:
 
 The controls implementing `ICheck` will automatically search for the parent
 `CheckedWindow`, register with it and inform it if their `HasChanged` or 
-`IsAvailablev` property has changed. `CheckedWindow` checks all other controls 
+`IsAvailable` property (true if the user has entered a value in a required control) 
+has changed. `CheckedWindow` checks all other controls 
 and calls `OnICheckChanged`or `OnIsAvailableChanged` as needed.
 ## Build requirements
 

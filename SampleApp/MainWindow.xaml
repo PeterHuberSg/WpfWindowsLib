@@ -1,7 +1,7 @@
 ﻿<!--***********************************************************************************
 
-SampleApp.MainWindow
-====================
+CheckedControlSample.MainWindow
+===============================
 
 Sample of a Window which automatically detect if the user has changed the value of any
 control implementing ICheck.
@@ -16,7 +16,7 @@ the Creative Commons 0 license (details see COPYING.txt file, see also
 
 This software is distributed without any warranty. 
 ************************************************************************************-->
-  <wwl:CheckedWindow x:Class="SampleApp.MainWindow"
+<wwl:CheckedWindow x:Class="CheckedControlSample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -84,7 +84,7 @@ This software is distributed without any warranty.
     </Grid.Resources>
     <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Fill="Gainsboro"/>
     <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Fill="Gainsboro"/>
-    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Fill="Gainsboro"/>
+    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Fill="LightGray"/>
     <Rectangle Grid.Row="1" Grid.Column="2" Grid.RowSpan="8" Fill="WhiteSmoke"/>
     <TextBlock Grid.Row="0" Grid.Column="1" Text="Empty"/>
     <TextBlock Grid.Row="0" Grid.Column="2" Text="Required"/>
@@ -130,8 +130,11 @@ This software is distributed without any warranty.
     <wwl:IntTextBox Grid.Row="8" Grid.Column="2" x:Name="RequiredIntTextBox"/>
     <wwl:IntTextBox Grid.Row="8" Grid.Column="3" x:Name="ChangedIntTextBox"/>
 
-    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Normal" TextWrapping="Wrap"
-               Text="Save button is only enabled when all required controls have a value."/>
+    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Normal" TextWrapping="Wrap"
+               Text="">
+      Save button is only enabled when all required controls have a value.<LineBreak/>
+      User can only close Window when all changed data is "saved".
+    </TextBlock>
     <Button Grid.Row="9" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

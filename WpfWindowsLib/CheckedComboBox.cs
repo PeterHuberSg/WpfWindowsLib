@@ -17,8 +17,6 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -28,19 +26,54 @@ using System.Windows.Media;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// If this ComboBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+  /// any value change.
+  /// </summary>
   public class CheckedComboBox: ComboBox, ICheck {
 
+    #region Properties
+    //      ----------
+
+    /// <summary>
+    /// Has the value of this control changed ?
+    /// </summary>
     public bool HasChanged { get; private set; }
+
+    /// <summary>
+    /// Raised when control gets changed or the user undoes the change
+    /// </summary>
     public event Action?  HasChangedEvent;
+
+    /// <summary>
+    /// Needs the user to provide this control with a value ?
+    /// </summary>
     public bool IsRequired { get; private set; }
+
+    /// <summary>
+    /// Has the user provided a value ?
+    /// </summary>
     public bool IsAvailable { get; private set; }
+
+    /// <summary>
+    /// The availability of the control has changed
+    /// </summary>
     public event Action?  IsAvailableEvent;
+    #endregion
+
+
+    #region Initialisation
+    //      --------------
 
 
     int initSelectedIndex = int.MinValue;
     int notSelectedIndex;
 
 
+    /// <summary>
+    /// Called from Windows constructor to set the initial value to notSelectedIndex and 
+    /// to indicate if the user is required to enter a value
+    /// </summary>
     public virtual void Init(bool isRequired = false, int notSelectedIndex = -1) {
       initSelectedIndex = SelectedIndex;
       this.notSelectedIndex = notSelectedIndex;
@@ -63,7 +96,11 @@ namespace WpfWindowsLib {
 
       Loaded += checkedComboBox_Loaded;
     }
+    #endregion
 
+
+    #region Methods
+    //      -------
 
     Brush? defaultBackground;
     Border? comboBoxBorder;
@@ -80,6 +117,9 @@ namespace WpfWindowsLib {
     }
 
 
+    /// <summary>
+    /// Called from CheckedWindow after a save. Sets the SelectedIndex as not changed value
+    /// </summary>
     public void ResetHasChanged() {
       initSelectedIndex = SelectedIndex;
       HasChanged = false;
@@ -115,8 +155,11 @@ namespace WpfWindowsLib {
     }
 
 
+    /// <summary>
+    /// Change the background color of this control if the user has changed its value
+    /// </summary>
     public void ShowChanged(bool isShowChanged) {
-      //the combobox contains a ToggleButton which contains a Border which paints the Combobox' background
+      //the ComboBox contains a ToggleButton which contains a Border which paints the ComboBox' background
       if (HasChanged) {
         if (isShowChanged) {
           comboBoxBorder!.Background = Styling.HasChangedBackgroundBrush;
@@ -125,5 +168,6 @@ namespace WpfWindowsLib {
         }
       }
     }
+    #endregion
   }
 }

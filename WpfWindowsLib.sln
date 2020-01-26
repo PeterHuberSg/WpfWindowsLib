@@ -5,15 +5,21 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLib", "WpfWindowsLib\WpfWindowsLib.csproj", "{B537826C-C790-49D4-B5C6-39287D8603AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "SampleApp\SampleApp.csproj", "{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckedControlSample", "SampleApp\CheckedControlSample.csproj", "{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFEF8C43-1A05-4AC8-A7E0-01BEA5E3DABB}"
 	ProjectSection(SolutionItems) = preProject
 		CannotClose.png = CannotClose.png
+		CheckedControlSample.png = CheckedControlSample.png
 		COPYING.txt = COPYING.txt
 		README.md = README.md
-		SampleApp.png = SampleApp.png
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLibTest", "WpfWindowsLibTest\WpfWindowsLibTest.csproj", "{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControlSample", "CustomControlSample\CustomControlSample.csproj", "{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControlSampleLib", "CustomControlSampleLib\CustomControlSampleLib.csproj", "{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,18 @@ Global
 		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

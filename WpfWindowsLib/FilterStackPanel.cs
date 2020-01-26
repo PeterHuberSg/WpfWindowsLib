@@ -43,7 +43,7 @@ namespace WpfWindowsLib {
         </StackPanel.Resources>
       </StackPanel>
       */
-      Background = Brushes.Gainsboro;
+      Background = Styling.PanelBackgroundBrush;
       Orientation = Orientation.Horizontal;
 
       var buttonMargin = new Thickness(5,3,5,3); //no labels, need left margin

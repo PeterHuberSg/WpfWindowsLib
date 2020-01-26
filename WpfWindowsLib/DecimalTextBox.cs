@@ -26,9 +26,18 @@ using System.Windows.Input;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// A TextBox accepting only decimal values. If it is placed in a Window inherited from CheckedWindow, 
+  /// it reports automatically any value change.
+  /// </summary>
   public class DecimalTextBox: CheckedTextBox {
 
+    #region Properties
+    //      ----------
 
+    /// <summary>
+    /// The control's value
+    /// </summary>
     public decimal? DecimalValue {
       get { return decimalValue; }
       set {
@@ -37,13 +46,25 @@ namespace WpfWindowsLib {
       }
     }
     private decimal? decimalValue;
+    #endregion
 
 
+    #region Initialisation
+    //      --------------
+
+    /// <summary>
+    /// Called from Windows constructor to set the initial value and to indicate
+    /// if the user is required to enter a value
+    /// </summary>
     public virtual void Init(decimal? wert = null, bool isRequired = false) {
       DecimalValue = wert;
       Init(Text, isRequired);
     }
+    #endregion
 
+
+    #region Methods
+    //      -------
 
     protected override void OnPreviewKeyDown(KeyEventArgs e) {
       e.Handled = e.Key == Key.Space;//forbid " " here, because it doesn't show up in OnPreviewTextInput
@@ -81,5 +102,6 @@ namespace WpfWindowsLib {
       }
       base.OnPreviewLostKeyboardFocus(e);
     }
+    #endregion
   }
 }

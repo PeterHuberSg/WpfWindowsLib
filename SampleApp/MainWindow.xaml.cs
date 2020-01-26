@@ -1,10 +1,27 @@
-﻿using System;
+﻿/**************************************************************************************
+
+CheckedControlSample.MainWindow
+===============================
+
+Shows how the various checked Controls can be used
+
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+**************************************************************************************/
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using WpfWindowsLib;
 
 
-namespace SampleApp {
+namespace CheckedControlSample {
 
 
   /// <summary>
@@ -13,6 +30,12 @@ namespace SampleApp {
   public partial class MainWindow: CheckedWindow {
 
 
+    #region Constructor
+    //      -----------
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
     public MainWindow() {
       InitializeComponent();
 
@@ -69,9 +92,13 @@ namespace SampleApp {
       ChangedIntTextBox.Init();
       ChangedIntTextBox.IntValue = 123;
     }
+    #endregion
 
 
-    public override void OnICheckChanged(bool hasChanged) {
+    #region Events
+    //      ------
+
+    protected override void OnICheckChanged(bool hasChanged) {
       updateSaveButtonIsEnabled();
     }
 
@@ -81,7 +108,7 @@ namespace SampleApp {
     }
 
 
-    public override void OnIsAvailableChanged(bool isAvailable) {
+    protected override void OnIsAvailableChanged(bool isAvailable) {
       updateSaveButtonIsEnabled();
     }
 
@@ -92,5 +119,6 @@ namespace SampleApp {
       MessageBox.Show("Data would now be saved.", "Save data", MessageBoxButton.OK, MessageBoxImage.Information);
       //signal that data has changed. user needs to change anything before saving is possible again
     }
+    #endregion
   }
 }

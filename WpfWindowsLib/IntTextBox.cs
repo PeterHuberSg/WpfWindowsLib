@@ -26,9 +26,18 @@ using System.Windows.Input;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// A TextBox accepting only integer values. If it is placed in a Window inherited from CheckedWindow, 
+  /// it reports automatically any value change.
+  /// </summary>
   public class IntTextBox: CheckedTextBox {
 
+    #region Properties
+    //      ----------
 
+    /// <summary>
+    /// The control's value
+    /// </summary>
     public int? IntValue {
       get { return intValue; }
       set {
@@ -37,13 +46,25 @@ namespace WpfWindowsLib {
       }
     }
     private int? intValue;
+    #endregion
 
 
+    #region Initialisation
+    //      --------------
+
+    /// <summary>
+    /// Called from Windows constructor to set the initial value and to indicate
+    /// if the user is required to enter a value
+    /// </summary>
     public virtual void Init(int? wert = null, bool isRequired = false) {
       IntValue = wert;
       Init(Text, isRequired);
     }
+    #endregion
 
+
+    #region Methods
+    //      -------
 
     protected override void OnPreviewKeyDown(KeyEventArgs e) {
       e.Handled = e.Key == Key.Space;//forbid " " here, because it doesn't show up in OnPreviewTextInput
@@ -52,7 +73,7 @@ namespace WpfWindowsLib {
 
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e) {
-      var handled = false;
+      var handled = false; 
       foreach (var c in e.Text) {
         handled |= !(c>='0' && c<='9');
       }
@@ -75,5 +96,6 @@ namespace WpfWindowsLib {
       }
       base.OnPreviewLostKeyboardFocus(e);
     }
+    #endregion
   }
 }

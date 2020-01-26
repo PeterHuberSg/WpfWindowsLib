@@ -3,7 +3,7 @@
 WpfWindowsLib.Styling
 =====================
 
-Shared Brushes for controls implementing ICheck
+Shared Brushes for controls in WpfWindowsLib
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -27,15 +27,35 @@ using System.Windows.Media;
 namespace WpfWindowsLib {
 
 
+  /// <summary>
+  /// Shared Brushes for controls in WpfWindowsLib
+  /// </summary>
   public static class Styling {
 
     #region Forms
     //      -----
 
+    /// <summary>
+    /// Background color for a required control whose initial value the user has not changed yet.
+    /// </summary>
     public static readonly Brush RequiredBrush = Brushes.LightGoldenrodYellow;
+
+    /// <summary>
+    /// Background color for a control whose initial value the user has changed. Used to show
+    /// the user why he should not just close the form, but save it first.
+    /// </summary>
+    public static readonly Brush HasChangedBackgroundBrush = Brushes.LightGreen;
+
+    /// <summary>
+    /// Background color for a control where the user made a mistake
+    /// </summary>
     public static readonly Brush ErrorBrush = Brushes.PapayaWhip;
 
-    public static readonly Brush HasChangedBackgroundBrush = Brushes.LightGreen;
+    /// <summary>
+    /// Background color for a panel control at the top or bottom of the form, containing controls
+    /// like Labels, TextBoxes and Buttons.
+    /// </summary>
+    public static readonly Brush PanelBackgroundBrush = Brushes.Gainsboro;
     #endregion
   }
 }

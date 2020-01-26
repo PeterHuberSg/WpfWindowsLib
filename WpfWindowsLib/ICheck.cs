@@ -27,14 +27,44 @@ namespace WpfWindowsLib {
 
   public interface ICheck {
 
+    /// <summary>
+    /// Has the user changed the initial value of the control ?
+    /// </summary>
     bool HasChanged { get; }
+
+    /// <summary>
+    /// Needs the user to change the initial value of the control ?
+    /// </summary>
     bool IsRequired { get; }
+
+    /// <summary>
+    /// Has the user changed the initial value of the required control ?
+    /// </summary>
     bool IsAvailable { get; }
 
+    /// <summary>
+    /// Raised when the user changes the initial value of the control or when the user undoes any change and
+    /// enters the initial value again.
+    /// </summary>
     event Action  HasChangedEvent;
+
+    /// <summary>
+    /// Raised when the user changes the initial value of the required value control or when the user undoes 
+    /// any change and enters the initial value again.
+    /// </summary>
     event Action  IsAvailableEvent;
 
+    /// <summary>
+    /// Tells the control to use the present value as initial value.
+    /// </summary>
     void ResetHasChanged();
+
+    /// <summary>
+    /// Changes the background color of the control if its value is now different than the initial value 
+    /// and isChanged is true. If isChanged is false, the background color gets displayed from when the
+    /// control got initialised.
+    /// </summary>
+    /// <param name="isChanged"></param>
     void ShowChanged(bool isChanged);
   }
 }
