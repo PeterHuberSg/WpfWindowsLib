@@ -18,6 +18,7 @@ This software is distributed without any warranty.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 
@@ -56,17 +57,17 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Gets called if HasICheckChanged has changed.
     /// </summary>
-    protected virtual void OnICheckChanged(bool hasChanged) { }
+    protected virtual void OnICheckChanged() { }
 
 
     //Data required
     //-------------
 
-    /// <summary>
-    /// All controls which require some data before data can be saved
-    /// </summary>
-    public IEnumerable<ICheck> Requireds { get { return requireds; } }
-    readonly List<ICheck> requireds;
+    ///// <summary>
+    ///// All controls which require some data before data can be saved
+    ///// </summary>
+    //public IEnumerable<ICheck> Requireds { get { return requireds; } }
+    //readonly List<ICheck> requireds;
 
     /// <summary>
     /// True if controls which require some data before data can be saved have some data.
@@ -76,7 +77,7 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Gets called if IsAvailable has changed.
     /// </summary>
-    protected virtual void OnIsAvailableChanged(bool isAvailable) { }
+    protected virtual void OnIsAvailableChanged() { }
     #endregion
 
 
@@ -88,7 +89,8 @@ namespace WpfWindowsLib {
     /// </summary>
     public CheckedWindow() {
       iChecks = new HashSet<ICheck>();
-      requireds = new List<ICheck>();
+      //requireds = new List<ICheck>();
+      HasICheckChanged = false;
       IsAvailable = true;
       Closing += checkedWindow_Closing;
       Closed += checkedWindow_Closed;
@@ -119,6 +121,29 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Called by a control implementing ICheck to find its parent CheckedWindow and register with it
+    /// </summary>
+    public static void Register(FrameworkElement element) {
+      var startElement = element;
+       do {
+        if (element.Parent==null) {
+          if (DesignerProperties.GetIsInDesignMode(startElement)) {
+            break;
+          } else {
+            throw new Exception($"Cannot find parent CheckedWindow of {startElement.Name}.");
+          }
+        }
+        element = (FrameworkElement)element.Parent;
+
+        if (element is CheckedWindow window) {
+          window.Register((ICheck)startElement);
+          break;
+        }
+      } while (true);
+    }
+
+
+    /// <summary>
     /// A control implementing ICheck will find automatically the host CheckedWindow and register with it.
     /// </summary>
     public void Register(ICheck iCheck) {
@@ -127,10 +152,10 @@ namespace WpfWindowsLib {
       if (iChecks.Contains(iCheck)) throw new Exception($"{Title} Window: Programming error, cannot register iCheck '{iCheck}' twice.");
       iChecks.Add(iCheck);
       iCheck.HasChangedEvent += iCheck_HasChangedEvent;
-      if (iCheck.IsRequired) {
-        requireds.Add(iCheck);
-        iCheck.IsAvailableEvent += iCheck_IsAvailableEvent;
-        IsAvailable = IsAvailable && iCheck.IsAvailable;
+      iCheck.IsAvailableEvent += iCheck_IsAvailableEvent;
+      if (iCheck.IsRequired && IsAvailable) {
+        //requireds.Add(iCheck);
+        IsAvailable = iCheck.IsAvailable;
       }
     }
 
@@ -161,25 +186,25 @@ namespace WpfWindowsLib {
       foreach (var iCheck in iChecks) {
         if (iCheck.HasChanged) {
           HasICheckChanged = true;
-          OnICheckChanged(true);
+          OnICheckChanged();
           return;
         }
       };
       HasICheckChanged = false;
-      OnICheckChanged(false);
+      OnICheckChanged();
     }
 
 
     private void iCheck_IsAvailableEvent() {
-      foreach (var iCheck in requireds) {
+      foreach (var iCheck in iChecks) {
         if (!iCheck.IsAvailable) {
           IsAvailable = false;
-          OnIsAvailableChanged(false);
+          OnIsAvailableChanged();
           return;
         }
       };
       IsAvailable = true;
-      OnIsAvailableChanged(true);
+      OnIsAvailableChanged();
     }
     #endregion
   }

@@ -1,0 +1,67 @@
+﻿<!--***********************************************************************************
+
+Samples.DecimalTextBoxWindow
+============================
+
+Sample Window for DecimalTextBox testing
+  
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+************************************************************************************-->
+<wwl:CheckedWindow x:Class="Samples.DecimalTextBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
+        mc:Ignorable="d"
+        Title="Test DecimalTextBox" SizeToContent="WidthAndHeight">
+  <Grid Background="{StaticResource GridBackground}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition Width="50"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <wwl:DecimalTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestDecimalTextBox" Margin="9"
+                        Text="1.23"  IsRequired="True" Min="0" Max="10"/>
+    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Fill="{StaticResource LabelBackground}"/>
+    <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
+              IsChecked="{Binding ElementName=TestDecimalTextBox, Path=IsRequired, Mode=TwoWay}"/>
+    <Label Grid.Row="2" Grid.Column="0" Content="_Min" Target="{Binding ElementName=MinTextBox}"/>
+    <TextBox Grid.Row="2" Grid.Column="1" x:Name="MinTextBox"
+             Text="{Binding ElementName=TestDecimalTextBox, Path=Min, Mode=TwoWay}"/>
+    <Label Grid.Row="3" Grid.Column="0" Content="M_ax" Target="{Binding ElementName=MaxTextBox}"/>
+    <TextBox Grid.Row="3" Grid.Column="1" x:Name="MaxTextBox"
+             Text="{Binding ElementName=TestDecimalTextBox, Path=Max, Mode=TwoWay}"/>
+    <Button Grid.Row="4" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="_Decimal Value" Target="{Binding ElementName=InitialiseDecimalValueTextBox}"/>
+    <TextBox Grid.Row="5" Grid.Column="1" x:Name="InitialiseDecimalValueTextBox"/>
+    <Label Grid.Row="6" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="6" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <Label Grid.Row="7" Grid.Column="0" Content="Mi_n" Target="{Binding ElementName=InitialiseMinTextBox}"/>
+    <TextBox Grid.Row="7" Grid.Column="1" x:Name="InitialiseMinTextBox"/>
+    <Label Grid.Row="8" Grid.Column="0" Content="Ma_x" Target="{Binding ElementName=InitialiseMaxTextBox}"/>
+    <TextBox Grid.Row="8" Grid.Column="1" x:Name="InitialiseMaxTextBox"/>
+    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
+    <Button Grid.Row="9" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
+  </Grid>
+</wwl:CheckedWindow>

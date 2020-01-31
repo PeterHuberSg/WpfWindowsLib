@@ -38,14 +38,38 @@ namespace WpfWindowsLib {
     /// <summary>
     /// The control's value
     /// </summary>
-    public int? IntValue {
-      get { return intValue; }
-      set {
-        intValue = value;
-        Text = value.ToString();
-      }
+    //public int? IntValue {
+    //  get { return intValue; }
+    //  set {
+    //    intValue = value;
+    //    Text = value.ToString();
+    //  }
+    //}
+    //private int? intValue;
+
+
+    public static readonly DependencyProperty IntValueProperty = DependencyProperty.Register(
+      "IntValue",
+      typeof(int?),
+      typeof(IntTextBox),
+      new FrameworkPropertyMetadata(null,
+          FrameworkPropertyMetadataOptions.AffectsRender,
+          new PropertyChangedCallback(OnIntValueChanged)
+      )
+    );
+
+    private static void OnIntValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var intTextBox = (IntTextBox)d;
+      intTextBox.Text = intTextBox.Text.ToString();
     }
-    private int? intValue;
+
+    /// <summary>
+    /// The control's value
+    /// </summary>
+    public int? IntValue {
+      get { return (int?)GetValue(IntValueProperty); }
+      set { SetValue(IntValueProperty, value); }
+    }
     #endregion
 
 
@@ -56,9 +80,9 @@ namespace WpfWindowsLib {
     /// Called from Windows constructor to set the initial value and to indicate
     /// if the user is required to enter a value
     /// </summary>
-    public virtual void Init(int? wert = null, bool isRequired = false) {
+    public virtual void Initialise(int? wert = null, bool isRequired = false) {
       IntValue = wert;
-      Init(Text, isRequired);
+      Initialise(Text, isRequired);
     }
     #endregion
 

@@ -23,7 +23,7 @@ This software is distributed without any warranty.
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
         mc:Ignorable="d"
-        Title="Checked Controls Sample" Width="500" SizeToContent="Height">
+        Title="Checked Controls Sample" Width="600" SizeToContent="Height">
     <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
@@ -37,9 +37,14 @@ This software is distributed without any warranty.
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition/>
       <ColumnDefinition/>
       <ColumnDefinition/>
       <ColumnDefinition/>
@@ -82,59 +87,84 @@ This software is distributed without any warranty.
       </Style>
       
     </Grid.Resources>
-    <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Fill="Gainsboro"/>
+    <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Fill="Gainsboro"/>
     <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Fill="Gainsboro"/>
-    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Fill="LightGray"/>
+    <Rectangle Grid.Row="9" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="5" Fill="LightGray"/>
     <Rectangle Grid.Row="1" Grid.Column="2" Grid.RowSpan="8" Fill="WhiteSmoke"/>
     <TextBlock Grid.Row="0" Grid.Column="1" Text="Empty"/>
-    <TextBlock Grid.Row="0" Grid.Column="2" Text="Required"/>
-    <TextBlock Grid.Row="0" Grid.Column="3" Text="Changed"/>
+    <TextBlock Grid.Row="0" Grid.Column="2" Text="XAML Value"/>
+    <TextBlock Grid.Row="0" Grid.Column="3" Text="Required"/>
+    <TextBlock Grid.Row="0" Grid.Column="4" Text="XAML &amp; Required"/>
 
     <TextBlock Grid.Row="1" Grid.Column="0" Text="AutoCompleteBox"/>
-    <wwl:CheckedAutoCompleteBox Grid.Row="1" Grid.Column="1" x:Name="NormalAutoCompleteBox"/>
+    <!--<wwl:CheckedAutoCompleteBox Grid.Row="1" Grid.Column="1" x:Name="EmptyAutoCompleteBox"/>
     <wwl:CheckedAutoCompleteBox Grid.Row="1" Grid.Column="2" x:Name="RequiredAutoCompleteBox"/>
-    <wwl:CheckedAutoCompleteBox Grid.Row="1" Grid.Column="3" x:Name="ChangedCompleteBox"/>
+    <wwl:CheckedAutoCompleteBox Grid.Row="1" Grid.Column="3" x:Name="ChangedCompleteBox"/>-->
 
     <TextBlock Grid.Row="2" Grid.Column="0" Text="CheckBox"/>
-    <wwl:CheckedCheckBox Grid.Row="2" Grid.Column="1" x:Name="NormalCheckBox" VerticalAlignment="Center"/>
+    <!--<wwl:CheckedCheckBox Grid.Row="2" Grid.Column="1" x:Name="EmptyCheckBox" VerticalAlignment="Center"/>
     <wwl:CheckedCheckBox Grid.Row="2" Grid.Column="2" x:Name="RequiredCheckBox"/>
-    <wwl:CheckedCheckBox Grid.Row="2" Grid.Column="3" x:Name="ChangedCheckBox"/>
+    <wwl:CheckedCheckBox Grid.Row="2" Grid.Column="3" x:Name="ChangedCheckBox"/>-->
 
     <TextBlock Grid.Row="3" Grid.Column="0" Text="ComboBox"/>
-    <wwl:CheckedComboBox Grid.Row="3" Grid.Column="1" x:Name="NormalComboBox"/>
+    <!--<wwl:CheckedComboBox Grid.Row="3" Grid.Column="1" x:Name="EmptyComboBox"/>
     <wwl:CheckedComboBox Grid.Row="3" Grid.Column="2" x:Name="RequiredComboBox"/>
-    <wwl:CheckedComboBox Grid.Row="3" Grid.Column="3" x:Name="ChangedComboBox"/>
+    <wwl:CheckedComboBox Grid.Row="3" Grid.Column="3" x:Name="ChangedComboBox"/>-->
 
     <TextBlock Grid.Row="4" Grid.Column="0" Text="DatePicker"/>
-    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="1" x:Name="NormalDatePicker"/>
+    <!--<wwl:CheckedDatePicker Grid.Row="4" Grid.Column="1" x:Name="EmptyDatePicker"/>
     <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="2" x:Name="RequiredDatePicker"/>
-    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="3" x:Name="ChangedDatePicker"/>
+    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="3" x:Name="ChangedDatePicker"/>-->
 
     <TextBlock Grid.Row="5" Grid.Column="0" Text="TextBox"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="1" x:Name="NormalTextBox"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="2" x:Name="RequiredTextBox"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="3" x:Name="ChangedTextBox"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="1" x:Name="EmptyTextBox"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="2" x:Name="XamlTextBox" Text="XAML value"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="3" x:Name="RequiredTextBox" IsRequired="True"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="4" x:Name="XamlRequTextBox" Text="XAML value" IsRequired="True"/>
+    <!--<wwl:CheckedTextBox Grid.Row="5" Grid.Column="4" x:Name="ChangedReqTextBox" Text="Changed" IsRequired="True"/>-->
 
     <TextBlock Grid.Row="6" Grid.Column="0" Text="Decimal TextBox"/>
-    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="1" x:Name="NormalDecimalTextBox"/>
-    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="2" x:Name="RequiredDecimalTextBox"/>
-    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="3" x:Name="ChangedDecimalTextBox"/>
+    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="1" x:Name="EmptyDecimalTextBox"/>
+    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="2" x:Name="XamlDecimalTextBox" Text="12.34"/>
+    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="3" x:Name="RequiredDecimalTextBox" IsRequired="True"/>
+    <wwl:DecimalTextBox Grid.Row="6" Grid.Column="4" x:Name="XamlRequDecimalTextBox" Text="12.34" IsRequired="True"/>
 
     <TextBlock Grid.Row="7" Grid.Column="0" Text="Email TextBox"/>
-    <wwl:EmailTextBox Grid.Row="7" Grid.Column="1" x:Name="NormalEmailTextBox"/>
+    <!--<wwl:EmailTextBox Grid.Row="7" Grid.Column="1" x:Name="EmptyEmailTextBox"/>
     <wwl:EmailTextBox Grid.Row="7" Grid.Column="2" x:Name="RequiredEmailTextBox"/>
-    <wwl:EmailTextBox Grid.Row="7" Grid.Column="3" x:Name="ChangedEmailTextBox"/>
+    <wwl:EmailTextBox Grid.Row="7" Grid.Column="3" x:Name="ChangedEmailTextBox"/>-->
 
     <TextBlock Grid.Row="8" Grid.Column="0" Text="Integer TextBox"/>
-    <wwl:IntTextBox Grid.Row="8" Grid.Column="1" x:Name="NormalIntTextBox"/>
+    <!--<wwl:IntTextBox Grid.Row="8" Grid.Column="1" x:Name="EmptyIntTextBox"/>
     <wwl:IntTextBox Grid.Row="8" Grid.Column="2" x:Name="RequiredIntTextBox"/>
-    <wwl:IntTextBox Grid.Row="8" Grid.Column="3" x:Name="ChangedIntTextBox"/>
+    <wwl:IntTextBox Grid.Row="8" Grid.Column="3" x:Name="ChangedIntTextBox"/>-->
 
-    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Normal" TextWrapping="Wrap"
+    <TextBlock Grid.Row="9" Grid.Column="0" Text="Call Initialise()"/>
+    <Button Grid.Row="9" Grid.Column="1" Content="null, not required" x:Name="EmptyNullNotRButton"/>
+    <Button Grid.Row="9" Grid.Column="2" Content="null, not required" x:Name="XamlNullNotRButton"/>
+    <Button Grid.Row="9" Grid.Column="3" Content="null, not required" x:Name="RequiredNullNotRButton"/>
+    <Button Grid.Row="9" Grid.Column="4" Content="null, not required" x:Name="XamlReqNullNotRButton"/>
+
+    <Button Grid.Row="10" Grid.Column="1" Content="value1, not required" x:Name="EmptyValueNotRButton"/>
+    <Button Grid.Row="10" Grid.Column="2" Content="value1, not required" x:Name="XamlValueNotRButton"/>
+    <Button Grid.Row="10" Grid.Column="3" Content="value1, not required" x:Name="RequiredValueNotRButton"/>
+    <Button Grid.Row="10" Grid.Column="4" Content="value1, not required" x:Name="XamlReqValueNotRButton"/>
+
+    <Button Grid.Row="11" Grid.Column="1" Content="null, required" x:Name="EmptyNullReqButton"/>
+    <Button Grid.Row="11" Grid.Column="2" Content="null, required" x:Name="XamlNullReqButton"/>
+    <Button Grid.Row="11" Grid.Column="3" Content="null, required" x:Name="RequiredNullReqButton"/>
+    <Button Grid.Row="11" Grid.Column="4" Content="null, required" x:Name="XamlReqNullReqButton"/>
+
+    <Button Grid.Row="12" Grid.Column="1" Content="value2, required" x:Name="EmptyValueReqButton"/>
+    <Button Grid.Row="12" Grid.Column="2" Content="value2, required" x:Name="XamlValueReqButton"/>
+    <Button Grid.Row="12" Grid.Column="3" Content="value2, required" x:Name="RequiredValueReqButton"/>
+    <Button Grid.Row="12" Grid.Column="4" Content="value2, required" x:Name="XamlReqValueReqButton"/>
+
+    <TextBlock Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="4" FontWeight="Normal" TextWrapping="Wrap"
                Text="">
       Save button is only enabled when all required controls have a value.<LineBreak/>
       User can only close Window when all changed data is "saved".
     </TextBlock>
-    <Button Grid.Row="9" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
+    <Button Grid.Row="13" Grid.Column="4" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

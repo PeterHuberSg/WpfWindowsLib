@@ -1,0 +1,57 @@
+﻿<!--***********************************************************************************
+
+Samples.CheckedTextBoxWindow
+============================
+
+Sample Window for CheckedTextBox testing
+  
+Written in 2020 by Jürgpeter Huber 
+Contact: PeterCode at Peterbox dot com
+
+To the extent possible under law, the author(s) have dedicated all copyright and 
+related and neighboring rights to this software to the public domain worldwide under
+the Creative Commons 0 license (details see COPYING.txt file, see also
+<http://creativecommons.org/publicdomain/zero/1.0/>). 
+
+This software is distributed without any warranty. 
+************************************************************************************-->
+<wwl:CheckedWindow x:Class="Samples.CheckedTextBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
+        mc:Ignorable="d"
+        Title="Test CheckedTextBox" SizeToContent="WidthAndHeight">
+  <Grid Background="{StaticResource GridBackground}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition Width="100"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <wwl:CheckedTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestCheckedTextBox" Margin="9"
+                        Text="ABC" MaxLength="3" IsRequired="True"/>
+    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Fill="{StaticResource LabelBackground}"/>
+    <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
+              IsChecked="{Binding ElementName=TestCheckedTextBox, Path=IsRequired, Mode=TwoWay}"/>
+    <Label Grid.Row="2" Grid.Column="0" Content="_MaxLength" Target="{Binding ElementName=MaxLengthTextBox}"/>
+    <TextBox Grid.Row="2" Grid.Column="1" x:Name="MaxLengthTextBox" 
+             Text="{Binding ElementName=TestCheckedTextBox, Path=MaxLength, Mode=TwoWay}"/>
+    <Button Grid.Row="3" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
+    <Label Grid.Row="4" Grid.Column="0" Content="_Text" Target="{Binding ElementName=InitialiseTextTetxBox}"/>
+    <TextBox Grid.Row="4" Grid.Column="1" x:Name="InitialiseTextTetxBox"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="5" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <Rectangle Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
+    <Button Grid.Row="6" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
+  </Grid>
+</wwl:CheckedWindow>

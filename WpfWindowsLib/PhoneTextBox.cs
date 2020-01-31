@@ -50,8 +50,8 @@ namespace WpfWindowsLib {
     /// Called from Windows constructor to set the initial value and to indicate
     /// if the user is required to enter a value
     /// </summary>
-    public override void Init(string? text, bool isRequired = false) {
-      base.Init(ToFormatedPhoneString(text?.Replace(" ", "")), isRequired);
+    public override void Initialise(string? text, bool? isRequired = null) {
+      base.Initialise(ToFormatedPhoneString(text?.Replace(" ", "")), isRequired);
     }
 
 
