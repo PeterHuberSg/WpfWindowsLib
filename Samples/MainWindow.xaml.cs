@@ -15,20 +15,7 @@ the Creative Commons 0 license (details see COPYING.txt file, see also
 
 This software is distributed without any warranty. 
 **************************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace Samples {
@@ -43,6 +30,9 @@ namespace Samples {
 
       CheckedTextBoxButton.Click += checkedTextBoxButton_Click;
       DecimalTextBoxButton.Click += decimalTextBoxButton_Click;
+      IntTextBoxButton.Click += intTextBoxButton_Click;
+      EmailTextBoxButton.Click += emailTextBoxButton_Click;
+      PhoneTextBoxButton.Click += phoneTextBoxButton_Click;
     }
 
 
@@ -53,6 +43,21 @@ namespace Samples {
 
     private void decimalTextBoxButton_Click(object sender, RoutedEventArgs e) {
       new DecimalTextBoxWindow { Owner=this }.Show();
+    }
+
+
+    private void intTextBoxButton_Click(object sender, RoutedEventArgs e) {
+      new IntTextBoxWindow { Owner=this }.Show();
+    }
+
+
+    private void emailTextBoxButton_Click(object sender, RoutedEventArgs e) {
+      new EmailTextBoxWindow { Owner=this }.Show();
+    }
+
+
+    private void phoneTextBoxButton_Click(object sender, RoutedEventArgs e) {
+      new EmailTextBoxWindow { Owner=this }.Show();
     }
   }
 }

@@ -1,9 +1,9 @@
 ﻿/**************************************************************************************
 
-Samples.DecimalTextBoxWindow
-============================
+Samples.IntTextBoxWindow
+========================
 
-Sample Window for DecimalTextBox testing
+Sample Window for IntTextBox testing
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -24,9 +24,9 @@ namespace Samples {
 
 
   /// <summary>
-  /// Interaction logic for DecimalTextBoxWindow.xaml
+  /// Interaction logic for IntTextBoxWindow.xaml
   /// </summary>
-  public partial class DecimalTextBoxWindow: CheckedWindow {
+  public partial class IntTextBoxWindow: CheckedWindow {
 
     #region Constructor
     //      -----------
@@ -34,7 +34,7 @@ namespace Samples {
     /// <summary>
     /// Default constructor
     /// </summary>
-    public DecimalTextBoxWindow() {
+    public IntTextBoxWindow() {
       InitializeComponent();
 
       InitialiseButton.Click += initialiseButton_Click;
@@ -49,12 +49,11 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        TestDecimalTextBox.Initialise(
-          InitialiseDecimalValueTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseDecimalValueTextBox.Text),
+        TestIntTextBox.Initialise(
+          InitialiseIntValueTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseIntValueTextBox.Text),
           InitialisationIsRequriedCheckBox.IsChecked,
-          InitialiseMinTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMinTextBox.Text),
-          InitialiseMaxTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMaxTextBox.Text),
-          InitialisePrecisionTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialisePrecisionTextBox.Text));
+          InitialiseMinTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMinTextBox.Text),
+          InitialiseMaxTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMaxTextBox.Text));
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

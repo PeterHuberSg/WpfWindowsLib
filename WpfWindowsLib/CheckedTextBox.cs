@@ -114,6 +114,23 @@ namespace WpfWindowsLib {
     #endregion
 
 
+    #region Constructor
+    //      -----------
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public CheckedTextBox() {
+      Loaded += checkedTextBox_Loaded;
+    }
+
+    private void checkedTextBox_Loaded(object sender, RoutedEventArgs e) {
+      //Background is only defined once default style is applied
+      DefaultBackground = Background;
+    }
+    #endregion
+
+
     #region Initialisation
     //      --------------
 
@@ -121,11 +138,11 @@ namespace WpfWindowsLib {
 
 
     protected override void OnInitialized(EventArgs e) {
+      //verify the values set in XAML
       if (MaxLength>0 && Text.Length>MaxLength) throw new Exception($"Error CheckedTextBox: Text '{Text}' must be shorter than MaxLength {MaxLength}.");
 
       OnTextBoxInitialised();
       initText = Text;
-      DefaultBackground = Background;
       TextChanged += checkedTextBox_TextChanged;
       if (IsRequired) {
         IsAvailable = Text.Length>0;
@@ -154,12 +171,14 @@ namespace WpfWindowsLib {
     /// </summary>
     public virtual void Initialise(string? text = null, bool? isRequired = false) {
       var newText = text??"";
-      if (MaxLength>0 && newText.Length>MaxLength) throw new Exception($"Error CheckedTextBox.Initialise(): Text '{newText}' must be shorter than MaxLength {MaxLength}.");
+      if (MaxLength>0 && newText.Length>MaxLength) {
+        throw new Exception($"Error CheckedTextBox.Initialise(): Text '{newText}' must be shorter than MaxLength {MaxLength}.");
+      }
 
       initText = newText; //TextBox converts null to empty string. initText must have here the same value like Text
       Text = newText; //resets HasChanged and updates isAvailable using old IsRequired
 
-      IsRequired = isRequired.HasValue ? isRequired.Value : IsRequired; //will update isAvailable if IsRequired!=isRequired
+      IsRequired = isRequired??IsRequired; //will update isAvailable if IsRequired!=isRequired
     }
 
 
@@ -173,8 +192,8 @@ namespace WpfWindowsLib {
     #endregion
 
 
-    #region Methods
-    //      -------
+    #region Event Handlers
+    //      --------------
 
     private void checkedTextBox_TextChanged(object sender, TextChangedEventArgs e) {
      var newHasChanged = initText!=Text;
@@ -192,7 +211,11 @@ namespace WpfWindowsLib {
         }
       }
     }
+    #endregion
 
+
+    #region Methods
+    //      -------
 
     private void showAvailability() {
       if (IsAvailable) {
@@ -214,6 +237,17 @@ namespace WpfWindowsLib {
           Background = DefaultBackground;
         }
       }
+    }
+
+
+    /// <summary>
+    /// Returns Text without the characters selected by user. Useful in OnPreviewTextInput()
+    /// </summary>
+    /// <returns></returns>
+    public string GetTextWithoutSelection() {
+      if (SelectedText.Length==0) return Text;
+
+      return Text[..CaretIndex] + Text[(CaretIndex+SelectedText.Length)..];
     }
     #endregion
   }

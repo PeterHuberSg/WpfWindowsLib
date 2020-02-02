@@ -11,4 +11,16 @@
     <ProjectReference Include="..\WpfWindowsLib\WpfWindowsLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="PhoneTextBoxWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="PhoneTextBoxWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

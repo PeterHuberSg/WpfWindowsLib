@@ -3,7 +3,7 @@
 WpfWindowsLib.DecimalTextBox
 ============================
 
-TextBox accepting only decimal values and implementing ICheck
+TextBox accepting only decimal values between Min and Max and implementing ICheck
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -25,8 +25,8 @@ namespace WpfWindowsLib {
 
 
   /// <summary>
-  /// A TextBox accepting only decimal values. If it is placed in a Window inheriting from CheckedWindow, 
-  /// it reports automatically any value change to that parent Window.
+  /// A TextBox accepting only decimal values, which have to be between Min and Max. If it is placed in a Window 
+  /// inheriting from CheckedWindow, it reports automatically any value change to that parent Window.
   /// </summary>
   public class DecimalTextBox: CheckedTextBox {
 
@@ -34,13 +34,13 @@ namespace WpfWindowsLib {
     //      ----------
 
     /// <summary>
-    /// The control's value. Returns null if Text is not a decimal.
+    /// The control's value. Returns null if Text is not a decimal, i.e. empty.
     /// </summary>
     public decimal? DecimalValue {
       get { return decimalValue; }
       set {
         decimalValue = value;
-        Text = value?.ToString("N")??"";
+        Text = decimalValue?.ToString(formats[Precision]);
       }
     }
     private decimal? decimalValue;
@@ -59,23 +59,23 @@ namespace WpfWindowsLib {
 
 
     private static void onMinChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-      var textBox = (DecimalTextBox)d;
-      if (textBox.isInitialising) return;
+      var decimalTextBox = (DecimalTextBox)d;
+      if (decimalTextBox.isInitialising) return;
 
       //when Min is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that Text and Min are assigned, if both are used in XAML
-      if (textBox.Min>textBox.Max) {
-        throw new Exception($"Error DecimalTextBox: Min {textBox.Min} must be <= Max {textBox.Max}. " +
+      if (decimalTextBox.Min>decimalTextBox.Max) {
+        throw new Exception($"Error DecimalTextBox: Min {decimalTextBox.Min} must be <= Max {decimalTextBox.Max}. " +
           "Use Initialise() to change both at the same time.");
       }
-      if (textBox.DecimalValue!=null && textBox.DecimalValue<textBox.Min) {
-        throw new Exception($"Error DecimalTextBox: DecimalValue {textBox.DecimalValue} must be >= {textBox.Min} (Min).");
+      if (decimalTextBox.DecimalValue!=null && decimalTextBox.DecimalValue<decimalTextBox.Min) {
+        throw new Exception($"Error DecimalTextBox: DecimalValue {decimalTextBox.DecimalValue} must be >= {decimalTextBox.Min} (Min).");
       }
     }
 
 
     /// <summary>
-    /// Only a DecimalValue greater equal Min is accepted 
+    /// DecimalTextBox accepts only a DecimalValue greater equal than Min 
     /// </summary>
     public decimal Min {
       get { return (decimal)GetValue(MinProperty); }
@@ -97,23 +97,23 @@ namespace WpfWindowsLib {
 
 
     private static void onMaxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-      var textBox = (DecimalTextBox)d;
-      if (textBox.isInitialising) return;
+      var decimalTextBox = (DecimalTextBox)d;
+      if (decimalTextBox.isInitialising) return;
 
       //when Max is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that Text and Max are assigned, if both are used in XAML
-      if (textBox.Min>textBox.Max) {
-        throw new Exception($"Error DecimalTextBox: Min {textBox.Min} must be <= Max {textBox.Max}. " +
+      if (decimalTextBox.Min>decimalTextBox.Max) {
+        throw new Exception($"Error DecimalTextBox: Min {decimalTextBox.Min} must be <= Max {decimalTextBox.Max}. " +
           "Use Initialise() to change both at the same time.");
       }
-      if (textBox.DecimalValue!=null && textBox.DecimalValue>textBox.Max) {
-        throw new Exception($"Error DecimalTextBox: DecimalValue {textBox.DecimalValue} must be <= {textBox.Max} (Max).");
+      if (decimalTextBox.DecimalValue!=null && decimalTextBox.DecimalValue>decimalTextBox.Max) {
+        throw new Exception($"Error DecimalTextBox: DecimalValue {decimalTextBox.DecimalValue} must be <= {decimalTextBox.Max} (Max).");
       }
     }
 
 
     /// <summary>
-    /// Only a DecimalValue smaller equal than Max is accepted 
+    /// DecimalTextBox accepts only a DecimalValue smaller equal than Max 
     /// </summary>
     public decimal Max {
       get { return (decimal)GetValue(MaxProperty); }
@@ -121,6 +121,49 @@ namespace WpfWindowsLib {
     }
     #endregion
 
+
+    #region Precision property
+    public static readonly DependencyProperty PrecisionProperty = DependencyProperty.Register(
+      "Precision",
+      typeof(int),
+      typeof(DecimalTextBox),
+      new FrameworkPropertyMetadata(2,
+          FrameworkPropertyMetadataOptions.None,
+          new PropertyChangedCallback(onPrecisionChanged)
+      )
+    );
+
+
+    private static void onPrecisionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var textBox = (DecimalTextBox)d;
+      if (textBox.Precision<0 || textBox.Precision>formatsLength) {
+        throw new Exception($"Error DecimalTextBox: Precision {textBox.Precision} must be between 0 and {formatsLength}. ");
+      }
+    }
+
+
+    /// <summary>
+    /// DecimalTextBox rounds Text to number of digits after the decimal point according to Precision 
+    /// </summary>
+    public int Precision {
+      get { return (int)GetValue(PrecisionProperty); }
+      set { SetValue(PrecisionProperty, value); }
+    }
+
+
+    static string[] formats = createFormats();
+    const int formatsLength = 29;
+
+
+    private static string[] createFormats() {
+      var formats = new string[formatsLength];
+      formats[0] = "0";
+      for (int i = 1; i < formats.Length; i++) {
+        formats[i] = "0." + new string('#', i);
+      };
+      return formats;
+    }
+    #endregion
     #endregion
 
 
@@ -131,6 +174,7 @@ namespace WpfWindowsLib {
 
 
     protected override void OnTextBoxInitialised() {
+      //verify the values set in XAML
       if (Min>Max) throw new Exception($"Error DecimalTextBox: Min {Min} must be <= Max {Max}.");
       if (Text.Length==0) {
         decimalValue = null;
@@ -139,6 +183,8 @@ namespace WpfWindowsLib {
         if (decimalValue<Min) throw new Exception($"Error DecimalTextBox: DecimalValue {DecimalValue} must be >= {Min} (Min).");
         if (decimalValue>Max) throw new Exception($"Error DecimalTextBox: DecimalValue {DecimalValue} must be <= {Max} (Max).");
       }
+      //precision is already validated
+      Text = decimalValue?.ToString(formats[Precision]);
       isInitialising = false;
     }
 
@@ -147,22 +193,35 @@ namespace WpfWindowsLib {
     /// Sets initial value from code behind. If isRequired is true, user needs to change the value before saving is possible. 
     /// If min or max are null, Min or Max value gets not changed.
     /// </summary>
-    public virtual void Initialise(decimal? value = null, bool? isRequired = false, decimal? min = null, decimal? max = null) {
-      decimal newMin = min.HasValue? min.Value : Min;
-      decimal newMax = max.HasValue? max.Value : Max;
-      if (newMin>newMax) throw new Exception($"Error DecimalTextBox: Min {newMin} must be <= Max {newMax}.");
+    public virtual void Initialise(
+      decimal? value = null, 
+      bool? isRequired = false, 
+      decimal? min = null, 
+      decimal? max = null,
+      int? precision = null) 
+    {
+      decimal newMin = min??Min;
+      decimal newMax = max??Max;
+      if (newMin>newMax) throw new Exception($"Error DecimalTextBox.Initialise(): Min {newMin} must be <= Max {newMax}.");
       if (value!=null) {
-        if (value<newMin) throw new Exception($"Error DecimalTextBox: DecimalValue {value} must be >= {newMin} (Min).");
-        if (value>newMax) throw new Exception($"Error DecimalTextBox: DecimalValue {value} must be <= {newMax} (Max).");
+        if (value<newMin) throw new Exception($"Error DecimalTextBox.Initialise(): DecimalValue {value} must be >= {newMin} (Min).");
+        if (value>newMax) throw new Exception($"Error DecimalTextBox.Initialise(): DecimalValue {value} must be <= {newMax} (Max).");
+      }
+      int newPrecision = precision??Precision;
+      if (newPrecision<0 || newPrecision>formatsLength) {
+        throw new Exception($"Error DecimalTextBox.Initialise(): Precision {newPrecision} must be between 0 and {formatsLength}. ");
       }
 
       isInitialising = true;
       Min = newMin;
       Max = newMax;
+      if (precision.HasValue) {
+        Precision = precision.Value; //validates
+      }
       decimalValue = value;
       isInitialising = false;
 
-      base.Initialise(value?.ToString("N")??"", isRequired);
+      base.Initialise(decimalValue?.ToString(formats[Precision]), isRequired);
     }
     #endregion
 
@@ -181,6 +240,7 @@ namespace WpfWindowsLib {
       var isDecimalFound = false;
       foreach (var c in e.Text) {
         if (c=='-') {
+          //'-' is only allowed if cursor is at position 0 and no '-' is entered already
           if (isMinusFound || SelectionStart!=0 || Text[SelectedText.Length..].Contains('-')) {
             e.Handled = true;
             break;
@@ -188,25 +248,13 @@ namespace WpfWindowsLib {
           isMinusFound = true;
 
         } else if (c=='.') {
-          if (!isDecimalFound) {
-            if (SelectedText.Length==0) {
-              isDecimalFound = Text.Contains('.');
-            } else {
-              if (SelectionStart==0) {
-                isDecimalFound = Text[SelectedText.Length..].Contains('.');
-              } else {
-                isDecimalFound = Text[..(SelectionStart)].Contains('.');
-                if (!isDecimalFound) {
-                  isDecimalFound = Text[(SelectionStart + SelectedText.Length)..].Contains('.');
-                }
-              }
-            }
-          }
-          if (isDecimalFound) {
+          //'.' is only allowed if no decimal point is entered already
+          if (isDecimalFound || GetTextWithoutSelection().Contains('.')) {
             e.Handled = true;
             break;
           }
           isDecimalFound = true;
+
         } else if(!(c>='0' && c<='9')) {
           e.Handled = true;
           break;
@@ -232,7 +280,7 @@ namespace WpfWindowsLib {
         MessageBox.Show($"{Text} must be <= {Max} (Max).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       } else {
-        DecimalValue = result;
+        DecimalValue = result;//will also format Text
       }
       base.OnPreviewLostKeyboardFocus(e);
     }

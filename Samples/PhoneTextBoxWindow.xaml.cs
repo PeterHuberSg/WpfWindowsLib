@@ -1,9 +1,9 @@
 ﻿/**************************************************************************************
 
-Samples.DecimalTextBoxWindow
-============================
+Samples.PhoneTextBoxWindow
+==========================
 
-Sample Window for DecimalTextBox testing
+Sample Window for PhoneTextBox testing
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -24,9 +24,9 @@ namespace Samples {
 
 
   /// <summary>
-  /// Interaction logic for DecimalTextBoxWindow.xaml
+  /// Interaction logic for PhoneTextBoxWindow.xaml
   /// </summary>
-  public partial class DecimalTextBoxWindow: CheckedWindow {
+  public partial class PhoneTextBoxWindow: CheckedWindow {
 
     #region Constructor
     //      -----------
@@ -34,7 +34,7 @@ namespace Samples {
     /// <summary>
     /// Default constructor
     /// </summary>
-    public DecimalTextBoxWindow() {
+    public PhoneTextBoxWindow() {
       InitializeComponent();
 
       InitialiseButton.Click += initialiseButton_Click;
@@ -49,16 +49,16 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        TestDecimalTextBox.Initialise(
-          InitialiseDecimalValueTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseDecimalValueTextBox.Text),
+        TestPhoneTextBox.Initialise(
+          InitialisePhoneValueTextBox.Text,
           InitialisationIsRequriedCheckBox.IsChecked,
-          InitialiseMinTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMinTextBox.Text),
-          InitialiseMaxTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMaxTextBox.Text),
-          InitialisePrecisionTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialisePrecisionTextBox.Text));
+          InitialiseMinDigitsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMinDigitsTextBox.Text),
+          InitialiseMaxDigitsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMaxDigitsTextBox.Text));
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
+
 
     private void saveButton_Click(object sender, RoutedEventArgs e) {
       this.ResetHasChanged();

@@ -26,5 +26,8 @@ This software is distributed without any warranty.
   <StackPanel>
     <Button Content="CheckedTextBox" x:Name="CheckedTextBoxButton"/>
     <Button Content="DecimalTextBox" x:Name="DecimalTextBoxButton"/>
+    <Button Content="IntTextBox" x:Name="IntTextBoxButton"/>
+    <Button Content="EmailTextBox" x:Name="EmailTextBoxButton"/>
+    <Button Content="PhoneTextBox" x:Name="PhoneTextBoxButton"/>
   </StackPanel>
 </Window>

@@ -1,9 +1,9 @@
 ﻿/**************************************************************************************
 
-Samples.DecimalTextBoxWindow
-============================
+Samples.EmailTextBoxWindow
+==========================
 
-Sample Window for DecimalTextBox testing
+Sample Window for EmailTextBox testing
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -24,9 +24,9 @@ namespace Samples {
 
 
   /// <summary>
-  /// Interaction logic for DecimalTextBoxWindow.xaml
+  /// Interaction logic for EmailTextBoxWindow.xaml
   /// </summary>
-  public partial class DecimalTextBoxWindow: CheckedWindow {
+  public partial class EmailTextBoxWindow: CheckedWindow {
 
     #region Constructor
     //      -----------
@@ -34,7 +34,7 @@ namespace Samples {
     /// <summary>
     /// Default constructor
     /// </summary>
-    public DecimalTextBoxWindow() {
+    public EmailTextBoxWindow() {
       InitializeComponent();
 
       InitialiseButton.Click += initialiseButton_Click;
@@ -49,12 +49,9 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        TestDecimalTextBox.Initialise(
-          InitialiseDecimalValueTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseDecimalValueTextBox.Text),
-          InitialisationIsRequriedCheckBox.IsChecked,
-          InitialiseMinTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMinTextBox.Text),
-          InitialiseMaxTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMaxTextBox.Text),
-          InitialisePrecisionTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialisePrecisionTextBox.Text));
+        TestEmailTextBox.Initialise(
+          InitialiseEmailAdrTextBox.Text,
+          InitialisationIsRequriedCheckBox.IsChecked);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }
