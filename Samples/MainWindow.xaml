@@ -24,6 +24,7 @@ This software is distributed without any warranty.
         mc:Ignorable="d"
         Title="Samples" SizeToContent="WidthAndHeight">
   <StackPanel>
+    <Button Content="CheckedCheckBox" x:Name="CheckedCheckBoxButton"/>
     <Button Content="CheckedTextBox" x:Name="CheckedTextBoxButton"/>
     <Button Content="DecimalTextBox" x:Name="DecimalTextBoxButton"/>
     <Button Content="IntTextBox" x:Name="IntTextBoxButton"/>

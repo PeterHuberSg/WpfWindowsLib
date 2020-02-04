@@ -67,7 +67,7 @@ namespace WpfWindowsLib {
 
     private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
       var textBox = (CheckedTextBox)d;
-      if (!textBox.IsInitialized) return;
+      if (textBox.isInitialising) return;
 
       //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that Text and IsRequired are assigned, if both are used in XAML
@@ -100,34 +100,11 @@ namespace WpfWindowsLib {
     /// </summary>
     public bool IsAvailable { get; private set; }
 
+
     /// <summary>
     /// The availability of the control has changed
     /// </summary>
     public event Action?  IsAvailableEvent;
-
-
-    /// <summary>
-    /// Background of control after initialisation. Useful for inheriting class which needs to change
-    /// the background to highlight the control and then wants to change back
-    /// </summary>
-    protected Brush? DefaultBackground { get; private set;}
-    #endregion
-
-
-    #region Constructor
-    //      -----------
-
-    /// <summary>
-    /// Default constructor
-    /// </summary>
-    public CheckedTextBox() {
-      Loaded += checkedTextBox_Loaded;
-    }
-
-    private void checkedTextBox_Loaded(object sender, RoutedEventArgs e) {
-      //Background is only defined once default style is applied
-      DefaultBackground = Background;
-    }
     #endregion
 
 
@@ -135,6 +112,7 @@ namespace WpfWindowsLib {
     //      --------------
 
     string initText = "";  //TextBox converts automatically null to an empty string. Don't allow null here neither
+    bool isInitialising = true;
 
 
     protected override void OnInitialized(EventArgs e) {
@@ -147,14 +125,16 @@ namespace WpfWindowsLib {
       if (IsRequired) {
         IsAvailable = Text.Length>0;
         if (!IsAvailable) {
+          //a changed background needs only to be displayed if control is required, but not available
           showAvailability();
         }
       } else {
         //if no user input is required, the control is always available
         IsAvailable = true;
       }
+      isInitialising = false;
 
-      CheckedWindow.Register(this); 
+      CheckedWindow.Register(this); //updates CheckedWindow.IsAvailable, no need to raise IsAvailableEvent
 
       base.OnInitialized(e);
     }
@@ -170,15 +150,28 @@ namespace WpfWindowsLib {
     /// Sets Text and IsRequired from code behind. If isRequired is null, IsRequired keeps its value.
     /// </summary>
     public virtual void Initialise(string? text = null, bool? isRequired = false) {
+      isInitialising = true;
       var newText = text??"";
       if (MaxLength>0 && newText.Length>MaxLength) {
-        throw new Exception($"Error CheckedTextBox.Initialise(): Text '{newText}' must be shorter than MaxLength {MaxLength}.");
+        throw new Exception($"Error CheckedTextBox.Initialise(): Text '{text}' must be shorter than MaxLength {MaxLength}.");
+      }
+      initText = newText;
+      Text = newText;
+      IsRequired = isRequired??IsRequired;
+      isInitialising = false;
+
+      var newHasChanged = initText!=Text;
+      if (HasChanged!=newHasChanged) {
+        HasChanged = newHasChanged;
+        HasChangedEvent?.Invoke();
       }
 
-      initText = newText; //TextBox converts null to empty string. initText must have here the same value like Text
-      Text = newText; //resets HasChanged and updates isAvailable using old IsRequired
-
-      IsRequired = isRequired??IsRequired; //will update isAvailable if IsRequired!=isRequired
+      var newIsAvailable = !IsRequired||Text.Length>0;
+      if (IsAvailable!=newIsAvailable) {
+        IsAvailable = newIsAvailable;
+        showAvailability();
+        IsAvailableEvent?.Invoke();
+      }
     }
 
 
@@ -219,7 +212,7 @@ namespace WpfWindowsLib {
 
     private void showAvailability() {
       if (IsAvailable) {
-        Background = DefaultBackground;
+        ClearValue(TextBox.BackgroundProperty);
       } else {
         Background = Styling.RequiredBrush;
       }
@@ -234,7 +227,7 @@ namespace WpfWindowsLib {
         if (isChanged) {
           Background = Styling.HasChangedBackgroundBrush;
         } else {
-          Background = DefaultBackground;
+          ClearValue(TextBox.BackgroundProperty);
         }
       }
     }

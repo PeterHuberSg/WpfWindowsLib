@@ -145,8 +145,6 @@ namespace WpfWindowsLib {
 
 
     private void showAvailability() {
-      if (!IsRequired) return;
-
       if (IsAvailable) {
         comboBoxBorder!.Background = defaultBackground;
       } else {

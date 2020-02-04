@@ -5,9 +5,4 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\WpfToolkit\WpfToolkit\Input\DotNetProjects.Input.Toolkit.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -28,11 +28,17 @@ namespace Samples {
     public MainWindow() {
       InitializeComponent();
 
+      CheckedCheckBoxButton.Click += checkedCheckBoxButton_Click;
       CheckedTextBoxButton.Click += checkedTextBoxButton_Click;
       DecimalTextBoxButton.Click += decimalTextBoxButton_Click;
       IntTextBoxButton.Click += intTextBoxButton_Click;
       EmailTextBoxButton.Click += emailTextBoxButton_Click;
       PhoneTextBoxButton.Click += phoneTextBoxButton_Click;
+    }
+
+
+    private void checkedCheckBoxButton_Click(object sender, RoutedEventArgs e) {
+      new CheckedCheckBoxWindow { Owner=this }.Show();
     }
 
 

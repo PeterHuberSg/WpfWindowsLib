@@ -127,8 +127,6 @@ namespace WpfWindowsLib {
 
 
     private void showAvailability() {
-      if (!IsRequired) return;
-
       if (IsAvailable) {
         Background = defaultBackground;
       } else {

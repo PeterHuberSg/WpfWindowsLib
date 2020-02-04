@@ -199,7 +199,7 @@ namespace WpfWindowsLib {
       if (!ValidatePhoneNumber(Text, out var compactNumber)) {
         MessageBox.Show($"Illegal phone number '{Text}'.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
-      } else if(count<MinDigits) { 
+      } else if(count!=0 && count<MinDigits) { 
         MessageBox.Show($"Phone number '{Text}' should have at least {MinDigits} digits.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       } else if (count>MaxDigits) {
@@ -276,6 +276,9 @@ namespace WpfWindowsLib {
       var isFirstChar = true;
       var stringBuilder = new StringBuilder();
       foreach (var phoneChar in phoneNumber) {
+        if (phoneChar==' ') {
+          continue;
+        }
         if (phoneChar>='0' && phoneChar<='9'|| isFirstChar && phoneChar=='+') {
           stringBuilder.Append(phoneChar);
         } else {

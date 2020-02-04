@@ -24,14 +24,14 @@ namespace Samples {
 
 
   /// <summary>
-  /// Interaction logic for CheckedTextBoxWindow.xaml
+  /// Interaction logic for CheckedCheckBoxWindow.xaml
   /// </summary>
-  public partial class CheckedTextBoxWindow: CheckedWindow {
+  public partial class CheckedCheckBoxWindow: CheckedWindow {
 
     #region Constructor
     //      -----------
 
-    public CheckedTextBoxWindow() {
+    public CheckedCheckBoxWindow() {
       InitializeComponent();
 
       InitialiseButton.Click += initialiseButton_Click;
@@ -46,7 +46,25 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        TestCheckedTextBox.Initialise(InitialiseTextTextBox.Text, InitialisationIsRequriedCheckBox.IsChecked);
+        var isChange = true;
+        bool? newSelected;
+        switch (InitialiseSelectedComboBox.SelectedIndex) {
+        case 0: isChange = false; newSelected = null; break;
+        case 1: newSelected = null; break;
+        case 2: newSelected = false; break;
+        case 3: newSelected = true; break;
+        default:
+          throw new NotSupportedException();
+        }
+        bool? isRequired;
+        switch (InitialiseIsRequriedComboBox.SelectedIndex) {
+        case 0: isRequired = null; break;
+        case 1: isRequired = false; break;
+        case 2: isRequired = true; break;
+        default:
+          throw new NotSupportedException();
+        }
+        TestCheckedTextBox.Initialise(isChange, newSelected, isRequired);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

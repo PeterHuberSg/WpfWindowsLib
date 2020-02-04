@@ -39,15 +39,54 @@ namespace WpfWindowsLib {
     /// </summary>
     public bool HasChanged { get; private set; }
 
+
     /// <summary>
     /// Raised when control gets changed or the user undoes the change
     /// </summary>
     public event Action?  HasChangedEvent;
 
+
+    #region IsRequired property
+    public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
+      "IsRequired",
+      typeof(bool),
+      typeof(CheckedCheckBox),
+      new FrameworkPropertyMetadata(false,
+          FrameworkPropertyMetadataOptions.AffectsRender,
+          new PropertyChangedCallback(onIsRequiredChanged)
+      )
+    );
+
+
+    private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var checkedCheckBox = (CheckedCheckBox)d;
+      if (checkedCheckBox.isInitialising) return;
+
+      //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
+      //guarantees that IsChecked and IsRequired are assigned, if both are used in XAML
+      var oldIsAvailable = checkedCheckBox.IsAvailable;
+      if (checkedCheckBox.IsRequired) {
+        checkedCheckBox.IsAvailable = checkedCheckBox.IsChecked.HasValue;
+      } else {
+        checkedCheckBox.IsAvailable = true;
+      }
+
+      if (oldIsAvailable!=checkedCheckBox.IsAvailable) {
+        checkedCheckBox.showAvailability();
+        checkedCheckBox.IsAvailableEvent?.Invoke();
+      }
+    }
+
+
     /// <summary>
-    /// Needs the user to provide this control with a value ?
+    /// Needs the user to provide this control with a value ? 
     /// </summary>
-    public bool IsRequired { get; private set; }
+    public bool IsRequired {
+      get { return (bool)GetValue(IsRequiredProperty); }
+      set { SetValue(IsRequiredProperty, value); }
+    }
+    #endregion
+
 
     /// <summary>
     /// Has the user provided a value ?
@@ -65,41 +104,60 @@ namespace WpfWindowsLib {
     //      --------------
 
     bool? initValue;
-    Brush? defaultBackground;
+    bool isInitialising = true;
+
+
+    protected override void OnInitialized(EventArgs e) {
+      initValue = IsChecked;
+
+      Indeterminate += checkedCheckBox_Checked;
+      Checked += checkedCheckBox_Checked;
+      Unchecked += checkedCheckBox_Checked;
+      if (IsRequired) {
+        IsAvailable = IsChecked.HasValue;
+        if (!IsAvailable) {
+          //a changed background needs only to be displayed if control is required, but not available
+          showAvailability();
+        }
+      } else {
+        //if no user input is required, the control is always available
+        IsAvailable = true;
+      }
+      isInitialising = false;
+
+      CheckedWindow.Register(this); //updates CheckedWindow.IsAvailable, no need to raise IsAvailableEvent
+
+      base.OnInitialized(e);
+    }
 
 
     /// <summary>
-    /// Called from Windows constructor to set the initial value and to indicate
-    /// if the user is required to enter a value
+    /// Sets IsChecked and IsRequired from code behind. If isChangeIsChecked is false, IsChecked keeps its value. If 
+    /// isRequired is null, IsRequired keeps its value.
     /// </summary>
-    public void Init(bool? checkValue = null, bool isRequired = false) {
+    public void Initialise(bool isChangeIsChecked = false, bool? isChecked = null, bool? isRequired = null) {
+      isInitialising = true;
+      if (isChangeIsChecked) {
+        initValue = isChecked;
+        IsChecked = isChecked;
+      }
+      IsRequired = isRequired??IsRequired; 
+      isInitialising = false;
 
-      initValue = checkValue;
-      IsChecked = checkValue;
-      IsRequired = isRequired;
-      defaultBackground = Background;
-      Checked += checkedCheckBox_Checked;
-      Unchecked += checkedCheckBox_Checked;
-      if (isRequired) {
-        IsAvailable = checkValue.HasValue;
-        showAvailability();
+      var newHasChanged = initValue!=IsChecked;
+      if (HasChanged!=newHasChanged) {
+        HasChanged = newHasChanged;
+        HasChangedEvent?.Invoke();
       }
 
-      FrameworkElement element = this;
-      do {
-        element = (FrameworkElement)element.Parent;
-        if (element==null) break;
-        if (element is CheckedWindow window) {
-          window.Register(this);
-          break;
-        }
-      } while (true);
+      var newIsAvailable = !IsRequired||IsChecked.HasValue;
+      if (IsAvailable!=newIsAvailable) {
+        IsAvailable = newIsAvailable;
+        showAvailability();
+        IsAvailableEvent?.Invoke();
+      }
     }
-    #endregion
 
-
-    #region Methods
-    //      -------
 
     /// <summary>
     /// Called from CheckedWindow after a save, sets the present value as initial value
@@ -108,7 +166,11 @@ namespace WpfWindowsLib {
       initValue = IsChecked;
       HasChanged = false;
     }
+    #endregion
 
+
+    #region Event Handlers
+    //      --------------
 
     private void checkedCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e) {
       var newHasChanged = initValue!=IsChecked;
@@ -126,13 +188,15 @@ namespace WpfWindowsLib {
         }
       }
     }
+    #endregion
 
+
+    #region Methods
+    //      -------
 
     private void showAvailability() {
-      if (!IsRequired) return;
-
       if (IsAvailable) {
-        Background = defaultBackground;
+        ClearValue(TextBox.BackgroundProperty);
       } else {
         Background = Styling.RequiredBrush;
       }
@@ -147,7 +211,7 @@ namespace WpfWindowsLib {
         if (isChanged) {
           Background = Styling.HasChangedBackgroundBrush;
         } else {
-          Background = defaultBackground;
+          ClearValue(TextBox.BackgroundProperty);
         }
       }
     }

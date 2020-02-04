@@ -22,6 +22,7 @@ This software is distributed without any warranty.
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
+        xmlns:wwtl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsToolkitLib"
         mc:Ignorable="d"
         Title="Checked Controls Sample" Width="600" SizeToContent="Height">
     <Grid>
@@ -58,7 +59,7 @@ This software is distributed without any warranty.
       <Style TargetType="Button">
         <Setter Property="Margin" Value="4,2,4,2" />
       </Style>
-      <Style TargetType="wwl:CheckedAutoCompleteBox">
+      <Style TargetType="wwtl:CheckedAutoCompleteBox">
         <Setter Property="Margin" Value="4,2,4,2" />
       </Style>
       <Style TargetType="wwl:CheckedCheckBox">
