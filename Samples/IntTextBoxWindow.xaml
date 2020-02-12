@@ -41,7 +41,7 @@ This software is distributed without any warranty.
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <wwl:IntTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestIntTextBox" Margin="9"
-                        Text="123"  IsRequired="True" Min="0" Max="1000"/>
+                        Text="1234"  IsRequired="True" Min="0" Max="10000"/>
     <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Fill="{StaticResource LabelBackground}"/>
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"

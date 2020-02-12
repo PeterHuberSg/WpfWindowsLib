@@ -38,7 +38,7 @@ This software is distributed without any warranty.
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <wwl:CheckedTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestCheckedTextBox" Margin="9"
-                        Text="ABC" MaxLength="3" IsRequired="True"/>
+                        Text="" MaxLength="3" IsRequired="True"/>
     <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Fill="{StaticResource LabelBackground}"/>
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"

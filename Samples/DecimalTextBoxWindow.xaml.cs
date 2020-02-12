@@ -54,7 +54,8 @@ namespace Samples {
           InitialisationIsRequriedCheckBox.IsChecked,
           InitialiseMinTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMinTextBox.Text),
           InitialiseMaxTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMaxTextBox.Text),
-          InitialisePrecisionTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialisePrecisionTextBox.Text));
+          InitialiseDecimalsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseDecimalsTextBox.Text),
+          InitialiseFormatTextBox.Text.Length==0 ? null : InitialiseFormatTextBox.Text);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

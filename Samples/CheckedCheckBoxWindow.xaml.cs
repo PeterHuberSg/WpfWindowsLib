@@ -46,13 +46,11 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        var isChange = true;
         bool? newSelected;
         switch (InitialiseSelectedComboBox.SelectedIndex) {
-        case 0: isChange = false; newSelected = null; break;
-        case 1: newSelected = null; break;
-        case 2: newSelected = false; break;
-        case 3: newSelected = true; break;
+        case 0: newSelected = null; break;
+        case 1: newSelected = false; break;
+        case 2: newSelected = true; break;
         default:
           throw new NotSupportedException();
         }
@@ -64,7 +62,7 @@ namespace Samples {
         default:
           throw new NotSupportedException();
         }
-        TestCheckedTextBox.Initialise(isChange, newSelected, isRequired);
+        TestCheckedTextBox.Initialise(newSelected, isRequired);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }
@@ -72,7 +70,7 @@ namespace Samples {
 
 
     private void saveButton_Click(object sender, RoutedEventArgs e) {
-      this.ResetHasChanged();
+      ResetHasChanged();
       updateSaveButtonIsEnabled();
       MessageBox.Show("Data would now be saved.", "Save data", MessageBoxButton.OK, MessageBoxImage.Information);
       //Signal that data has been saved. User needs to change something before saving is possible again

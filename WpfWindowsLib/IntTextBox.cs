@@ -165,7 +165,7 @@ namespace WpfWindowsLib {
       intValue = value;
       isInitialising = false;
 
-      base.Initialise(value?.ToString("N")??"", isRequired);
+      base.Initialise(value?.ToString()??"", isRequired);
     }
     #endregion
 

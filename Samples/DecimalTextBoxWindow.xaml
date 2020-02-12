@@ -26,7 +26,7 @@ This software is distributed without any warranty.
   <Grid Background="{StaticResource GridBackground}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
-      <ColumnDefinition Width="50"/>
+      <ColumnDefinition Width="100"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -41,34 +41,42 @@ This software is distributed without any warranty.
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
+
     <wwl:DecimalTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestDecimalTextBox" Margin="9"
-                        Text="1.23" IsRequired="True" Min="0" Max="10" Precision="3"/>
-    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="10" Fill="{StaticResource LabelBackground}"/>
+                        Text="1.234" IsRequired="True" Min="0" Max="10" Decimals="3" DecimalFormat="G"/>
+    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="12" Fill="{StaticResource LabelBackground}"/>
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
               IsChecked="{Binding ElementName=TestDecimalTextBox, Path=IsRequired, Mode=TwoWay}"/>
     <Label Grid.Row="2" Grid.Column="0" Content="_Min" Target="{Binding ElementName=MinTextBox}"/>
-    <TextBox Grid.Row="2" Grid.Column="1" x:Name="MinTextBox"
+    <TextBox Grid.Row="2" Grid.Column="1" x:Name="MinTextBox" HorizontalContentAlignment="Right"
              Text="{Binding ElementName=TestDecimalTextBox, Path=Min, Mode=TwoWay}"/>
     <Label Grid.Row="3" Grid.Column="0" Content="M_ax" Target="{Binding ElementName=MaxTextBox}"/>
-    <TextBox Grid.Row="3" Grid.Column="1" x:Name="MaxTextBox"
+    <TextBox Grid.Row="3" Grid.Column="1" x:Name="MaxTextBox"  HorizontalContentAlignment="Right"
              Text="{Binding ElementName=TestDecimalTextBox, Path=Max, Mode=TwoWay}"/>
-    <Label Grid.Row="4" Grid.Column="0" Content="_Precision" Target="{Binding ElementName=PrecisionTextBox}"/>
-    <TextBox Grid.Row="4" Grid.Column="1" x:Name="PrecisionTextBox"
-             Text="{Binding ElementName=TestDecimalTextBox, Path=Precision, Mode=TwoWay}"/>
-    <Button Grid.Row="5" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
-    <Label Grid.Row="6" Grid.Column="0" Content="_Decimal Value" Target="{Binding ElementName=InitialiseDecimalValueTextBox}"/>
-    <TextBox Grid.Row="6" Grid.Column="1" x:Name="InitialiseDecimalValueTextBox"/>
-    <Label Grid.Row="7" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
-    <CheckBox Grid.Row="7" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
-    <Label Grid.Row="8" Grid.Column="0" Content="Mi_n" Target="{Binding ElementName=InitialiseMinTextBox}"/>
-    <TextBox Grid.Row="8" Grid.Column="1" x:Name="InitialiseMinTextBox"/>
-    <Label Grid.Row="9" Grid.Column="0" Content="Ma_x" Target="{Binding ElementName=InitialiseMaxTextBox}"/>
-    <TextBox Grid.Row="9" Grid.Column="1" x:Name="InitialiseMaxTextBox"/>
-    <Label Grid.Row="10" Grid.Column="0" Content="_Precision" Target="{Binding ElementName=PrecisionTextBox}"/>
-    <TextBox Grid.Row="10" Grid.Column="1" x:Name="InitialisePrecisionTextBox"/>
-    <Rectangle Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
-    <Button Grid.Row="11" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
+    <Label Grid.Row="4" Grid.Column="0" Content="_Decimals" Target="{Binding ElementName=DecimalsTextBox}"/>
+    <TextBox Grid.Row="4" Grid.Column="1" x:Name="DecimalsTextBox" HorizontalContentAlignment="Right"
+             Text="{Binding ElementName=TestDecimalTextBox, Path=Decimals, Mode=TwoWay}"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="_Format" Target="{Binding ElementName=FormatTextBox}"/>
+    <TextBox Grid.Row="5" Grid.Column="1" x:Name="FormatTextBox" HorizontalContentAlignment="Right" 
+             Text="{Binding ElementName=TestDecimalTextBox, Path=DecimalFormat, Mode=TwoWay}"/>
+    <Button Grid.Row="6" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
+    <Label Grid.Row="7" Grid.Column="0" Content="_Decimal Value" Target="{Binding ElementName=InitialiseDecimalValueTextBox}"/>
+    <TextBox Grid.Row="7" Grid.Column="1" x:Name="InitialiseDecimalValueTextBox" HorizontalContentAlignment="Right" Text="1234.56"/>
+    <Label Grid.Row="8" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="8" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <Label Grid.Row="9" Grid.Column="0" Content="Mi_n" Target="{Binding ElementName=InitialiseMinTextBox}"/>
+    <TextBox Grid.Row="9" Grid.Column="1" x:Name="InitialiseMinTextBox" HorizontalContentAlignment="Right" Text="100"/>
+    <Label Grid.Row="10" Grid.Column="0" Content="Ma_x" Target="{Binding ElementName=InitialiseMaxTextBox}"/>
+    <TextBox Grid.Row="10" Grid.Column="1" x:Name="InitialiseMaxTextBox" HorizontalContentAlignment="Right" Text="10000"/>
+    <Label Grid.Row="11" Grid.Column="0" Content="D_ecimals" Target="{Binding ElementName=InitialiseDecimalsTextBox}"/>
+    <TextBox Grid.Row="11" Grid.Column="1" x:Name="InitialiseDecimalsTextBox" HorizontalContentAlignment="Right" Text="2"/>
+    <Label Grid.Row="12" Grid.Column="0" Content="F_ormat" Target="{Binding ElementName=InitialiseFormatTextBox}"/>
+    <TextBox Grid.Row="12" Grid.Column="1" x:Name="InitialiseFormatTextBox" HorizontalContentAlignment="Right" Text="#,#"/>
+    <Rectangle Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
+    <Button Grid.Row="13" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

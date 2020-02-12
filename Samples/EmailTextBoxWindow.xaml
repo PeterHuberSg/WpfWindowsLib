@@ -27,9 +27,12 @@ This software is distributed without any warranty.
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="auto"/>
       <ColumnDefinition Width="50"/>
-      <ColumnDefinition Width="100"/>
+      <ColumnDefinition Width="150"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
@@ -40,20 +43,30 @@ This software is distributed without any warranty.
     </Grid.RowDefinitions>
     <wwl:EmailTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" x:Name="TestEmailTextBox" Margin="9"
                         Text="Some.One@nowhere.com"  IsRequired="True"/>
-    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Fill="{StaticResource LabelBackground}"/>
+    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Fill="{StaticResource LabelBackground}"/>
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
               IsChecked="{Binding ElementName=TestEmailTextBox, Path=IsRequired, Mode=TwoWay}"/>
     <Label Grid.Row="2" Grid.Column="0" Content="_MaxLength" Target="{Binding ElementName=MaxLengthTextBox}"/>
     <TextBox Grid.Row="2" Grid.Column="1" x:Name="MaxLengthTextBox" 
              Text="{Binding ElementName=TestEmailTextBox, Path=MaxLength, Mode=TwoWay}"/>
-    <Button Grid.Row="3" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
-    <Label Grid.Row="4" Grid.Column="0" Content="_Email Adr" Target="{Binding ElementName=InitialiseEmailAdrTextBox}"/>
-    <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="InitialiseEmailAdrTextBox"/>
-    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
-    <CheckBox Grid.Row="5" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
-    <Rectangle Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3
+    <Label Grid.Row="3" Grid.Column="0" Content="_Characters" Target="{Binding ElementName=v}"/>
+    <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="CharactersComboBox" SelectedIndex="0">
+      <ComboBoxItem Content="Simple .@-_+"/>
+      <ComboBoxItem Content="Extended .@-_+!#$%&amp;'*/=?^`{|}~"/>
+      <ComboBoxItem Content="All .@-_+!#$%&amp;'*/=?^`{|}~&quot;(),:;&lt;&gt;[\]"/>
+    </ComboBox>
+    <Label Grid.Row="4" Grid.Column="0" Content="_International Chars" Target="{Binding ElementName=InternationalCharsCheckBox}"/>
+    <CheckBox Grid.Row="4" Grid.Column="1" x:Name="InternationalCharsCheckBox" IsThreeState="False" IsChecked="False"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="_Blank ' ' allowed" Target="{Binding ElementName=BlankAllowedCheckBox}"/>
+    <CheckBox Grid.Row="5" Grid.Column="1" x:Name="BlankAllowedCheckBox" IsThreeState="False" IsChecked="False"/>
+    <Button Grid.Row="6" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
+    <Label Grid.Row="7" Grid.Column="0" Content="_Email Adr" Target="{Binding ElementName=InitialiseEmailAdrTextBox}"/>
+    <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" x:Name="InitialiseEmailAdrTextBox"/>
+    <Label Grid.Row="8" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
+    <CheckBox Grid.Row="8" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3
                " Fill="{StaticResource PanelBackground}"/>
-    <Button Grid.Row="6" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
+    <Button Grid.Row="9" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

@@ -40,13 +40,16 @@ namespace WpfWindowsLib {
       get { return decimalValue; }
       set {
         decimalValue = value;
-        Text = decimalValue?.ToString(formats[Precision]);
+        if (value is null) return;
+
+        Text = Math.Round(value.Value, Decimals).ToString(DecimalFormat);
       }
     }
     private decimal? decimalValue;
 
 
     #region Min property
+
     public static readonly DependencyProperty MinProperty = DependencyProperty.Register(
       "Min",
       typeof(decimal),
@@ -85,6 +88,7 @@ namespace WpfWindowsLib {
 
 
     #region Max property
+
     public static readonly DependencyProperty MaxProperty = DependencyProperty.Register(
       "Max",
       typeof(decimal),
@@ -122,48 +126,75 @@ namespace WpfWindowsLib {
     #endregion
 
 
-    #region Precision property
-    public static readonly DependencyProperty PrecisionProperty = DependencyProperty.Register(
-      "Precision",
+    #region Decimals property
+
+    public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
+      "Decimals",
       typeof(int),
       typeof(DecimalTextBox),
       new FrameworkPropertyMetadata(2,
           FrameworkPropertyMetadataOptions.None,
-          new PropertyChangedCallback(onPrecisionChanged)
+          new PropertyChangedCallback(onDecimalsChanged)
       )
     );
 
 
-    private static void onPrecisionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-      var textBox = (DecimalTextBox)d;
-      if (textBox.Precision<0 || textBox.Precision>formatsLength) {
-        throw new Exception($"Error DecimalTextBox: Precision {textBox.Precision} must be between 0 and {formatsLength}. ");
+    const int maxDecimals = 29;
+
+
+    private static void onDecimalsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var decimalTextBox = (DecimalTextBox)d;
+      if (decimalTextBox.Decimals<0 || decimalTextBox.Decimals>maxDecimals) {
+        throw new Exception($"Error DecimalTextBox: Decimals {decimalTextBox.Decimals} must be between 0 and {maxDecimals}. ");
       }
     }
 
 
     /// <summary>
-    /// DecimalTextBox rounds Text to number of digits after the decimal point according to Precision 
+    /// DecimalTextBox rounds Text to number of fractional digits after the decimal point according to Decimals 
     /// </summary>
-    public int Precision {
-      get { return (int)GetValue(PrecisionProperty); }
-      set { SetValue(PrecisionProperty, value); }
-    }
-
-
-    static string[] formats = createFormats();
-    const int formatsLength = 29;
-
-
-    private static string[] createFormats() {
-      var formats = new string[formatsLength];
-      formats[0] = "0";
-      for (int i = 1; i < formats.Length; i++) {
-        formats[i] = "0." + new string('#', i);
-      };
-      return formats;
+    public int Decimals {
+      get { return (int)GetValue(DecimalsProperty); }
+      set { SetValue(DecimalsProperty, value); }
     }
     #endregion
+
+
+
+    #region DecimalFormat property
+
+    public static readonly DependencyProperty DecimalFormatProperty = DependencyProperty.Register(
+      "DecimalFormat",
+      typeof(string),
+      typeof(CheckedTextBox),
+      new FrameworkPropertyMetadata("",
+          FrameworkPropertyMetadataOptions.None,
+          new PropertyChangedCallback(onDecimalFormatChanged) 
+      )
+    );
+
+
+    private static void onDecimalFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var decimalTextBox = (DecimalTextBox)d;
+      try {
+        123.45m.ToString(decimalTextBox.DecimalFormat);
+      } catch (Exception) {
+
+        throw new Exception($"Illegal DecimalFormat '{decimalTextBox.DecimalFormat}'.");
+      }
+    }
+
+
+    /// <summary>
+    /// Needs the user to provide this control with a value ? 
+    /// </summary>
+    public string DecimalFormat {
+      get { return (string)GetValue(DecimalFormatProperty); }
+      set { SetValue(DecimalFormatProperty, value); }
+    }
+    #endregion
+
+
     #endregion
 
 
@@ -179,12 +210,12 @@ namespace WpfWindowsLib {
       if (Text.Length==0) {
         decimalValue = null;
       } else {
-        decimalValue = decimal.Parse(Text); //throw exception here if Parse is not possible
+        decimalValue = Math.Round(decimal.Parse(Text), Decimals); //Decimals is already validated, throw exception here if Parse is not possible
         if (decimalValue<Min) throw new Exception($"Error DecimalTextBox: DecimalValue {DecimalValue} must be >= {Min} (Min).");
         if (decimalValue>Max) throw new Exception($"Error DecimalTextBox: DecimalValue {DecimalValue} must be <= {Max} (Max).");
+        //
+        Text = decimalValue?.ToString(DecimalFormat); //DecimalFormat doesn't need to get validated, any string is valid
       }
-      //precision is already validated
-      Text = decimalValue?.ToString(formats[Precision]);
       isInitialising = false;
     }
 
@@ -198,7 +229,8 @@ namespace WpfWindowsLib {
       bool? isRequired = false, 
       decimal? min = null, 
       decimal? max = null,
-      int? precision = null) 
+      int? decimals = null,
+      string? format = null) 
     {
       decimal newMin = min??Min;
       decimal newMax = max??Max;
@@ -207,21 +239,24 @@ namespace WpfWindowsLib {
         if (value<newMin) throw new Exception($"Error DecimalTextBox.Initialise(): DecimalValue {value} must be >= {newMin} (Min).");
         if (value>newMax) throw new Exception($"Error DecimalTextBox.Initialise(): DecimalValue {value} must be <= {newMax} (Max).");
       }
-      int newPrecision = precision??Precision;
-      if (newPrecision<0 || newPrecision>formatsLength) {
-        throw new Exception($"Error DecimalTextBox.Initialise(): Precision {newPrecision} must be between 0 and {formatsLength}. ");
-      }
 
+      if (decimals.HasValue) {
+        Decimals = decimals.Value; //validates
+      }
+      if (format!=null) {
+        DecimalFormat = format; //validates
+      }
       isInitialising = true;
       Min = newMin;
       Max = newMax;
-      if (precision.HasValue) {
-        Precision = precision.Value; //validates
+      if (value is null) {
+        decimalValue = null;
+      } else {
+        decimalValue =  Math.Round(value.Value, Decimals); ;
       }
-      decimalValue = value;
       isInitialising = false;
 
-      base.Initialise(decimalValue?.ToString(formats[Precision]), isRequired);
+      base.Initialise(decimalValue?.ToString(DecimalFormat), isRequired);
     }
     #endregion
 
@@ -270,17 +305,17 @@ namespace WpfWindowsLib {
         return;
       }
 
-      if (!decimal.TryParse(Text, out decimal result)) {
+      if (!decimal.TryParse(Text, out decimal newValue)) {
         MessageBox.Show($"{Text} is not a valid decimal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
-      } else if(result<Min) {
+      } else if(newValue<Min) {
         MessageBox.Show($"{Text} must be >= {Min} (Min).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
-      } else if (result>Max) {
+      } else if (newValue>Max) {
         MessageBox.Show($"{Text} must be <= {Max} (Max).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       } else {
-        DecimalValue = result;//will also format Text
+        DecimalValue = Math.Round(newValue, Decimals);//will also format Text
       }
       base.OnPreviewLostKeyboardFocus(e);
     }

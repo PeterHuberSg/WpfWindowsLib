@@ -29,7 +29,7 @@ namespace WpfWindowsLib {
   /// If this TextBox is placed in a Window inheriting from CheckedWindow, it reports automatically 
   /// any value change to that parent Window.
   /// </summary>
-  public class CheckedTextBox: TextBox, ICheck {
+  public class CheckedTextBox: TextBox {
 
     #region Properties
     //      ----------
@@ -40,17 +40,6 @@ namespace WpfWindowsLib {
     /// </summary>
     public string? TextNullable { get { return Text.Length==0 ? null : Text; } }
 
-
-    /// <summary>
-    /// Has the value of this control changed ?
-    /// </summary>
-    public bool HasChanged { get; private set; }
-
-
-    /// <summary>
-    /// Raised when control gets changed or the user undoes the change
-    /// </summary>
-    public event Action?  HasChangedEvent;
 
 
     #region IsRequired property
@@ -67,21 +56,11 @@ namespace WpfWindowsLib {
 
     private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
       var textBox = (CheckedTextBox)d;
-      if (textBox.isInitialising) return;
+      if (textBox.IsInitialising) return;
 
       //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that Text and IsRequired are assigned, if both are used in XAML
-      var oldIsAvailable = textBox.IsAvailable;
-      if (textBox.IsRequired) {
-        textBox.IsAvailable = textBox.Text.Length>0;
-      } else {
-        textBox.IsAvailable = true;
-      }
-
-      if (oldIsAvailable!=textBox.IsAvailable) {
-        textBox.showAvailability();
-        textBox.IsAvailableEvent?.Invoke();
-      }
+      textBox.IChecker.IsRequiredChanged(textBox.IsRequired, isAvailable: textBox.Text.Length>0);
     }
 
 
@@ -95,47 +74,39 @@ namespace WpfWindowsLib {
     #endregion
 
 
-    /// <summary>
-    /// Has the user provided a value ?
-    /// </summary>
-    public bool IsAvailable { get; private set; }
+    public bool IsInitialising { get; private set; } 
 
 
     /// <summary>
-    /// The availability of the control has changed
+    /// Provides the ICheck functionality to CheckedTextBox
     /// </summary>
-    public event Action?  IsAvailableEvent;
+    public IChecker<string?> IChecker { get; }
+    #endregion
+
+
+    #region Constructor
+    //      -----------
+
+    public CheckedTextBox() {
+      IChecker = new IChecker<string?>(this);
+    }
     #endregion
 
 
     #region Initialisation
     //      --------------
 
-    string initText = "";  //TextBox converts automatically null to an empty string. Don't allow null here neither
-    bool isInitialising = true;
-
-
     protected override void OnInitialized(EventArgs e) {
+      IsInitialising = true;
+
       //verify the values set in XAML
       if (MaxLength>0 && Text.Length>MaxLength) throw new Exception($"Error CheckedTextBox: Text '{Text}' must be shorter than MaxLength {MaxLength}.");
 
+      IChecker.OnInitialized(initValue: Text, IsRequired, isAvailble: Text.Length>0);
+      IsInitialising = false;
       OnTextBoxInitialised();
-      initText = Text;
+      //add event handlers only once XAML values are processed, i.e in OnInitialized. 
       TextChanged += checkedTextBox_TextChanged;
-      if (IsRequired) {
-        IsAvailable = Text.Length>0;
-        if (!IsAvailable) {
-          //a changed background needs only to be displayed if control is required, but not available
-          showAvailability();
-        }
-      } else {
-        //if no user input is required, the control is always available
-        IsAvailable = true;
-      }
-      isInitialising = false;
-
-      CheckedWindow.Register(this); //updates CheckedWindow.IsAvailable, no need to raise IsAvailableEvent
-
       base.OnInitialized(e);
     }
 
@@ -150,37 +121,15 @@ namespace WpfWindowsLib {
     /// Sets Text and IsRequired from code behind. If isRequired is null, IsRequired keeps its value.
     /// </summary>
     public virtual void Initialise(string? text = null, bool? isRequired = false) {
-      isInitialising = true;
+      IsInitialising = true;
       var newText = text??"";
       if (MaxLength>0 && newText.Length>MaxLength) {
         throw new Exception($"Error CheckedTextBox.Initialise(): Text '{text}' must be shorter than MaxLength {MaxLength}.");
       }
-      initText = newText;
       Text = newText;
       IsRequired = isRequired??IsRequired;
-      isInitialising = false;
-
-      var newHasChanged = initText!=Text;
-      if (HasChanged!=newHasChanged) {
-        HasChanged = newHasChanged;
-        HasChangedEvent?.Invoke();
-      }
-
-      var newIsAvailable = !IsRequired||Text.Length>0;
-      if (IsAvailable!=newIsAvailable) {
-        IsAvailable = newIsAvailable;
-        showAvailability();
-        IsAvailableEvent?.Invoke();
-      }
-    }
-
-
-    /// <summary>
-    /// Called from CheckedWindow after a save, sets Text as initial value
-    /// </summary>
-    public void ResetHasChanged() {
-      initText = Text;
-      HasChanged = false;
+      IChecker.Initialise(initValue: newText, IsRequired, isAvailble: Text.Length>0);
+      IsInitialising = false;
     }
     #endregion
 
@@ -189,20 +138,9 @@ namespace WpfWindowsLib {
     //      --------------
 
     private void checkedTextBox_TextChanged(object sender, TextChangedEventArgs e) {
-     var newHasChanged = initText!=Text;
-      if (HasChanged != newHasChanged) {
-        HasChanged = newHasChanged;
-        HasChangedEvent?.Invoke();
-      }
+      if (IsInitialising) return;
 
-      if (IsRequired) {
-        var newIsAvailable = Text.Length>0;
-        if (IsAvailable!=newIsAvailable) {
-          IsAvailable = newIsAvailable;
-          showAvailability();
-          IsAvailableEvent?.Invoke();
-        }
-      }
+      IChecker.ValueChanged(Text, Text.Length>0);
     }
     #endregion
 
@@ -210,33 +148,9 @@ namespace WpfWindowsLib {
     #region Methods
     //      -------
 
-    private void showAvailability() {
-      if (IsAvailable) {
-        ClearValue(TextBox.BackgroundProperty);
-      } else {
-        Background = Styling.RequiredBrush;
-      }
-    }
-
-
-    /// <summary>
-    /// Change the background color of this control if the user has changed its value
-    /// </summary>
-    public void ShowChanged(bool isChanged) {
-      if (HasChanged) {
-        if (isChanged) {
-          Background = Styling.HasChangedBackgroundBrush;
-        } else {
-          ClearValue(TextBox.BackgroundProperty);
-        }
-      }
-    }
-
-
     /// <summary>
     /// Returns Text without the characters selected by user. Useful in OnPreviewTextInput()
     /// </summary>
-    /// <returns></returns>
     public string GetTextWithoutSelection() {
       if (SelectedText.Length==0) return Text;
 

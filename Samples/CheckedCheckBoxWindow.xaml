@@ -46,7 +46,6 @@ This software is distributed without any warranty.
     <Button Grid.Row="3" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
     <Label Grid.Row="4" Grid.Column="0" Content="_IsSelected" Target="{Binding ElementName=InitialiseSelectedCheckBox}"/>
     <ComboBox Grid.Row="4" Grid.Column="1" x:Name="InitialiseSelectedComboBox" SelectedIndex="0">
-      <ComboBoxItem Content="don't change"/>
       <ComboBoxItem Content="null"/>
       <ComboBoxItem Content="not selected"/>
       <ComboBoxItem Content="selected"/>

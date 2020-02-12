@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
-
+using System.Windows.Controls;
 
 namespace WpfWindowsLib {
 
@@ -63,12 +63,6 @@ namespace WpfWindowsLib {
     //Data required
     //-------------
 
-    ///// <summary>
-    ///// All controls which require some data before data can be saved
-    ///// </summary>
-    //public IEnumerable<ICheck> Requireds { get { return requireds; } }
-    //readonly List<ICheck> requireds;
-
     /// <summary>
     /// True if controls which require some data before data can be saved have some data.
     /// </summary>
@@ -89,7 +83,6 @@ namespace WpfWindowsLib {
     /// </summary>
     public CheckedWindow() {
       iChecks = new HashSet<ICheck>();
-      //requireds = new List<ICheck>();
       HasICheckChanged = false;
       IsAvailable = true;
       Closing += checkedWindow_Closing;
@@ -137,6 +130,26 @@ namespace WpfWindowsLib {
 
         if (element is CheckedWindow window) {
           window.Register((ICheck)startElement);
+          break;
+        }
+      } while (true);
+    }
+
+
+    public static void Register(ICheck iCheck, FrameworkElement element) {
+      var startElement = element;
+      do {
+        if (element.Parent==null) {
+          if (DesignerProperties.GetIsInDesignMode(startElement)) {
+            break;
+          } else {
+            throw new Exception($"Cannot find parent CheckedWindow of {startElement.Name}.");
+          }
+        }
+        element = (FrameworkElement)element.Parent;
+
+        if (element is CheckedWindow window) {
+          window.Register(iCheck);
           break;
         }
       } while (true);
