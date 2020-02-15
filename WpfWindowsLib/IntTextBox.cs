@@ -132,7 +132,7 @@ namespace WpfWindowsLib {
     bool isInitialising = true;
 
 
-    protected override void OnTextBoxInitialised() {
+    protected override void OnTextBoxInitialized() {
       //verify the values set in XAML
       if (Min>Max) throw new Exception($"Error IntTextBox: Min {Min} must be <= Max {Max}.");
       if (Text.Length==0) {
@@ -180,20 +180,22 @@ namespace WpfWindowsLib {
 
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e) {
-      var isMinusFound = false;
-      foreach (var c in e.Text) {
+      if (e.Text.Length>0) { //ctrl + key results in Text.Length==0
+        if (e.Text.Length!=1) throw new NotSupportedException($"DecimalTextBox supports only ASCII code.");
+
+        var c = e.Text[0];
         if (c=='-') {
           //'-' is only allowed if cursor is at position 0 and no '-' is entered already
-          if (isMinusFound || SelectionStart!=0 || Text[SelectedText.Length..].Contains('-')) {
+          if (CaretIndex!=0 || Text[SelectedText.Length..].Contains('-')) {
             e.Handled = true;
-            break;
           }
-          isMinusFound = true;
 
         } else if (!(c>='0' && c<='9')) {
           e.Handled = true;
-          break;
         }
+      }
+
+      foreach (var c in e.Text) {
       }
       base.OnPreviewTextInput(e);
     }

@@ -1,0 +1,9 @@
+﻿<wwl:CheckedWindow x:Class="Samples.SampleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib">
+  <StackPanel>
+    <wwl:CheckedTextBox x:Name="TestCheckedTextBox" MinWidth="100" MaxLength="20" IsRequired="True"/>
+    <Button x:Name="SaveButton" Content="_Save"/>
+  </StackPanel>
+</wwl:CheckedWindow>

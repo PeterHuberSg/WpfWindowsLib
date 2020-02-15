@@ -19,7 +19,6 @@ This software is distributed without any warranty.
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 
 namespace WpfWindowsLib {
@@ -27,7 +26,7 @@ namespace WpfWindowsLib {
 
   /// <summary>
   /// If this TextBox is placed in a Window inheriting from CheckedWindow, it reports automatically 
-  /// any value change to that parent Window.
+  /// any Text change to that parent Window.
   /// </summary>
   public class CheckedTextBox: TextBox {
 
@@ -56,7 +55,7 @@ namespace WpfWindowsLib {
 
     private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
       var textBox = (CheckedTextBox)d;
-      if (textBox.IsInitialising) return;
+      if (textBox.isInitialising) return;
 
       //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that Text and IsRequired are assigned, if both are used in XAML
@@ -72,9 +71,6 @@ namespace WpfWindowsLib {
       set { SetValue(IsRequiredProperty, value); }
     }
     #endregion
-
-
-    public bool IsInitialising { get; private set; } 
 
 
     /// <summary>
@@ -96,15 +92,16 @@ namespace WpfWindowsLib {
     #region Initialisation
     //      --------------
 
-    protected override void OnInitialized(EventArgs e) {
-      IsInitialising = true;
+    bool isInitialising = true;
 
+
+    protected override void OnInitialized(EventArgs e) {
       //verify the values set in XAML
       if (MaxLength>0 && Text.Length>MaxLength) throw new Exception($"Error CheckedTextBox: Text '{Text}' must be shorter than MaxLength {MaxLength}.");
 
       IChecker.OnInitialized(initValue: Text, IsRequired, isAvailble: Text.Length>0);
-      IsInitialising = false;
-      OnTextBoxInitialised();
+      isInitialising = false;
+      OnTextBoxInitialized();
       //add event handlers only once XAML values are processed, i.e in OnInitialized. 
       TextChanged += checkedTextBox_TextChanged;
       base.OnInitialized(e);
@@ -114,14 +111,14 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Inheritors might need to handle here Text content set in XAML
     /// </summary>
-    protected virtual void OnTextBoxInitialised() {}
+    protected virtual void OnTextBoxInitialized() {}
 
 
     /// <summary>
     /// Sets Text and IsRequired from code behind. If isRequired is null, IsRequired keeps its value.
     /// </summary>
     public virtual void Initialise(string? text = null, bool? isRequired = false) {
-      IsInitialising = true;
+      isInitialising = true;
       var newText = text??"";
       if (MaxLength>0 && newText.Length>MaxLength) {
         throw new Exception($"Error CheckedTextBox.Initialise(): Text '{text}' must be shorter than MaxLength {MaxLength}.");
@@ -129,7 +126,7 @@ namespace WpfWindowsLib {
       Text = newText;
       IsRequired = isRequired??IsRequired;
       IChecker.Initialise(initValue: newText, IsRequired, isAvailble: Text.Length>0);
-      IsInitialising = false;
+      isInitialising = false;
     }
     #endregion
 
@@ -138,7 +135,7 @@ namespace WpfWindowsLib {
     //      --------------
 
     private void checkedTextBox_TextChanged(object sender, TextChangedEventArgs e) {
-      if (IsInitialising) return;
+      if (isInitialising) return;
 
       IChecker.ValueChanged(Text, Text.Length>0);
     }

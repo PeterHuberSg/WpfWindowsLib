@@ -39,10 +39,11 @@ This software is distributed without any warranty.
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <wwl:PhoneTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TestPhoneTextBox" Margin="9"
                         Text="" IsRequired="True"/>
-    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Fill="{StaticResource LabelBackground}"/>
+    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="9" Fill="{StaticResource LabelBackground}"/>
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
               IsChecked="{Binding ElementName=TestPhoneTextBox, Path=IsRequired, Mode=TwoWay}"/>
@@ -61,7 +62,16 @@ This software is distributed without any warranty.
     <TextBox Grid.Row="7" Grid.Column="1" x:Name="InitialiseMinDigitsTextBox"/>
     <Label Grid.Row="8" Grid.Column="0" Content="Ma_xDigits" Target="{Binding ElementName=InitialiseMaxDigitsTextBox}"/>
     <TextBox Grid.Row="8" Grid.Column="1" x:Name="InitialiseMaxDigitsTextBox"/>
-    <Rectangle Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
-    <Button Grid.Row="9" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
+    <Label Grid.Row="9" Grid.Column="0" Content="_Local Format" Target="{Binding ElementName=LocalFormatComboBox}"/>
+    <ComboBox Grid.Row="9" Grid.Column="0" x:Name="LocalFormatComboBox" SelectedIndex="1">
+      <ComboBoxItem Content="None" />
+      <ComboBoxItem Content="2 digit area code" />
+      <ComboBoxItem Content="'0' and 2 digit area code" />
+      <ComboBoxItem Content="3 digit area code" />
+      <ComboBoxItem Content="'0' and 3 digit area code" />
+      <ComboBoxItem Content="no area code, 8 digits" />
+    </ComboBox>
+    <Rectangle Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
+    <Button Grid.Row="10" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>

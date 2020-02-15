@@ -40,6 +40,7 @@ namespace Samples {
       InitializeComponent();
 
       InitialiseButton.Click += initialiseButton_Click;
+      LocalFormatComboBox.SelectionChanged += localFormatComboBox_SelectionChanged;
       SaveButton.Click += saveButton_Click;
       updateSaveButtonIsEnabled();
     }
@@ -58,6 +59,19 @@ namespace Samples {
           InitialiseMaxDigitsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMaxDigitsTextBox.Text));
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+    }
+
+
+    private void localFormatComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) {
+      switch (LocalFormatComboBox.SelectedIndex) {
+      case 0: CountryCode.LocalFormat = null; break;
+      case 1: CountryCode.LocalFormat = CountryCode.LocalFormatNo0Area2; CountryCode.MaxLengthLocalCode=9; break;
+      case 2: CountryCode.LocalFormat = CountryCode.LocalFormat0Area2; CountryCode.MaxLengthLocalCode=9; break;
+      case 3: CountryCode.LocalFormat = CountryCode.LocalFormatNo0Area3; CountryCode.MaxLengthLocalCode=10; break;
+      case 4: CountryCode.LocalFormat = CountryCode.LocalFormat0Area3; CountryCode.MaxLengthLocalCode=10; break;
+      case 5: CountryCode.LocalFormat = CountryCode.LocalFormat8Digits; CountryCode.MaxLengthLocalCode=8; break;
+      default: throw new NotImplementedException();
       }
     }
 

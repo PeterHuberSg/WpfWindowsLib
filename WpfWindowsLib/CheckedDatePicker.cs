@@ -29,7 +29,7 @@ namespace WpfWindowsLib {
 
   /// <summary>
   /// If this ComboBox is placed in a Window inherited from CheckedWindow, it reports automatically 
-  /// any value change.
+  /// any value change to that parent Window.
   /// </summary>
   public class CheckedDatePicker: DatePicker, ICheck {
 

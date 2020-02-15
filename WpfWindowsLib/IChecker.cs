@@ -218,7 +218,6 @@ namespace WpfWindowsLib {
         ownerControl.ClearValue(TextBox.BackgroundProperty);
       } else {
         ownerControl.Background = Styling.RequiredBrush;
-        ownerControl.Background = Brushes.Yellow;
       }
     }
 

@@ -3,7 +3,7 @@
 WpfWindowsLibTest.BigBitSetTest
 ===============================
 
-TextBox with auto suggestions based on user input. Implements ICheck
+Test for BigBitSet
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com

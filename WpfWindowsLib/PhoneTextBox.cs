@@ -4,7 +4,8 @@ WpfWindowsLib.PhoneTextBox
 ==========================
 
 TextBox accepting only phone numbers and implementing ICheck. Probably not useful for you,
-because it supports the formating used in Singapore, but you can make your own control with the proper phone formatting. 
+because it supports the formating used in Singapore, but you can make your own control with 
+the proper phone formatting. 
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -18,6 +19,7 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -28,7 +30,7 @@ namespace WpfWindowsLib {
 
   /// <summary>
   /// A TextBox accepting only phone number values. If it is placed in a Window inherited from CheckedWindow, 
-  /// it reports automatically any value change.
+  /// it reports automatically any Text change to that parent Window.
   /// </summary>
   public class PhoneTextBox: CheckedTextBox {
 
@@ -36,7 +38,7 @@ namespace WpfWindowsLib {
     //      ----------
 
     /// <summary>
-    /// The user might use blanks when entering the number, which are removed in PhoneNoWithoutBlanks
+    /// The user might use blanks when entering the number, which are removed in CompactNumber
     /// </summary>
     public string? CompactNumber { get; private set; }
 
@@ -117,20 +119,50 @@ namespace WpfWindowsLib {
       set { SetValue(MaxDigitsProperty, value); }
     }
     #endregion
+
+
+    /// <summary>
+    /// Characters that user can input for phone numbers, additionally to the digits '0' to '9' and a
+    /// '+' as first character.
+    /// </summary>
+    public static char[] LegalSpecialCharacters = {'-', '/'};
+
+
+    /// <summary>
+    /// ValidateUserInput gets called every time a user has keyed in a character, except when he enters a blank. Assign
+    /// a different method to change how user input gets validated.
+    /// </summary>
+    public Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = DefaultValidateUserInput;
+
+
+    /// <summary>
+    /// Delegate for ValidatePhoneNumber, which validates that phoneNumber is a valid phone number. When returning, 
+    /// compactNumber might have been reformatted.
+    /// </summary>
+    public delegate bool ValidatePhoneNumberDelegate(string? phoneNumber, out string? compactNumber);
+
+
+    /// <Summary>
+    /// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been reformatted.
+    /// </summary>
+    public ValidatePhoneNumberDelegate ValidatePhoneNumber = DefaultValidatePhoneNumber;
     #endregion
 
 
     #region Initialisation
     //      --------------
 
+    // True while XAML code gets executed and during Initialise(). This prevents that each value change is validated
+    // on its own. Instead, validation gets executed once all values are changed.
     bool isInitialising = true;
 
 
-    protected override void OnTextBoxInitialised() {
+    protected override void OnTextBoxInitialized() {
       //verify the values set in XAML
       if (!ValidatePhoneNumber(Text, out var compactNumber)) {
         throw new Exception($"Error PhoneTextBox: Text {Text} is not a valid phone number."); 
       }
+      Text = CountryCode.Format(Text)??Text;
       var count = CountDigits();
       if (count!=0) {
         if (count<MinDigits) {
@@ -142,13 +174,12 @@ namespace WpfWindowsLib {
       }
 
       CompactNumber = compactNumber;
-      isInitialising = false;
     }
 
 
     /// <summary>
-    /// Called from Windows constructor to set the initial value and to indicate
-    /// if the user is required to enter a value
+    /// Sets initial value from code behind. If isRequired is true, user needs to change the value before saving is possible.
+    /// If minDigits or maxDigits are null, MinDigits or MaxDigits value gets not changed.
     /// </summary>
     public virtual void Initialise(string? text, bool? isRequired = null, int? minDigits = null, int? maxDigits = null) {
       if (!ValidatePhoneNumber(text, out var compactNumber)) {
@@ -171,6 +202,9 @@ namespace WpfWindowsLib {
       CompactNumber = compactNumber;
       isInitialising = false;
 
+      if (text!=null) {
+        text = CountryCode.Format(text)??text;
+      }
       base.Initialise(text, isRequired);
     }
     #endregion
@@ -180,14 +214,15 @@ namespace WpfWindowsLib {
     //      ---------
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e) {
-      if (e.Text.Length!=1) throw new NotSupportedException($"PhoneTextBox supports only 1 input character at a time, but it was {e.Text}.");
+      if (e.Text.Length>0) { //ctrl + key results in Text.Length==0
+        if (e.Text.Length!=1) throw new NotSupportedException($"PhoneTextBox supports only ASCII code.");
 
-      var inputChar = e.Text[0];
-      var textWithoutSelection = GetTextWithoutSelection();
-      if (!ValidateUserInput(inputChar, CaretIndex, textWithoutSelection) || 
-        (inputChar>='0' && inputChar<='9' && CountDigits()>=MaxDigits)) 
-      {
-        e.Handled= true;
+        var inputChar = e.Text[0];
+        var textWithoutSelection = GetTextWithoutSelection();
+        if (!ValidateUserInput(inputChar, CaretIndex, textWithoutSelection) ||
+          (inputChar>='0' && inputChar<='9' && CountDigits()>=MaxDigits)) {
+          e.Handled= true;
+        }
       }
 
       base.OnPreviewTextInput(e);
@@ -209,6 +244,7 @@ namespace WpfWindowsLib {
         CompactNumber = compactNumber;
       }
 
+      Text = CountryCode.Format(Text)??Text;
       base.OnPreviewLostKeyboardFocus(e);
     }
     #endregion
@@ -216,20 +252,6 @@ namespace WpfWindowsLib {
 
     #region Validation
     //      ----------
-
-      /// <summary>
-      /// Characters that user can input for phone numbers, additionally to the digits '0' to '9' and a
-      /// '+' as first character.
-      /// </summary>
-    public static char[] LegalSpecialCharacters = {'-', '/'};
-
-
-    /// <summary>
-    /// ValidateUserInput gets called every time a user has keyed in a character, except when he enters a blank. Assign
-    /// a different method to change how user input gets validated.
-    /// </summary>
-    public Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = DefaultValidateUserInput;
-
 
     /// <summary>
     /// Returns true if inputChar can be entered at inputPos into partialPhoneNumber, which is the phone 
@@ -250,22 +272,9 @@ namespace WpfWindowsLib {
     }
 
 
-    /// <summary>
-    /// Delegate for ValidatePhoneNumber, which validates that phoneNumber is a valid phone number. When returning, 
-    /// compactNumber might have been reformatted.
-    /// </summary>
-    public delegate bool ValidatePhoneNumberDelegate(string? phoneNumber, out string? compactNumber);
-
-
     /// <Summary>
-    /// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been reformatted.
-    /// </summary>
-    public ValidatePhoneNumberDelegate ValidatePhoneNumber = DefaultValidatePhoneNumber;
-
-
-    /// <Summary>
-    /// Validates that phoneNumber is a valid phone number. On returning, special characters like ' ', ' ' are 
-    /// removed from compactNumber
+    /// Validates that phoneNumber is a valid phone number. On returning, special characters like '+', ' ' and LegalSpecialCharacters
+    /// are removed from compactNumber
     /// </summary>
     private static bool DefaultValidatePhoneNumber(string? phoneNumber, out string? compactNumber) {
       if (string.IsNullOrEmpty(phoneNumber)) {
@@ -274,13 +283,13 @@ namespace WpfWindowsLib {
       }
 
       var isFirstChar = true;
-      var stringBuilder = new StringBuilder();
+      var compactNumberSB = new StringBuilder();
       foreach (var phoneChar in phoneNumber) {
         if (phoneChar==' ') {
           continue;
         }
         if (phoneChar>='0' && phoneChar<='9'|| isFirstChar && phoneChar=='+') {
-          stringBuilder.Append(phoneChar);
+          compactNumberSB.Append(phoneChar);
         } else {
           var isLegal = false;
           foreach (var legalChar in LegalSpecialCharacters) {
@@ -298,7 +307,7 @@ namespace WpfWindowsLib {
           isFirstChar = false;
         }
       }
-      compactNumber = stringBuilder.ToString();
+      compactNumber = compactNumberSB.ToString();
       return true;
     }
     #endregion

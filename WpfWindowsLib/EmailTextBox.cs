@@ -3,10 +3,17 @@
 WpfWindowsLib.EmailTextBox
 ==========================
 
-TextBox accepting only email addresses and implementing ICheck. 
-The user can only key in characters like 'a' .. 'z', '0' .. '9', '.', '-' and '_'. More 
-characters would be legal, but some email servers might not accept them. If more characters 
-should be allowed, make a new class using the code here and change OnPreviewTextInput().
+A TextBox accepting only email addresses with exactly one '@' separating local-part 
+and domain-part. Per default, the user can only key in characters like 
+'A' .. 'Z', 'a' .. 'z', '0' .. '9', '.', '+', '-' and '_'. It is also possible to allow
+an extended or maximum ASCII set, blanks and finally also UTF8. You can also assign your
+own set of valid characters to AsciiSpecialChars.<para/>
+Once the user has finished entering the address, he gets a warning when the address violates
+default rules (one '@' in the middle and at least one '.' in the domain-part). The validation
+can be changed to a Microsoft Regex email address validator. You can also assign your
+own email address validation function to IsValidEmail.<para/>
+If EmailTextBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+any value change to that parent Window.
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -30,27 +37,25 @@ namespace WpfWindowsLib {
 
 
   /// <summary>
-  /// A TextBox accepting only email addresses with exactly one '@' separating local-part 
-  /// and domain-part. Per default, the user can only key in characters like 
-  /// 'A' .. 'Z', 'a' .. 'z', '0' .. '9', '.', '+', '-' and '_'. It is also possible to allow
-  /// an extended or maximum ASCII set, blanks and finally also UTF8.<para/>
-  /// Once the user has finished entering the address, he gets a warning when the address violates
-  /// default rules (one '@' in the middle and at least one '.' in the domain-part. The validation
-  /// can be changed to a Microsoft Regex email address validator.<para/>
-  /// If EmailTextBox is placed in a Window inherited from CheckedWindow, it reports automatically 
-  /// any value change.
+  /// A TextBox preventing user from keying in invalid email address characters and validating the entered email address when
+  /// loses the EmailTextBox KeyboardFocus. The validations can be changed by assigning different values to AsciiSpecialChars
+  /// and IsValidEmail. If EmailTextBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+  /// any value change to that parent Window.
   /// </summary>
   public class EmailTextBox: CheckedTextBox {
 
     //https://social.technet.microsoft.com/Forums/exchange/en-US/69f393aa-d555-4f8f-bb16-c636a129fc25/what-are-valid-and-invalid-email-address-characters
     //http://www.dominicsayers.com/isemail/
 
-    #region Methods
-    //      -------
+    #region Properties
+    //      ----------
 
     const string defaultAsciiSpecialChars = ".@-_+";
 
 
+    /// <summary>
+    /// Characters allowed in the local-part of the email address (before @ sign),
+    /// </summary>
     public static string AsciiSpecialChars { get; set; } = defaultAsciiSpecialChars;
 
 
@@ -112,7 +117,7 @@ namespace WpfWindowsLib {
     #region Initialisation
     //      --------------
 
-    protected override void OnTextBoxInitialised() {
+    protected override void OnTextBoxInitialized() {
       //verify the values set in XAML
       if (Text.Length>0 && !IsValidEmail(Text)) {
         throw new Exception($"Error EmailTextBox: '{Text}' is not a valid email address).");
@@ -122,7 +127,7 @@ namespace WpfWindowsLib {
 
     /// <summary>
     /// Sets initial value from code behind. If isRequired is true, user needs to change the value before saving is possible. 
-    /// If min or max are null, Min or Max value gets not changed.
+    /// If isRequired is null, IsRequired will not be changed.
     /// </summary>
     public override void Initialise(string? text = null, bool? isRequired = false) {
 
@@ -151,20 +156,23 @@ namespace WpfWindowsLib {
       if (e.Text.Length>0) { //ctrl + key results in Text.Length==0
         if (e.Text.Length>1 || e.Text[0]>0x7F) {
           //character greater than biggest ASCII character
-          if (!IsInternationalCharSetAllowed) {
-            isError = true;
-          }
+          isError = !IsInternationalCharSetAllowed;
         } else {
+          var textWithoutSelection = Text[..CaretIndex] + Text[(CaretIndex + SelectionLength)..];
           var checkChar = e.Text[0];
           if (checkChar=='@') {
             if (CaretIndex==0) {
               isError = true;
             } else {
-              var textWithoutSelection = Text[..CaretIndex] + Text[(CaretIndex + SelectionLength)..];
               isError = textWithoutSelection.Contains('@');
             }
           } else {
-            isError = !IsValidEmailChar(checkChar);
+            var atIndex = textWithoutSelection.IndexOf('@');
+            if (atIndex<0 || CaretIndex<=atIndex) {
+              isError = !IsValidEmailChar(checkChar);
+            } else {
+              isError = !IsValidDnsChar(checkChar);
+            }
           }
         }
       }
@@ -248,7 +256,7 @@ namespace WpfWindowsLib {
     /// + has not 2 consecutive dots '.' in domain part
     /// + only legal characters
     /// </summary>
-    static bool IsValidEmailDefault(string address) {
+    public static bool IsValidEmailDefault(string address) {
       //inspired by
       //https://softwareengineering.stackexchange.com/questions/78353/how-far-should-one-take-e-mail-address-validation/78363#78363
       //@ testing
