@@ -91,7 +91,7 @@ namespace WpfWindowsLib {
 
 
     protected override void OnInitialized(EventArgs e) {
-      IChecker.OnInitialized(initValue: IsChecked, IsRequired, isAvailble: IsChecked.HasValue);
+      IChecker.OnInitialized(initValue: IsChecked, IsRequired, isAvailable: IsChecked.HasValue);
       isInitialising = false;
       //add event handlers only once XAML values are processed, i.e in OnInitialized. 
       Indeterminate += checkedCheckBox_Checked;
@@ -108,7 +108,7 @@ namespace WpfWindowsLib {
       isInitialising = true;
       IsChecked = isChecked;
       IsRequired = isRequired??IsRequired;
-      IChecker.Initialise(initValue: isChecked, IsRequired, isAvailble: IsChecked.HasValue);
+      IChecker.Initialise(initValue: isChecked, IsRequired, isAvailable: IsChecked.HasValue);
       isInitialising = false;
     }
     #endregion

@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CannotClose.png = CannotClose.png
 		CheckedControlSample.png = CheckedControlSample.png
 		COPYING.txt = COPYING.txt
+		Design.pptx = Design.pptx
 		README.md = README.md
+		SmallSample.png = SmallSample.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLibTest", "WpfWindowsLibTest\WpfWindowsLibTest.csproj", "{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}"
@@ -23,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomControlSampleLib", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "Samples\Samples.csproj", "{9729E88C-59FC-4C76-B4C0-F1533216D76D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfWindowsToolkitLib", "WpfWindowsToolkitLib\WpfWindowsToolkitLib.csproj", "{2CAD28F0-9127-446E-959B-E4A521CBCF55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsToolkitLib", "WpfWindowsToolkitLib\WpfWindowsToolkitLib.csproj", "{2CAD28F0-9127-446E-959B-E4A521CBCF55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

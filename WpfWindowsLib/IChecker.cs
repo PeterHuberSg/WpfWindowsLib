@@ -27,7 +27,7 @@ using System.Windows.Media;
 namespace WpfWindowsLib {
 
   /// <summary>
-  /// implements ICheck. A Control having an IChecker needs very little code to support ICheck.
+  /// Implements ICheck. A Control having an IChecker needs very little code to support ICheck.
   /// </summary>
   /// <typeparam name="TValue">A control let's the user input a specific type. TextBox: string, DatePicker: DateTime, ...</typeparam>
   public class IChecker<TValue>: ICheck {
@@ -36,7 +36,8 @@ namespace WpfWindowsLib {
     //https://docs.microsoft.com/en-us/dotnet/csharp/nullable-attributes
 
     /**************************************************************************************
-    The control owing IChecker interacts with XAML and the user
+    The control owning IChecker interacts with XAML and the user. IChecker implements the
+    functionality of ICheck.
 
     If the control's value or IsRequired changes, the control calls IChecker to update
     HasChanged and IsAvailable.
@@ -45,6 +46,11 @@ namespace WpfWindowsLib {
     Control.OnInitialized() => IChecker.OnInitialized()
     Control.Initialise() => IChecker.Initialise()
     Control value changed event => if (!isInitialising) IChecker.ValueChanged()
+
+    IChecker changes the Background of the ownerControl to display the state of HasChanged
+    and IsAvailable. This might not work for some control. For that case, the control
+    can assign its own activities to     OnChangeBackground, OnClearBackground, 
+    OnSetBackground and OnResetBackground
     **************************************************************************************/
 
 
@@ -92,6 +98,32 @@ namespace WpfWindowsLib {
     /// </summary>
     [MaybeNull]
     public TValue ActualValue { get; private set; }
+
+
+    /// <summary>
+    /// Assign Brush to control's Background. Should be changed when a different control than ownerControl needs to be used.
+    /// </summary>
+    public Action<Brush> OnChangeBackground;
+
+
+    /// <summary>
+    /// Call control.ClearValue(Control.BackgroundProperty). Should be overwritten when a different control than ownerControl needs 
+    /// to be used. 
+    /// </summary>
+    public Action OnClearBackground;
+
+
+    /// <summary>
+    /// Remember control's Background (=oldBackground) and assign the Brush to it. Should be changed when a different control 
+    /// than ownerControl needs to be used.
+    /// </summary>
+    public Action<Brush> OnSetBackground;
+
+
+    /// <summary>
+    /// Assign oldBackground to control's Background. Should be changed when a different controlthan ownerControl needs to be used.
+    /// </summary>
+    public Action OnResetBackground;
     #endregion
 
 
@@ -105,6 +137,11 @@ namespace WpfWindowsLib {
       ownerControl = control;
       InitValue = default!;
       ActualValue = default!;
+
+      OnChangeBackground = DefaultOnChangeBackground;
+      OnClearBackground = DefaultOnClearBackground;
+      OnSetBackground = DefaultOnSetBackground;
+      OnResetBackground = DefaultOnResetBackground;
     }
     #endregion
 
@@ -112,7 +149,7 @@ namespace WpfWindowsLib {
     #region Initialisation
     //      --------------
 
-    public void OnInitialized(TValue initValue, bool isRequired, bool isAvailble) {
+    public void OnInitialized(TValue initValue, bool isRequired, bool isAvailable) {
       InitValue = initValue;
       ActualValue = initValue;
       IsRequired = isRequired;
@@ -120,9 +157,9 @@ namespace WpfWindowsLib {
       //HasChanged is already and stays false here
 
       if (IsRequired) {
-        IsAvailable = isAvailble;
+        IsAvailable = isAvailable;
         if (!IsAvailable) {
-          //a changed background needs only to be displayed if control is required, but not available
+          //a changed background needs only to be displayed here if control is required, but not available
           showAvailability();
         }
       } else {
@@ -138,7 +175,7 @@ namespace WpfWindowsLib {
     /// Sets IsChecked and IsRequired from code behind. If isChangeIsChecked is false, IsChecked keeps its value. If 
     /// isRequired is null, IsRequired keeps its value.
     /// </summary>
-    public void Initialise(TValue initValue, bool isRequired, bool isAvailble) {
+    public void Initialise(TValue initValue, bool isRequired, bool isAvailable) {
       InitValue = initValue;
       ActualValue = initValue;
       IsRequired = isRequired;
@@ -148,7 +185,7 @@ namespace WpfWindowsLib {
         HasChangedEvent?.Invoke();
       }
 
-      var newIsAvailable = !IsRequired||isAvailble;
+      var newIsAvailable = !IsRequired||isAvailable;
       if (IsAvailable!=newIsAvailable) {
         IsAvailable = newIsAvailable;
         showAvailability();
@@ -174,7 +211,7 @@ namespace WpfWindowsLib {
     /// Called be ownerControl when IsRequired has changed.
     /// </summary>
     public void IsRequiredChanged(bool isRequired, bool isAvailable) {
-      if (IsRequired==isRequired) throw new Exception();
+      //if (IsRequired==isRequired) return;
 
       IsRequired = isRequired;
       var oldIsAvailable = IsAvailable;
@@ -215,14 +252,11 @@ namespace WpfWindowsLib {
 
     private void showAvailability() {
       if (IsAvailable) {
-        ownerControl.ClearValue(TextBox.BackgroundProperty);
+        OnClearBackground();
       } else {
-        ownerControl.Background = Styling.RequiredBrush;
+        OnChangeBackground(Styling.RequiredBrush);
       }
     }
-
-
-    Brush? oldBackGround;
 
 
     /// <summary>
@@ -231,12 +265,47 @@ namespace WpfWindowsLib {
     public void ShowChanged(bool isChanged) {
       if (HasChanged) {
         if (isChanged) {
-          oldBackGround = ownerControl.Background;
-          ownerControl.Background = Styling.HasChangedBackgroundBrush;
+          OnSetBackground(Styling.HasChangedBackgroundBrush);
         } else {
-          ownerControl.Background = oldBackGround!;
+          OnResetBackground();
         }
       }
+    }
+
+
+    /// <summary>
+    /// Default version for OnChangeBackground.
+    /// </summary>
+    public void DefaultOnChangeBackground(Brush backgroundBrush) {
+      ownerControl.Background = backgroundBrush!;
+    }
+
+
+    /// <summary>
+    /// Default version for OnClearBackground.
+    /// </summary>
+    public void DefaultOnClearBackground() {
+      ownerControl.ClearValue(Control.BackgroundProperty);
+    }
+
+
+    Brush? oldBackground;
+
+
+    /// <summary>
+    /// Default version for OnSetBackground.
+    /// </summary>
+    public void DefaultOnSetBackground(Brush backgroundBrush) {
+      oldBackground = ownerControl.Background;
+      ownerControl.Background = backgroundBrush!;
+    }
+
+
+    /// <summary>
+    /// Default version for OnResetBackground.
+    /// </summary>
+    public void DefaultOnResetBackground() {
+      ownerControl.Background = oldBackground!;
     }
     #endregion
   }

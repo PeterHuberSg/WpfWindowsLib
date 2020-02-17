@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using WpfWindowsLib;
 
 namespace Samples {
-  /// <summary>
-  /// Interaction logic for AaaaWindow.xaml
-  /// </summary>
   public partial class SampleWindow: CheckedWindow {
     public SampleWindow() {
       InitializeComponent();
@@ -31,9 +18,15 @@ namespace Samples {
     }
 
     private void updateSaveButtonIsEnabled() {
-      if (SaveButton!=null) {
-        SaveButton.IsEnabled = HasICheckChanged && IsAvailable;
-      }
+      SaveButton.IsEnabled = HasICheckChanged && IsAvailable;
+    }
+
+    protected override void OnICheckChanged() {
+      updateSaveButtonIsEnabled();
+    }
+
+    protected override void OnIsAvailableChanged() {
+      updateSaveButtonIsEnabled();
     }
   }
 }

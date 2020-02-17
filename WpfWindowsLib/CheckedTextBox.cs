@@ -99,7 +99,7 @@ namespace WpfWindowsLib {
       //verify the values set in XAML
       if (MaxLength>0 && Text.Length>MaxLength) throw new Exception($"Error CheckedTextBox: Text '{Text}' must be shorter than MaxLength {MaxLength}.");
 
-      IChecker.OnInitialized(initValue: Text, IsRequired, isAvailble: Text.Length>0);
+      IChecker.OnInitialized(initValue: Text, IsRequired, isAvailable: Text.Length>0);
       isInitialising = false;
       OnTextBoxInitialized();
       //add event handlers only once XAML values are processed, i.e in OnInitialized. 
@@ -125,7 +125,7 @@ namespace WpfWindowsLib {
       }
       Text = newText;
       IsRequired = isRequired??IsRequired;
-      IChecker.Initialise(initValue: newText, IsRequired, isAvailble: Text.Length>0);
+      IChecker.Initialise(initValue: newText, IsRequired, isAvailable: Text.Length>0);
       isInitialising = false;
     }
     #endregion

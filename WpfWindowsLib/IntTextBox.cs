@@ -17,8 +17,6 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
