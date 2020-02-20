@@ -88,7 +88,7 @@ namespace WpfWindowsLib {
 
       //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that the control's values and IsRequired are assigned, if both are used in XAML
-      checkedComboBox.IChecker.IsRequiredChanged(checkedComboBox.IsRequired, checkedComboBox.SelectedIndex==checkedComboBox.initSelectedIndex);
+      checkedComboBox.IChecker.IsRequiredChanged(checkedComboBox.IsRequired, isAvailable: checkedComboBox.SelectedIndex!=0);
     }
 
 
@@ -132,7 +132,6 @@ namespace WpfWindowsLib {
     //      --------------
 
 
-    int initSelectedIndex = int.MinValue;
     bool isInitialising = true;
 
 
@@ -140,7 +139,6 @@ namespace WpfWindowsLib {
       if (SelectedIndex==-1) {
         SelectedIndex = 0;
       }
-      initSelectedIndex = SelectedIndex;
 
       IChecker.OnInitialized(initValue: SelectedIndex, IsRequired, isAvailable: SelectedIndex!=0);
       isInitialising = false;
@@ -156,18 +154,17 @@ namespace WpfWindowsLib {
     /// If isRequired is null, IsRequired keeps its value.
     /// </summary>
     public virtual void Initialise(int? selectedIndex = 0, bool? isRequired = null) {
-      isInitialising = false;
+      isInitialising = true;
       if (selectedIndex.HasValue) {
         SelectedIndex = selectedIndex.Value;
       } else {
         SelectedIndex = 0;
       }
-      initSelectedIndex = SelectedIndex;
       if (isRequired.HasValue) {
         IsRequired = isRequired.Value;
       }
       IChecker.Initialise(initValue: SelectedIndex, IsRequired, isAvailable: SelectedIndex!=0);
-      isInitialising = true;
+      isInitialising = false;
     }
     #endregion
 
@@ -192,7 +189,7 @@ namespace WpfWindowsLib {
     private void checkedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
       if (isInitialising) return;
 
-      IChecker.ValueChanged(SelectedIndex, isAvailable: SelectedIndex!=initSelectedIndex);
+      IChecker.ValueChanged(SelectedIndex, isAvailable: SelectedIndex!=0);
     }
     #endregion
 

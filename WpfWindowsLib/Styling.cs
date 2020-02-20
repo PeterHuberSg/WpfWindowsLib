@@ -38,7 +38,8 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Background color for a required control whose initial value the user has not changed yet.
     /// </summary>
-    public static readonly Brush RequiredBrush = Brushes.LightGoldenrodYellow;
+    //public static readonly Brush RequiredBrush = Brushes.LightGoldenrodYellow;
+    public static readonly Brush RequiredBrush = Brushes.Khaki;
 
     /// <summary>
     /// Background color for a control whose initial value the user has changed. Used to show

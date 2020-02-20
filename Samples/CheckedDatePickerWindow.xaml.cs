@@ -1,9 +1,9 @@
 ﻿/**************************************************************************************
 
-Samples.CheckedComboBoxWindow
-=============================
+Samples.CheckedDatePickerWindow
+===============================
 
-Sample Window for CheckedComboBox testing
+Sample Window for CheckedDatePicker testing
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -14,7 +14,7 @@ the Creative Commons 0 license (details see COPYING.txt file, see also
 <http://creativecommons.org/publicdomain/zero/1.0/>). 
 
 This software is distributed without any warranty. 
-**************************************************************************************/
+**************************************************************************************/using System;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,18 +25,15 @@ namespace Samples {
 
 
   /// <summary>
-  /// Interaction logic for CheckedComboBoxWindow.xaml
+  /// Interaction logic for CheckedDatePickerWindow.xaml
   /// </summary>
-  public partial class CheckedComboBoxWindow: CheckedWindow {
+  public partial class CheckedDatePickerWindow: CheckedWindow {
 
     #region Constructor
     //      -----------
 
-    public CheckedComboBoxWindow() {
+    public CheckedDatePickerWindow() {
       InitializeComponent();
-
-      TestCheckedComboBox.Loaded += testCheckedComboBox_Loaded;
-      TestCheckedComboBox.SelectionChanged += testCheckedComboBox_SelectionChanged;
       InitialiseButton.Click += initialiseButton_Click;
       SaveButton.Click += saveButton_Click;
       updateSaveButtonIsEnabled();
@@ -47,34 +44,15 @@ namespace Samples {
     #region Events
     //      ------
 
-    private void testCheckedComboBox_Loaded(object sender, RoutedEventArgs e) {
-      SelectedIndexNullableTextBox.Text = TestCheckedComboBox.SelectedIndexNullable?.ToString()??"null";
-    }
-
-
-    private void testCheckedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-      SelectedIndexNullableTextBox.Text = TestCheckedComboBox.SelectedIndexNullable?.ToString()??"null";
-    }
-
-
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        int? newSelected;
-        switch (InitialiseSelectedComboBox.SelectedIndex) {
-        case 0: newSelected = null; break;
-        case 1: newSelected = 1; break;
-        default:
-          throw new NotSupportedException();
-        }
-        bool? isRequired;
-        switch (InitialiseIsRequriedComboBox.SelectedIndex) {
-        case 0: isRequired = null; break;
-        case 1: isRequired = false; break;
-        case 2: isRequired = true; break;
-        default:
-          throw new NotSupportedException();
-        }
-        TestCheckedComboBox.Initialise(newSelected, isRequired);
+        bool? isRequired = InitialiseIsRequriedComboBox.SelectedIndex switch {
+          0 => null,
+          1 => false,
+          2 => true,
+          _ => throw new NotSupportedException(),
+        };
+        TestCheckedDatePicker.Initialise(InitialiseDatePicker.SelectedDate, isRequired);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

@@ -231,7 +231,10 @@ namespace WpfWindowsLib {
     /// Called be ownerControl when the value of the control has changed
     /// </summary>
     public void ValueChanged(TValue value, bool isAvailable) {
-      if (value?.Equals(ActualValue)??((ActualValue is null))) throw new Exception();
+      if (typeof(TValue)!=typeof(DateTime?)) {
+        //DatePicker wrongly raises the same SelectedDateChanged event twice (I report bug to MS)
+        if (value?.Equals(ActualValue)??((ActualValue is null))) throw new Exception();
+      }
 
       ActualValue = value;
       var hasChanged = !InitValue?.Equals(ActualValue)??(!(ActualValue is null));

@@ -17,8 +17,6 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -28,38 +26,62 @@ namespace WpfWindowsLib {
 
 
   /// <summary>
-  /// If this ComboBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+  /// If this DatePicker is placed in a Window inherited from CheckedWindow, it reports automatically 
   /// any value change to that parent Window.
   /// </summary>
-  public class CheckedDatePicker: DatePicker, ICheck {
+  public class CheckedDatePicker: DatePicker {
 
     #region Properties
     //      ----------
 
-    /// <summary>
-    /// Has the value of this control changed ?
-    /// </summary>
-    public bool HasChanged { get; private set; }
+    #region IsRequired property
+    public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
+      "IsRequired",
+      typeof(bool),
+      typeof(CheckedDatePicker),
+      new FrameworkPropertyMetadata(false,
+          FrameworkPropertyMetadataOptions.AffectsRender,
+          new PropertyChangedCallback(onIsRequiredChanged)
+      )
+    );
+
+
+    private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+      var checkedDatePicker = (CheckedDatePicker)d;
+      if (checkedDatePicker.isInitialising) return;
+
+      //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
+      //guarantees that the control's values and IsRequired are assigned, if both are used in XAML
+      checkedDatePicker.IChecker.IsRequiredChanged(checkedDatePicker.IsRequired, isAvailable:checkedDatePicker.SelectedDate!=null);
+    }
+
 
     /// <summary>
-    /// Raised when control gets changed or the user undoes the change
+    /// Needs the user to provide this control with a value ? 
     /// </summary>
-    public event Action?  HasChangedEvent;
+    public bool IsRequired {
+      get { return (bool)GetValue(IsRequiredProperty); }
+      set { SetValue(IsRequiredProperty, value); }
+    }
+    #endregion
+
 
     /// <summary>
-    /// Needs the user to provide this control with a value ?
+    /// Provides the ICheck functionality to CheckedDatePicker
     /// </summary>
-    public bool IsRequired { get; private set; }
+    public IChecker<DateTime?> IChecker { get; }
+    #endregion
+
+
+    #region Constructor
+    //      -----------
 
     /// <summary>
-    /// Has the user provided a value ?
+    /// Default constructor
     /// </summary>
-    public bool IsAvailable { get; private set; }
-
-    /// <summary>
-    /// The availability of the control has changed
-    /// </summary>
-    public event Action?  IsAvailableEvent;
+    public CheckedDatePicker() {
+      IChecker = new IChecker<DateTime?>(this);
+    }
     #endregion
 
 
@@ -67,87 +89,44 @@ namespace WpfWindowsLib {
     //      --------------
 
     DateTime? initDate;
-    Brush? defaultBackground;
+    bool isInitialising = true;
+
+
+    protected override void OnInitialized(EventArgs e) {
+      initDate = SelectedDate;
+
+      IChecker.OnInitialized(initValue: SelectedDate, IsRequired, isAvailable: SelectedDate!=null);
+      isInitialising = false;
+      //add event handlers only once XAML values are processed, i.e in OnInitialized. 
+      SelectedDateChanged += checkedDatePicker_SelectedDateChanged;
+      base.OnInitialized(e);
+    }
 
 
     /// <summary>
-    /// Called from Windows constructor to set the initial value and to indicate
-    /// if the user is required to enter a value
+    /// Sets SelectedDate and IsRequired from code behind.<para/>
+    /// If isRequired is null, IsRequired keeps its value.
     /// </summary>
-    public virtual void Init(DateTime? date = null, bool isRequired = false) {
+    public virtual void Initialise(DateTime? date = null, bool? isRequired = null) {
+      isInitialising = false;
       initDate = date;
       SelectedDate = date;
-      IsRequired = isRequired;
-      defaultBackground = Background;
-      SelectedDateChanged += checkedDatePicker_SelectedDateChanged;
-      if (isRequired) {
-        IsAvailable = Text.Length>0;
-        showAvailability();
+      if (isRequired.HasValue) {
+        IsRequired = isRequired.Value;
       }
-
-      FrameworkElement element = this;
-      do {
-        element = (FrameworkElement)element.Parent;
-        if (element==null) break;
-        if (element is CheckedWindow window) {
-          window.Register(this);
-          break;
-        }
-      } while (true);
+      IChecker.Initialise(initValue: date, IsRequired, isAvailable: date!=null);
+      isInitialising = true;
     }
     #endregion
 
 
-    #region Methods
-    //      -------
-
-    /// <summary>
-    /// Called from CheckedWindow after a save, sets the SelectedDate as initial value
-    /// </summary>
-    public void ResetHasChanged() {
-      initDate = SelectedDate;
-      HasChanged = false;
-    }
-
+    #region Event Handlers
+    //      --------------
 
     private void checkedDatePicker_SelectedDateChanged(object? sender, SelectionChangedEventArgs e) {
-      var newHasChanged = initDate!=SelectedDate;
-      if (HasChanged!=newHasChanged) {
-        HasChanged = newHasChanged;
-        HasChangedEvent?.Invoke();
-      }
+      if (isInitialising) return;
 
-      if (IsRequired) {
-        var newIsAvailable = SelectedDate != null;
-        if (IsAvailable!=newIsAvailable) {
-          IsAvailable = newIsAvailable;
-          showAvailability();
-          IsAvailableEvent?.Invoke();
-        }
-      }
-    }
-
-
-    private void showAvailability() {
-      if (IsAvailable) {
-        Background = defaultBackground;
-      } else {
-        Background = Styling.RequiredBrush;
-      }
-    }
-
-
-    /// <summary>
-    /// Change the background color of this control if the user has changed its value
-    /// </summary>
-    public void ShowChanged(bool isChanged) {
-      if (HasChanged) {
-        if (isChanged) {
-          Background = Styling.HasChangedBackgroundBrush;
-        } else {
-          Background = defaultBackground;
-        }
-      }
+      IChecker.ValueChanged(SelectedDate, isAvailable: SelectedDate!=null) ;
     }
     #endregion
   }
