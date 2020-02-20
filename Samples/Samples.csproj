@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WpfWindowsLib\WpfWindowsLib.csproj" />
-    <ProjectReference Include="..\WpfWindowsToolkitLib\WpfWindowsToolkitLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

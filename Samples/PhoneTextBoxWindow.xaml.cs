@@ -52,9 +52,16 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
+        bool? isRequired = InitialiseIsRequriedComboBox.SelectedIndex switch
+        {
+          0 => null,
+          1 => false,
+          2 => true,
+          _ => throw new NotSupportedException(),
+        };
         TestPhoneTextBox.Initialise(
           InitialisePhoneValueTextBox.Text,
-          InitialisationIsRequriedCheckBox.IsChecked,
+          isRequired,
           InitialiseMinDigitsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMinDigitsTextBox.Text),
           InitialiseMaxDigitsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseMaxDigitsTextBox.Text));
       } catch (Exception ex) {

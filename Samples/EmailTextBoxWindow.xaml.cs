@@ -72,9 +72,16 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
+        bool? isRequired = InitialiseIsRequriedComboBox.SelectedIndex switch
+        {
+          0 => null,
+          1 => false,
+          2 => true,
+          _ => throw new NotSupportedException(),
+        };
         TestEmailTextBox.Initialise(
           InitialiseEmailAdrTextBox.Text,
-          InitialisationIsRequriedCheckBox.IsChecked);
+          isRequired);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

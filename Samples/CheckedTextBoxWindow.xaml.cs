@@ -46,7 +46,14 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
-        TestCheckedTextBox.Initialise(InitialiseTextTextBox.Text, InitialisationIsRequriedCheckBox.IsChecked);
+        bool? isRequired = InitialiseIsRequriedComboBox.SelectedIndex switch
+        {
+          0 => null,
+          1 => false,
+          2 => true,
+          _ => throw new NotSupportedException(),
+        };
+        TestCheckedTextBox.Initialise(InitialiseTextTextBox.Text, isRequired);
       } catch (Exception ex) {
         MessageBox.Show(ex.Message, "Exception occurred", MessageBoxButton.OK, MessageBoxImage.Error);
       }

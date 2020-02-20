@@ -33,10 +33,6 @@ namespace Samples {
     public MainWindow() {
       InitializeComponent();
 
-      CheckedAutoCompleteBox cacb = new CheckedAutoCompleteBox();
-      MainGrid.Children.Add(cacb);
-      AutoCompleteBoxButton.Click += autoCompleteBoxButton_Click;
-
       CheckedCheckBoxButton.Click += checkedCheckBoxButton_Click;
       ChangedCheckBox.IsChecked = true;
 
@@ -118,7 +114,7 @@ namespace Samples {
 
 
     private void phoneTextBoxButton_Click(object sender, RoutedEventArgs e) {
-      new EmailTextBoxWindow { Owner=this }.Show();
+      new PhoneTextBoxWindow { Owner=this }.Show();
     }
 
 

@@ -49,9 +49,16 @@ namespace Samples {
 
     private void initialiseButton_Click(object sender, RoutedEventArgs e) {
       try {
+        bool? isRequired = InitialiseIsRequriedComboBox.SelectedIndex switch
+        {
+          0 => null,
+          1 => false,
+          2 => true,
+          _ => throw new NotSupportedException(),
+        };
         TestDecimalTextBox.Initialise(
           InitialiseDecimalValueTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseDecimalValueTextBox.Text),
-          InitialisationIsRequriedCheckBox.IsChecked,
+          isRequired,
           InitialiseMinTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMinTextBox.Text),
           InitialiseMaxTextBox.Text.Length==0 ? (decimal?)null : decimal.Parse(InitialiseMaxTextBox.Text),
           InitialiseDecimalsTextBox.Text.Length==0 ? (int?)null : int.Parse(InitialiseDecimalsTextBox.Text),

@@ -26,7 +26,7 @@ This software is distributed without any warranty.
   <Grid Background="{StaticResource GridBackground}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
-      <ColumnDefinition Width="100"/>
+      <ColumnDefinition Width="110"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -67,7 +67,11 @@ This software is distributed without any warranty.
     <Label Grid.Row="7" Grid.Column="0" Content="_Decimal Value" Target="{Binding ElementName=InitialiseDecimalValueTextBox}"/>
     <TextBox Grid.Row="7" Grid.Column="1" x:Name="InitialiseDecimalValueTextBox" HorizontalContentAlignment="Right" Text="1234.56"/>
     <Label Grid.Row="8" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
-    <CheckBox Grid.Row="8" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <ComboBox Grid.Row="8" Grid.Column="1" x:Name="InitialiseIsRequriedComboBox" SelectedIndex="0">
+      <ComboBoxItem Content="don't change"/>
+      <ComboBoxItem Content="not required"/>
+      <ComboBoxItem Content="required"/>
+    </ComboBox>
     <Label Grid.Row="9" Grid.Column="0" Content="Mi_n" Target="{Binding ElementName=InitialiseMinTextBox}"/>
     <TextBox Grid.Row="9" Grid.Column="1" x:Name="InitialiseMinTextBox" HorizontalContentAlignment="Right" Text="100"/>
     <Label Grid.Row="10" Grid.Column="0" Content="Ma_x" Target="{Binding ElementName=InitialiseMaxTextBox}"/>

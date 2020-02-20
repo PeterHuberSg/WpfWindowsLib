@@ -5,15 +5,13 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLib", "WpfWindowsLib\WpfWindowsLib.csproj", "{B537826C-C790-49D4-B5C6-39287D8603AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckedControlSample", "SampleApp\CheckedControlSample.csproj", "{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFEF8C43-1A05-4AC8-A7E0-01BEA5E3DABB}"
 	ProjectSection(SolutionItems) = preProject
 		CannotClose.png = CannotClose.png
-		CheckedControlSample.png = CheckedControlSample.png
 		COPYING.txt = COPYING.txt
 		Design.pptx = Design.pptx
 		README.md = README.md
+		Samples.png = Samples.png
 		SmallSample.png = SmallSample.png
 	EndProjectSection
 EndProject
@@ -25,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomControlSampleLib", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "Samples\Samples.csproj", "{9729E88C-59FC-4C76-B4C0-F1533216D76D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsToolkitLib", "WpfWindowsToolkitLib\WpfWindowsToolkitLib.csproj", "{2CAD28F0-9127-446E-959B-E4A521CBCF55}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +33,6 @@ Global
 		{B537826C-C790-49D4-B5C6-39287D8603AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B537826C-C790-49D4-B5C6-39287D8603AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B537826C-C790-49D4-B5C6-39287D8603AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA1AC3F4-5800-4CCC-AE0B-4B4071D4ADA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,10 +49,6 @@ Global
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CAD28F0-9127-446E-959B-E4A521CBCF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CAD28F0-9127-446E-959B-E4A521CBCF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CAD28F0-9127-446E-959B-E4A521CBCF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CAD28F0-9127-446E-959B-E4A521CBCF55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

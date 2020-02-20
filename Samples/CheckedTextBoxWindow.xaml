@@ -26,7 +26,7 @@ This software is distributed without any warranty.
   <Grid Background="{StaticResource GridBackground}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
-      <ColumnDefinition Width="100"/>
+      <ColumnDefinition Width="110"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -49,8 +49,12 @@ This software is distributed without any warranty.
     <Button Grid.Row="3" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
     <Label Grid.Row="4" Grid.Column="0" Content="_Text" Target="{Binding ElementName=InitialiseTextTextBox}"/>
     <TextBox Grid.Row="4" Grid.Column="1" x:Name="InitialiseTextTextBox"/>
-    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
-    <CheckBox Grid.Row="5" Grid.Column="1" x:Name="InitialisationIsRequriedCheckBox" IsThreeState="True" IsChecked="{x:Null}"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialiseIsRequriedComboBox}"/>
+    <ComboBox Grid.Row="5" Grid.Column="1" x:Name="InitialiseIsRequriedComboBox" SelectedIndex="0">
+      <ComboBoxItem Content="don't change"/>
+      <ComboBoxItem Content="not required"/>
+      <ComboBoxItem Content="required"/>
+    </ComboBox>
     <Rectangle Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Fill="{StaticResource PanelBackground}"/>
     <Button Grid.Row="6" Grid.Column="1" x:Name="SaveButton" Content="_Save"/>
   </Grid>
