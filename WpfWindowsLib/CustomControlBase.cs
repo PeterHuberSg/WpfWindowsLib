@@ -3,7 +3,7 @@
 WpfWindowsLib.CustomControlBase
 ===============================
 
-CustomControl with functionality added for Padding, Border and Background.
+Base class for custom controls with functionality added for Children, Drawing, Border, Padding and Background.
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
