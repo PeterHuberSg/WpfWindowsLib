@@ -75,8 +75,8 @@ Shows how to use `CustomControlBase`
 Helper library for `CustomControlSample`
 
 ## Project Status
-* **Data Entry:** functionality: Completed and stable
-* **Custom Control:** functionality: Under construction
+* **Data Entry** functionality: Completed and stable
+* **Custom Control** functionality: Under construction
 
 ## Copyright
 Copyright 2020 Jürg Peter Huber, Singapore.

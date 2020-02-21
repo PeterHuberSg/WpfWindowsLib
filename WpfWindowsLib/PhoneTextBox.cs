@@ -3,9 +3,7 @@
 WpfWindowsLib.PhoneTextBox
 ==========================
 
-TextBox accepting only phone numbers and implementing ICheck. Probably not useful for you,
-because it supports the formating used in Singapore, but you can make your own control with 
-the proper phone formatting. 
+TextBox accepting only phone numbers and implementing ICheck. 
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
