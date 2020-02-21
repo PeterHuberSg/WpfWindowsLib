@@ -86,34 +86,44 @@ namespace WpfWindowsLib {
     [TestMethod]
     public void TestCountryCode_Format() {
       CountryCode.LocalFormat = CountryCode.LocalFormatNo0Area2; //need to reset default values because other tests might have changed them
-      CountryCode.MaxLengthLocalCode = 9;
+      CountryCode.MaxLengthLocalCode = 10;
       Assert.AreEqual("", CountryCode.Format(""));
       Assert.AreEqual("0", CountryCode.Format("0"));
       Assert.AreEqual("+0", CountryCode.Format("+0"));
-      Assert.AreEqual("+1 234567890", CountryCode.Format("(1) 23-456 78 90"));
+      Assert.AreEqual("+1 234567890", CountryCode.Format("+1 23-456 78 90"));
       Assert.AreEqual("+1 234567890", CountryCode.Format("001 23 45 67890"));
       Assert.AreEqual("+1 234567890", CountryCode.Format("001234567890"));
-      Assert.AreEqual("+1 234567890", CountryCode.Format("1234567890"));
+      Assert.AreEqual("+1 2345678901", CountryCode.Format("12345678901"));
       Assert.AreEqual("+1 234567890", CountryCode.Format("+1 234567890"));
 
       Assert.AreEqual("23-456 78 90", CountryCode.Format("(23) 456 78 90"));
       Assert.AreEqual("23-456 78 90", CountryCode.Format("234567890"));
-      Assert.AreEqual("23-456 78 90", CountryCode.Format("23-456 78 90"));
       Assert.AreEqual("23-456 789", CountryCode.Format("0234 56789"));
-      Assert.AreEqual("0234 5678", CountryCode.Format("0234 5678"));
+      Assert.AreEqual("23-4567 8901", CountryCode.Format("23-45678901"));
+      Assert.AreEqual("23-456 78 90", CountryCode.Format("23-456 78 90"));
+      Assert.AreEqual("0234 5678", CountryCode.Format("0234 5678")); //too short to be formatted
 
       CountryCode.LocalFormat = CountryCode.LocalFormat0Area2;
-      Assert.AreEqual("+1 234567890", CountryCode.Format("1234567890"));
+      Assert.AreEqual("+41 234567890", CountryCode.Format("41234567890"));
+      Assert.AreEqual("023-4567 8901", CountryCode.Format("2345678901"));
       Assert.AreEqual("023-456 78 90", CountryCode.Format("(23) 456 78 90"));
       Assert.AreEqual("023-456 78 90", CountryCode.Format("234567890"));
       Assert.AreEqual("023-456 78 90", CountryCode.Format("023-456 78 90"));
       Assert.AreEqual("023-456 789", CountryCode.Format("0234 56789"));
       Assert.AreEqual("0234 5678", CountryCode.Format("0234 5678"));
 
+      CountryCode.LocalFormat = CountryCode.LocalFormatNo0Area3;
+      CountryCode.MaxLengthLocalCode = 11;
+      Assert.AreEqual("234-567 89 01", CountryCode.Format("(234) 567 89 01"));
+      Assert.AreEqual("234-5678 9012", CountryCode.Format("23456789012"));
+      Assert.AreEqual("234-567 89 01", CountryCode.Format("234-567 8901"));
+      Assert.AreEqual("234-567 890", CountryCode.Format("02345 67890"));
+      Assert.AreEqual("0234 56789", CountryCode.Format("0234 56789"));//too short
+
       CountryCode.LocalFormat = CountryCode.LocalFormat0Area3;
-      CountryCode.MaxLengthLocalCode = 10;
+      CountryCode.MaxLengthLocalCode = 11;
       Assert.AreEqual("0234-567 89 01", CountryCode.Format("(234) 567 89 01"));
-      Assert.AreEqual("0234-567 89 01", CountryCode.Format("2345678901"));
+      Assert.AreEqual("0234-5678 9012", CountryCode.Format("23456789012"));
       Assert.AreEqual("0234-567 89 01", CountryCode.Format("234-567 8901"));
       Assert.AreEqual("0234-567 890", CountryCode.Format("02345 67890"));
       Assert.AreEqual("0234 56789", CountryCode.Format("0234 56789"));

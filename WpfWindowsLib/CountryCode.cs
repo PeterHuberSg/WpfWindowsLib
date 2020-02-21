@@ -92,7 +92,7 @@ namespace WpfWindowsLib {
     /// Number of digits a local phone code (including area code) can maximal have. If more digits are provided, the
     /// number is considered to be an international dialing code.
     /// </summary>
-    public static int MaxLengthLocalCode = 9; //2 area code and 7 local digits
+    public static int MaxLengthLocalCode = 10; //2 area code and 8 local digits
 
     /// <summary>
     /// LocalFormat holds the function being used for formatting a local phone number (i.e. not an international dialing code).
