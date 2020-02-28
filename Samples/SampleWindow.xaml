@@ -1,4 +1,4 @@
-﻿<wwl:CheckedWindow x:Class="Samples.SampleWindow"
+﻿<!--<wwl:CheckedWindow x:Class="Samples.SampleWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib">
@@ -6,4 +6,33 @@
     <wwl:CheckedTextBox x:Name="TestCheckedTextBox" MinWidth="100" MaxLength="20" IsRequired="True"/>
     <Button x:Name="SaveButton" Content="_Save"/>
   </StackPanel>
+</wwl:CheckedWindow>-->
+  
+<!--<wwl:CheckedWindow x:Class="Samples.SampleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
+                   SizeToContent="WidthAndHeight">
+  <StackPanel>
+    <Label Content="Phone No required"/>
+    <wwl:PhoneTextBox x:Name="RequiredPhoneTextBox" MinWidth="100" MinDigits="7" MaxDigits="13" IsRequired="True"/>
+    <Label Content="Phone No  not required"/>
+    <wwl:PhoneTextBox x:Name="NotRequiredPhoneTextBox" MinWidth="100"/>
+    <Button x:Name="SaveButton" Content="_Save"/>
+  </StackPanel>
+</wwl:CheckedWindow>-->
+  
+<wwl:CheckedWindow x:Class="Samples.SampleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wwl="clr-namespace:WpfWindowsLib;assembly=WpfWindowsLib"
+                   SizeToContent="WidthAndHeight">
+  <StackPanel>
+    <Label Content="Name (required)"/>
+    <wwl:CheckedTextBox x:Name="NameTextBox" MinWidth="100" IsRequired="True"/>
+    <Label Content="Email (not required)"/>
+    <wwl:EmailTextBox x:Name="EmailTextBox" MinWidth="100"/>
+    <Button x:Name="SaveButton" Content="_Save"/>
+  </StackPanel>
 </wwl:CheckedWindow>
+  

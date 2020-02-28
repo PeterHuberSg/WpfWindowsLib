@@ -48,7 +48,7 @@ namespace Samples {
 
     private void charactersComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) {
       switch (CharactersComboBox.SelectedIndex) {
-      case 0: EmailTextBox.SetDefaultAsciiSpecialChars(); break;
+      case 0: EmailTextBox.SetAsciiSpecialCharsDefault(); break;
       case 1: EmailTextBox.SetExtendedAsciiSpecialChars(); break;
       case 2: EmailTextBox.SetExtendedQuotedAsciiSpecialChars(); break;
       default:throw new NotSupportedException();

@@ -15,9 +15,7 @@ the Creative Commons 0 license (details see COPYING.txt file, see also
 
 This software is distributed without any warranty. 
 **************************************************************************************/using System;
-using System;
 using System.Windows;
-using System.Windows.Controls;
 using WpfWindowsLib;
 
 

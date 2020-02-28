@@ -39,24 +39,24 @@ namespace WpfWindowsLib {
     /// Background color for a required control whose initial value the user has not changed yet.
     /// </summary>
     //public static readonly Brush RequiredBrush = Brushes.LightGoldenrodYellow;
-    public static readonly Brush RequiredBrush = Brushes.Khaki;
+    public static Brush RequiredBrush = Brushes.Khaki;
 
     /// <summary>
     /// Background color for a control whose initial value the user has changed. Used to show
     /// the user why he should not just close the form, but save it first.
     /// </summary>
-    public static readonly Brush HasChangedBackgroundBrush = Brushes.LightGreen;
+    public static Brush HasChangedBackgroundBrush = Brushes.LightGreen;
 
     /// <summary>
     /// Background color for a control where the user made a mistake
     /// </summary>
-    public static readonly Brush ErrorBrush = Brushes.PapayaWhip;
+    public static Brush ErrorBrush = Brushes.PapayaWhip;
 
     /// <summary>
     /// Background color for a panel control at the top or bottom of the form, containing controls
     /// like Labels, TextBoxes and Buttons.
     /// </summary>
-    public static readonly Brush PanelBackgroundBrush = Brushes.Gainsboro;
+    public static Brush PanelBackgroundBrush = Brushes.Gainsboro;
     #endregion
   }
 }

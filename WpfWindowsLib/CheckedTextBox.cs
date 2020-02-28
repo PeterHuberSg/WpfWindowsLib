@@ -40,7 +40,6 @@ namespace WpfWindowsLib {
     public string? TextNullable { get { return Text.Length==0 ? null : Text; } }
 
 
-
     #region IsRequired property
     public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
       "IsRequired",
@@ -68,7 +67,7 @@ namespace WpfWindowsLib {
     /// </summary>
     public bool IsRequired {
       get { return (bool)GetValue(IsRequiredProperty); }
-      set { SetValue(IsRequiredProperty, value); }
+      set { SetValue(IsRequiredProperty, value);}
     }
     #endregion
 

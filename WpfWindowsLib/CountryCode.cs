@@ -433,11 +433,17 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Formats a phone number. Assign a different function to change what Format() returns.
+    /// </summary>
+    public static Func<string, string> Format = FormatDefault;
+
+
+    /// <summary>
     /// Formats a phone number. If phoneNumber starts with '+' or "00" or is longer than MaxLengthLocalCode its
     /// formatted like an international dialing code, i.e. '+' country-code local-code. If it is not international,
     /// LocalFormat() is called for formatting.
     /// </summary>
-    public static string Format(string phoneNumber) {
+    public static string FormatDefault(string phoneNumber) {
       if (phoneNumber.Length==0) return phoneNumber;
 
       var isInternational = phoneNumber[0]=='+';

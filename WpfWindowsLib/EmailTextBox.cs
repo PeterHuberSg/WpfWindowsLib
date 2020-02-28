@@ -12,7 +12,7 @@ Once the user has finished entering the address, he gets a warning when the addr
 default rules (one '@' in the middle and at least one '.' in the domain-part). The validation
 can be changed to a Microsoft Regex email address validator. You can also assign your
 own email address validation function to IsValidEmail.<para/>
-If EmailTextBox is placed in a Window inherited from CheckedWindow, it reports automatically 
+The EmailTextBox must be placed in a Window inherited from CheckedWindow and it reports automatically 
 any value change to that parent Window.
 
 Written in 2020 by Jürgpeter Huber 
@@ -30,6 +30,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -44,26 +45,23 @@ namespace WpfWindowsLib {
   /// </summary>
   public class EmailTextBox: CheckedTextBox {
 
-    //https://social.technet.microsoft.com/Forums/exchange/en-US/69f393aa-d555-4f8f-bb16-c636a129fc25/what-are-valid-and-invalid-email-address-characters
-    //http://www.dominicsayers.com/isemail/
-
     #region Properties
     //      ----------
 
-    const string defaultAsciiSpecialChars = ".@-_+";
+    public const string AsciiSpecialCharsDefault = ".@-_+";
 
 
     /// <summary>
-    /// Characters allowed in the local-part of the email address (before @ sign),
+    /// Characters allowed in the local-part of the email address (before @ sign).
     /// </summary>
-    public static string AsciiSpecialChars { get; set; } = defaultAsciiSpecialChars;
+    public static string AsciiSpecialChars { get; set; } = AsciiSpecialCharsDefault;
 
 
     /// <summary>
     /// Allows only the special characters ".@-_+" in an email address
     /// </summary>
-    public static void SetDefaultAsciiSpecialChars() {
-      AsciiSpecialChars = defaultAsciiSpecialChars;
+    public static void SetAsciiSpecialCharsDefault() {
+      AsciiSpecialChars = AsciiSpecialCharsDefault;
     }
 
 
@@ -111,6 +109,22 @@ namespace WpfWindowsLib {
     /// Validates complete email address
     /// </summary>
     public static Func<string, bool> IsValidEmail { get; set; } = IsValidEmailDefault;
+
+
+    /// <summary>
+    /// Gets called to display a warning message when user has keyed a strange looking email address. Return true when user made a
+    /// mistake and wants to correct it, false when the user thinks it is correct. 
+    /// </summary>
+    public static Func<EmailTextBox, bool> ShowLooksStrangeWarning = ShowLooksStrangeWarningDefault;
+    #endregion
+
+
+    #region Static constructor
+    //      ------------------
+
+    static EmailTextBox() {
+      TextBox.MaxLengthProperty.OverrideMetadata(typeof(EmailTextBox), new FrameworkPropertyMetadata(defaultValue: 320));
+    }
     #endregion
 
 
@@ -184,14 +198,19 @@ namespace WpfWindowsLib {
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
       if (Text.Length>0) {
         if (!IsValidEmail(Text)) {
-          var result = MessageBox.Show($"'{Text}' might not be a valid email address. Press'Ok' to accept email address as it is or press 'Cancel' " + 
-            "to change the email address.", "Invalid Email Address ?", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
-          if (result!=MessageBoxResult.OK) {
+          if (ShowLooksStrangeWarning(this)) {
             e.Handled = true;
           }
         }
       }
       base.OnPreviewLostKeyboardFocus(e);
+    }
+
+
+    public static bool ShowLooksStrangeWarningDefault(EmailTextBox emailTextBox) {
+      var result = MessageBox.Show($"'{emailTextBox.Text}' might not be a valid email address. Press'Ok' to accept email address as it is or press 'Cancel' " +
+            "to change the email address.", "Invalid Email Address ?", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+      return result!=MessageBoxResult.OK;
     }
     #endregion
 
@@ -260,8 +279,8 @@ namespace WpfWindowsLib {
       //inspired by
       //https://softwareengineering.stackexchange.com/questions/78353/how-far-should-one-take-e-mail-address-validation/78363#78363
       //@ testing
-      var atIndex = address.LastIndexOf("@");
-      if (atIndex==0 || address.LastIndexOf(".")<=atIndex) return false;
+      var atIndex = address.IndexOf("@");
+      if (atIndex==0 || address.LastIndexOf(".")<=atIndex) return false;//checks implicitly that '@' cannot be the last character
 
       //local-part testing
       var addressSpan = address.AsSpan();
@@ -274,7 +293,7 @@ namespace WpfWindowsLib {
 
       //domain-part testing
       var domainPart = addressSpan[(atIndex+1)..];
-      if (domainPart.Length<4 || domainPart.Length>254-localPart.Length) return false;
+      if (domainPart.Length<4 || domainPart.Length>255) return false;
 
       var isDot = false;
       foreach (var addressChar in domainPart) {

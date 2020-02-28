@@ -194,7 +194,23 @@ namespace WpfWindowsLib {
     }
     #endregion
 
+    /// <summary>
+    /// Gets called to display an error message when user has keyed in an invalid decimal, but wants to 
+    /// move the keyboard focus from this DecimalTextBox. 
+    /// </summary>
+    public static Action<DecimalTextBox> ShowNotValidError = ShowNotValidErrorDefault;
 
+    /// <summary>
+    /// Gets called to display an error message when user has keyed in an decimal smaller than Min, but wants 
+    /// to move the keyboard focus from this DecimalTextBox. 
+    /// </summary>
+    public static Action<DecimalTextBox> ShowSmallerMinError = ShowSmallerMinErrorDefault;
+
+    /// <summary>
+    /// Gets called to display an error message when user has keyed in an decimal bigger than Max, but wants 
+    /// to move the keyboard focus from this DecimalTextBox. 
+    /// </summary>
+    public static Action<DecimalTextBox> ShowBiggerMaxError = ShowBiggerMaxErrorDefault;
     #endregion
 
 
@@ -300,18 +316,33 @@ namespace WpfWindowsLib {
       }
 
       if (!decimal.TryParse(Text, out decimal newValue)) {
-        MessageBox.Show($"{Text} is not a valid decimal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        ShowNotValidError(this);
         e.Handled = true;
       } else if(newValue<Min) {
-        MessageBox.Show($"{Text} must be >= {Min} (Min).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        ShowSmallerMinError(this);
         e.Handled = true;
       } else if (newValue>Max) {
-        MessageBox.Show($"{Text} must be <= {Max} (Max).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        ShowBiggerMaxError(this);
         e.Handled = true;
       } else {
         DecimalValue = Math.Round(newValue, Decimals);//will also format Text
       }
       base.OnPreviewLostKeyboardFocus(e);
+    }
+
+
+    public static void ShowNotValidErrorDefault(DecimalTextBox decimalTextBox) {
+      MessageBox.Show($"{decimalTextBox.Text} is not a valid decimal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+
+    public static void ShowSmallerMinErrorDefault(DecimalTextBox decimalTextBox) {
+      MessageBox.Show($"{decimalTextBox.Text} must be >= {decimalTextBox.Min} (Min).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+
+    public static void ShowBiggerMaxErrorDefault(DecimalTextBox decimalTextBox) {
+      MessageBox.Show($"{decimalTextBox.Text} must be <= {decimalTextBox.Max} (Max).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
     }
     #endregion
   }

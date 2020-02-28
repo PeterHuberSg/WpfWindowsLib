@@ -138,10 +138,10 @@ namespace WpfWindowsLib {
       InitValue = default!;
       ActualValue = default!;
 
-      OnChangeBackground = DefaultOnChangeBackground;
-      OnClearBackground = DefaultOnClearBackground;
-      OnSetBackground = DefaultOnSetBackground;
-      OnResetBackground = DefaultOnResetBackground;
+      OnChangeBackground = OnChangeBackgroundDefault;
+      OnClearBackground = OnClearBackgroundDefault;
+      OnSetBackground = OnSetBackgroundDefault;
+      OnResetBackground = OnResetBackgroundDefault;
     }
     #endregion
 
@@ -231,10 +231,13 @@ namespace WpfWindowsLib {
     /// Called be ownerControl when the value of the control has changed
     /// </summary>
     public void ValueChanged(TValue value, bool isAvailable) {
-      if (typeof(TValue)!=typeof(DateTime?)) {
-        //DatePicker wrongly raises the same SelectedDateChanged event twice (I report bug to MS)
-        if (value?.Equals(ActualValue)??((ActualValue is null))) throw new Exception();
-      }
+      //if (typeof(TValue)!=typeof(DateTime?)) { //doesn't work for example when user copies text and pastes it
+      //  //DatePicker wrongly raises the same SelectedDateChanged event twice (I report bug to MS)
+      //  if (value?.Equals(ActualValue)??((ActualValue is null))) throw new Exception();
+      //}
+
+     if (value?.Equals(ActualValue)??((ActualValue is null))) return;//normally the value!=ActualValue, but in some strange
+                                                                     //cases they are the same.
 
       ActualValue = value;
       var hasChanged = !InitValue?.Equals(ActualValue)??(!(ActualValue is null));
@@ -279,7 +282,7 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Default version for OnChangeBackground.
     /// </summary>
-    public void DefaultOnChangeBackground(Brush backgroundBrush) {
+    public void OnChangeBackgroundDefault(Brush backgroundBrush) {
       ownerControl.Background = backgroundBrush!;
     }
 
@@ -287,7 +290,7 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Default version for OnClearBackground.
     /// </summary>
-    public void DefaultOnClearBackground() {
+    public void OnClearBackgroundDefault() {
       ownerControl.ClearValue(Control.BackgroundProperty);
     }
 
@@ -298,7 +301,7 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Default version for OnSetBackground.
     /// </summary>
-    public void DefaultOnSetBackground(Brush backgroundBrush) {
+    public void OnSetBackgroundDefault(Brush backgroundBrush) {
       oldBackground = ownerControl.Background;
       ownerControl.Background = backgroundBrush!;
     }
@@ -307,7 +310,7 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Default version for OnResetBackground.
     /// </summary>
-    public void DefaultOnResetBackground() {
+    public void OnResetBackgroundDefault() {
       ownerControl.Background = oldBackground!;
     }
     #endregion

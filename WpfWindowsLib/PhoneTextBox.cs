@@ -130,7 +130,7 @@ namespace WpfWindowsLib {
     /// ValidateUserInput gets called every time a user has keyed in a character, except when he enters a blank. Assign
     /// a different method to change how user input gets validated.
     /// </summary>
-    public Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = DefaultValidateUserInput;
+    public static Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = ValidateUserInputDefault;
 
 
     /// <summary>
@@ -141,9 +141,9 @@ namespace WpfWindowsLib {
 
 
     /// <Summary>
-    /// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been reformatted.
+    /// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been updated.
     /// </summary>
-    public ValidatePhoneNumberDelegate ValidatePhoneNumber = DefaultValidatePhoneNumber;
+    public static ValidatePhoneNumberDelegate ValidatePhoneNumber = ValidatePhoneNumberDefault;
     #endregion
 
 
@@ -255,7 +255,7 @@ namespace WpfWindowsLib {
     /// Returns true if inputChar can be entered at inputPos into partialPhoneNumber, which is the phone 
     /// number the user has entered so far.
     /// </summary>
-    public static bool DefaultValidateUserInput(char inputChar, int inputPos, string partialPhoneNumber) {
+    public static bool ValidateUserInputDefault(char inputChar, int inputPos, string partialPhoneNumber) {
       //if user enters a blank, DefaultValidateUserInput does not get called
 
       if (inputChar>='0' && inputChar<='9') return true;
@@ -274,7 +274,7 @@ namespace WpfWindowsLib {
     /// Validates that phoneNumber is a valid phone number. On returning, special characters like '+', ' ' and LegalSpecialCharacters
     /// are removed from compactNumber
     /// </summary>
-    private static bool DefaultValidatePhoneNumber(string? phoneNumber, out string? compactNumber) {
+    public static bool ValidatePhoneNumberDefault(string? phoneNumber, out string? compactNumber) {
       if (string.IsNullOrEmpty(phoneNumber)) {
         compactNumber = null;
         return true;

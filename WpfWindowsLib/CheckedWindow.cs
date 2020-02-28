@@ -72,6 +72,17 @@ namespace WpfWindowsLib {
     /// Gets called if IsAvailable has changed.
     /// </summary>
     protected virtual void OnIsAvailableChanged() { }
+
+
+    //Configuration
+    //-------------
+
+    /// <summary>
+    /// Gets called to display a warning when user wants to close window but some data has be changed. On 
+    /// returning true, window gets closed without saving the data. If returning false, the user can 
+    /// continue editing. 
+    /// </summary>
+    public static Func<CheckedWindow, bool> AskUserIfNoSaving = AskUserIfNoSavingDefault;
     #endregion
 
 
@@ -96,17 +107,18 @@ namespace WpfWindowsLib {
 
     private void checkedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
       if (HasICheckChanged) {
-        MessageBoxResult result;
         ShowChanged(true);
-        result = MessageBox.Show("Press OK to close the Window without saving the data, Cancel to continue with data entry.",
-        "Closing the Window ? Data has changed.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
+        e.Cancel = !AskUserIfNoSaving(this);
         ShowChanged(false);
-        if (result==MessageBoxResult.OK) return;
-
-        e.Cancel = true;
       }
     }
 
+
+    public static bool AskUserIfNoSavingDefault(CheckedWindow window) {
+      var result = MessageBox.Show("Press OK to close the Window without saving the data, Cancel to continue with data entry.",
+      "Closing the Window ? Data has changed.", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.Cancel);
+      return result==MessageBoxResult.OK;
+    }
 
     private void checkedWindow_Closed(object? sender, EventArgs e) {
       Owner?.Activate();

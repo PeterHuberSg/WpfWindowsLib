@@ -28,7 +28,7 @@ namespace WpfWindowsLib {
     [TestMethod()]
     public void TestEmailChar() {
       //default settings, must be reapplied because another test might have changed them
-      EmailTextBox.SetDefaultAsciiSpecialChars();
+      EmailTextBox.SetAsciiSpecialCharsDefault();
       EmailTextBox.IsBlankAllowed = false;
       EmailTextBox.IsInternationalCharSetAllowed = false;
       Assert.IsFalse(EmailTextBox.IsValidEmailChar('\x00'));
@@ -244,7 +244,7 @@ namespace WpfWindowsLib {
     [TestMethod()]
     public void TestEmailAdr() {
       //default settings, must be reapplied because another test might have changed them
-      EmailTextBox.SetDefaultAsciiSpecialChars();
+      EmailTextBox.SetAsciiSpecialCharsDefault();
       EmailTextBox.IsBlankAllowed = false;
       EmailTextBox.IsInternationalCharSetAllowed = false;
       Assert.IsFalse(EmailTextBox.IsValidEmail(""));
@@ -254,6 +254,8 @@ namespace WpfWindowsLib {
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b."));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b.c"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("ab.cd@"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b..cD"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z@b.cd"));
@@ -266,6 +268,9 @@ namespace WpfWindowsLib {
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z.Y@b.cd.ef"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("01234567890123456789012345678901234567890123456789012345678901234@b.cd"));
+      Assert.IsTrue(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 255-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 256-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 65) + "@" + "a." + new string('a', 255-2)));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a!Z@b.cd"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a#Z@b.cd"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a$Z@b.cd"));
@@ -307,6 +312,8 @@ namespace WpfWindowsLib {
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b."));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b.c"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("ab.cd@"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b..cD"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z@b.cd"));
@@ -319,6 +326,9 @@ namespace WpfWindowsLib {
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z.Y@b.cd.ef"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("01234567890123456789012345678901234567890123456789012345678901234@b.cd"));
+      Assert.IsTrue(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 255-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 256-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 65) + "@" + "a." + new string('a', 255-2)));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a!Z@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a#Z@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a$Z@b.cd"));
@@ -361,6 +371,8 @@ namespace WpfWindowsLib {
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b."));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b.c"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("@b.cd"));
+      Assert.IsFalse(EmailTextBox.IsValidEmail("ab.cd@"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("a@b..cD"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z@b.cd"));
@@ -373,6 +385,9 @@ namespace WpfWindowsLib {
       Assert.IsTrue(EmailTextBox.IsValidEmail("a_Z.Y@b.cd.ef"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
       Assert.IsFalse(EmailTextBox.IsValidEmail("01234567890123456789012345678901234567890123456789012345678901234@b.cd"));
+      Assert.IsTrue(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 255-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 64) + "@" + "a." + new string('a', 256-2)));
+      Assert.IsFalse(EmailTextBox.IsValidEmail(new string('a', 65) + "@" + "a." + new string('a', 255-2)));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a!Z@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a#Z@b.cd"));
       Assert.IsTrue(EmailTextBox.IsValidEmail("a$Z@b.cd"));
