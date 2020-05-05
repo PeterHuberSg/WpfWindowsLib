@@ -1,4 +1,4 @@
-# Base WPF Window functionality for data entry and writing custom controls
+# Base WPF Window functionality for data entry 
 
 ## Table of content
 [About](#about)  
@@ -17,12 +17,6 @@ to decide if any data has been changed, i.e. the save button should be
 enabled and to check if all required data is entered. The controls in 
 `WpfWindowsLib` detect themselves if there was a change and inform the window
 automatically.
-
-A few other methods are in this library, which are helpful when writing
-WPF applications, like `GlyphDrawer` which allows to measure text length and
-writing text directly to a DrawingContext or `CustomControlBase` which
-provides functionality like drawing to the screen or `Border` and `Padding` support to your
-custom control.
 
 ## Data Entry Samples Application
 
@@ -72,23 +66,16 @@ For a more detailed documentation see:
 
 ## Structure WpfWindowsLib Solution
 ### WpfWindowsLib
-The only library needed to be referenced from other code, providing:
-* `ICheck`, `IChecker` and various controls
-* `CustomControlBase`: Base class for custom controls with functionality added for Children, Drawing, 
-`Border`, `Padding` and `Background`.
-* `GlyphDrawer`: Writes text to a `DrawingContext`. Can also be used to calculate the length of text.
+The only library needed to be referenced from other code, providing
+ `ICheck`, `IChecker` and various WPF controls like TextBox or ComboBox
+supporting ICheck.
 ### Samples
 WPF Core application showing all WpfWindowsLib Controls
 ### WpfWindowsLibTest
 WpfWindowsLib unit tests
-### CustomControlSample
-Shows how to use `CustomControlBase`
-### CustomControlSampleLib
-Helper library for `CustomControlSample`
 
 ## Project Status
-* **Data Entry** functionality: Completed and stable
-* **Custom Control** functionality: Under construction
+Completed and stable
 
 ## Copyright
 Copyright 2020 Jürg Peter Huber, Singapore.

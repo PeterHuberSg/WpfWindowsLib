@@ -1,7 +1,7 @@
-﻿<Application x:Class="CustomControlSample.App"
+﻿<Application x:Class="TestVisibility.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CustomControlSample"
+             xmlns:local="clr-namespace:TestVisibility"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

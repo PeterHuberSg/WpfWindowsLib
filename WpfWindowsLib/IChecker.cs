@@ -81,6 +81,12 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Control implementing ICheck
+    /// </summary>
+    public Control Control { get; }
+
+
+    /// <summary>
     /// The availability of the control has changed
     /// </summary>
     public event Action?  IsAvailableEvent;
@@ -121,7 +127,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Assign oldBackground to control's Background. Should be changed when a different controlthan ownerControl needs to be used.
+    /// Assign oldBackground to control's Background. Should be changed when a different control than ownerControl needs to be used.
     /// </summary>
     public Action OnResetBackground;
     #endregion
@@ -130,11 +136,8 @@ namespace WpfWindowsLib {
     #region Constructor
     //      -----------
 
-    readonly Control ownerControl;
-
-
     public IChecker(Control control) {
-      ownerControl = control;
+      Control = control;
       InitValue = default!;
       ActualValue = default!;
 
@@ -167,7 +170,7 @@ namespace WpfWindowsLib {
         IsAvailable = true;
       }
 
-      CheckedWindow.Register(this, ownerControl); //updates CheckedWindow.IsAvailable, no need to raise IsAvailableEvent    
+      CheckedWindow.Register(this, Control); //updates CheckedWindow.IsAvailable, no need to raise IsAvailableEvent    
     }
 
 
@@ -198,7 +201,7 @@ namespace WpfWindowsLib {
     /// Called from CheckedWindow after a save, sets the present value as initial value
     /// </summary>
     public void ResetHasChanged() {
-      InitValue = ActualValue;
+      InitValue = ActualValue!;
       HasChanged = false;
     }
     #endregion
@@ -283,7 +286,7 @@ namespace WpfWindowsLib {
     /// Default version for OnChangeBackground.
     /// </summary>
     public void OnChangeBackgroundDefault(Brush backgroundBrush) {
-      ownerControl.Background = backgroundBrush!;
+      Control.Background = backgroundBrush!;
     }
 
 
@@ -291,7 +294,7 @@ namespace WpfWindowsLib {
     /// Default version for OnClearBackground.
     /// </summary>
     public void OnClearBackgroundDefault() {
-      ownerControl.ClearValue(Control.BackgroundProperty);
+      Control.ClearValue(Control.BackgroundProperty);
     }
 
 
@@ -302,8 +305,8 @@ namespace WpfWindowsLib {
     /// Default version for OnSetBackground.
     /// </summary>
     public void OnSetBackgroundDefault(Brush backgroundBrush) {
-      oldBackground = ownerControl.Background;
-      ownerControl.Background = backgroundBrush!;
+      oldBackground = Control.Background;
+      Control.Background = backgroundBrush!;
     }
 
 
@@ -311,7 +314,7 @@ namespace WpfWindowsLib {
     /// Default version for OnResetBackground.
     /// </summary>
     public void OnResetBackgroundDefault() {
-      ownerControl.Background = oldBackground!;
+      Control.Background = oldBackground!;
     }
     #endregion
   }

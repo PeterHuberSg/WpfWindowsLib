@@ -4,11 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomControlSampleLib\CustomControlSampleLib.csproj" />
     <ProjectReference Include="..\WpfWindowsLib\WpfWindowsLib.csproj" />
   </ItemGroup>
 

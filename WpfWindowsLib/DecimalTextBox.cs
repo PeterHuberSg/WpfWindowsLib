@@ -40,7 +40,10 @@ namespace WpfWindowsLib {
       get { return decimalValue; }
       set {
         decimalValue = value;
-        if (value is null) return;
+        if (value is null) {
+          Text = "";
+          return;
+        }
 
         Text = Math.Round(value.Value, Decimals).ToString(DecimalFormat);
       }

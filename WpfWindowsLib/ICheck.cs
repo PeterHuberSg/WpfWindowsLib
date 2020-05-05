@@ -18,7 +18,7 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-
+using System.Windows.Controls;
 
 namespace WpfWindowsLib {
 
@@ -39,6 +39,11 @@ namespace WpfWindowsLib {
     /// Has the user changed the initial value of the required control ?
     /// </summary>
     bool IsAvailable { get; }
+
+    /// <summary>
+    /// Control implementing ICheck
+    /// </summary>
+    Control Control { get; }
 
     /// <summary>
     /// Raised when the user changes the initial value of the control or when the user undoes any change and

@@ -12,6 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Design.pptx = Design.pptx
 		EmailError.png = EmailError.png
 		EmailSample.png = EmailSample.png
+		IntSample1.png = IntSample1.png
+		IntSample2.png = IntSample2.png
+		IntSample3.png = IntSample3.png
+		IntSample4.png = IntSample4.png
+		IntSample5.png = IntSample5.png
+		IntSample6.png = IntSample6.png
 		PhoneSample.png = PhoneSample.png
 		README.md = README.md
 		Samples.png = Samples.png
@@ -21,11 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfWindowsLibTest", "WpfWindowsLibTest\WpfWindowsLibTest.csproj", "{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomControlSample", "CustomControlSample\CustomControlSample.csproj", "{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomControlSampleLib", "CustomControlSampleLib\CustomControlSampleLib.csproj", "{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "Samples\Samples.csproj", "{9729E88C-59FC-4C76-B4C0-F1533216D76D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestVisibility", "TestVisibility\TestVisibility.csproj", "{1FDFF65D-78A0-4679-9E4F-BE26768AABCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,18 +45,14 @@ Global
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAADBAE8-38FA-4F94-8E3F-7DCF81A785ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F925D152-62B9-41AD-A4B1-FC5DFB9AB527}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDC2CE9B-72AF-4484-80DB-3F3BDB2CBD38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9729E88C-59FC-4C76-B4C0-F1533216D76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FDFF65D-78A0-4679-9E4F-BE26768AABCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FDFF65D-78A0-4679-9E4F-BE26768AABCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FDFF65D-78A0-4679-9E4F-BE26768AABCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FDFF65D-78A0-4679-9E4F-BE26768AABCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

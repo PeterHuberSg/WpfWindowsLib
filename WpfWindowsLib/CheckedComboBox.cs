@@ -123,8 +123,9 @@ namespace WpfWindowsLib {
         OnResetBackground = onResetBackground
       };
 
-      Loaded += checkedComboBox_Loaded;
+      LayoutUpdated += CheckedComboBox_LayoutUpdated;
     }
+
     #endregion
 
 
@@ -172,17 +173,32 @@ namespace WpfWindowsLib {
     #region Event Handlers
     //      --------------
 
+    ToggleButton? toggleButton;
+
+
+    public override void OnApplyTemplate() {
+      //unfortunately, Loaded event also fires when template is not applied, for example when control's
+      //Visibility = Collapsed. Since there is no TemplateApllied event, OnApplyTemplate has to be used 
+      //to find toggleButton in the template
+      base.OnApplyTemplate();
+
+      //if (DesignerProperties.GetIsInDesignMode(this)) return;
+      toggleButton = (ToggleButton)Template.FindName("toggleButton", this);
+      //comboBoxBorder can not be searched here yet, because the templates visual tree is not created yet :-)
+    }
+
+
     Border? comboBoxBorder;
+    
+    
+    private void CheckedComboBox_LayoutUpdated(object? sender, EventArgs e) {
+      //this is the only event I could find firing after OnApplyTemplate().
+      if (toggleButton==null || comboBoxBorder!=null) return;
 
-
-    private void checkedComboBox_Loaded(object sender, RoutedEventArgs e) {
-      if (DesignerProperties.GetIsInDesignMode(this)) return;
-
-      var toggleButton = (ToggleButton)Template.FindName("toggleButton", this);
       comboBoxBorder = (Border)VisualTreeHelper.GetChild(toggleButton, 0);
-      if (delayedBackground!=null) {
-        comboBoxBorder.Background = delayedBackground;
-      }
+      if (delayedBackground==null) return;
+
+      comboBoxBorder.Background = delayedBackground;
     }
 
 

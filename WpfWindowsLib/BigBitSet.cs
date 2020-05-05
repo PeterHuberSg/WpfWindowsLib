@@ -23,7 +23,9 @@ using System.Text;
 
 namespace WpfWindowsLib {
 
-
+  /// <summary>
+  /// BitSet with more than 32 bits
+  /// </summary>
   public class BigBitSet {
 
     #region Properties
