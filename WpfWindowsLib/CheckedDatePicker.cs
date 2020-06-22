@@ -67,6 +67,12 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Has the value of this control changed since it was initialised ?
+    /// </summary>
+    public bool HasChanged { get { return IChecker.HasChanged; } }
+
+
+    /// <summary>
     /// Provides the ICheck functionality to CheckedDatePicker
     /// </summary>
     public IChecker<DateTime?> IChecker { get; }

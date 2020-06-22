@@ -103,6 +103,12 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Has the value of this control changed since it was initialised ?
+    /// </summary>
+    public bool HasChanged { get { return IChecker.HasChanged; } }
+
+
+    /// <summary>
     /// Provides the ICheck functionality to CheckedComboBox
     /// </summary>
     public IChecker<int> IChecker { get; }
@@ -123,7 +129,7 @@ namespace WpfWindowsLib {
         OnResetBackground = onResetBackground
       };
 
-      LayoutUpdated += CheckedComboBox_LayoutUpdated;
+      LayoutUpdated += checkedComboBox_LayoutUpdated;
     }
 
     #endregion
@@ -191,7 +197,7 @@ namespace WpfWindowsLib {
     Border? comboBoxBorder;
     
     
-    private void CheckedComboBox_LayoutUpdated(object? sender, EventArgs e) {
+    private void checkedComboBox_LayoutUpdated(object? sender, EventArgs e) {
       //this is the only event I could find firing after OnApplyTemplate().
       if (toggleButton==null || comboBoxBorder!=null) return;
 

@@ -73,6 +73,12 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
+    /// Has the value of this control changed since it was initialised ?
+    /// </summary>
+    public bool HasChanged { get { return IChecker.HasChanged; } }
+
+
+    /// <summary>
     /// Provides the ICheck functionality to CheckedTextBox
     /// </summary>
     public IChecker<string?> IChecker { get; }
