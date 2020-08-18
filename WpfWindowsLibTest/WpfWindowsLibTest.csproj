@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WpfWindowsHelperLib\WpfWindowsHelperLib.csproj" />
     <ProjectReference Include="..\WpfWindowsLib\WpfWindowsLib.csproj" />
   </ItemGroup>
 

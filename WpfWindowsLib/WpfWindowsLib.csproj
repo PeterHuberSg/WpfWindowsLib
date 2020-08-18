@@ -5,4 +5,8 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WpfWindowsHelperLib\WpfWindowsHelperLib.csproj" />
+  </ItemGroup>
 </Project>

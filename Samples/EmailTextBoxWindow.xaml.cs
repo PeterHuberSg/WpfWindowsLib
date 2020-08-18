@@ -48,21 +48,21 @@ namespace Samples {
 
     private void charactersComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) {
       switch (CharactersComboBox.SelectedIndex) {
-      case 0: EmailTextBox.SetAsciiSpecialCharsDefault(); break;
-      case 1: EmailTextBox.SetExtendedAsciiSpecialChars(); break;
-      case 2: EmailTextBox.SetExtendedQuotedAsciiSpecialChars(); break;
+      case 0: EmailValidator.SetAsciiSpecialCharsDefault(); break;
+      case 1: EmailValidator.SetExtendedAsciiSpecialChars(); break;
+      case 2: EmailValidator.SetExtendedQuotedAsciiSpecialChars(); break;
       default:throw new NotSupportedException();
       }
     }
 
 
     private void internationalCharsCheckBox_Click(object sender, RoutedEventArgs e) {
-      EmailTextBox.IsInternationalCharSetAllowed = InternationalCharsCheckBox.IsChecked!.Value;
+      EmailValidator.IsInternationalCharSetAllowed = InternationalCharsCheckBox.IsChecked!.Value;
     }
 
 
     private void blankAllowedCheckBox_Click(object sender, RoutedEventArgs e) {
-      EmailTextBox.IsBlankAllowed = BlankAllowedCheckBox.IsChecked!.Value;
+      EmailValidator.IsBlankAllowed = BlankAllowedCheckBox.IsChecked!.Value;
     }
     #endregion
 

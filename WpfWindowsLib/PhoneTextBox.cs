@@ -18,6 +18,7 @@ This software is distributed without any warranty.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -119,31 +120,31 @@ namespace WpfWindowsLib {
     #endregion
 
 
-    /// <summary>
-    /// Characters that user can input for phone numbers, additionally to the digits '0' to '9' and a
-    /// '+' as first character.
-    /// </summary>
-    public static char[] LegalSpecialCharacters = {'-', '/'};
+    ///// <summary>
+    ///// Characters that user can input for phone numbers, additionally to the digits '0' to '9' and a
+    ///// '+' as first character.
+    ///// </summary>
+    //public static char[] LegalSpecialCharacters = {'-', '/'};
 
 
-    /// <summary>
-    /// ValidateUserInput gets called every time a user has keyed in a character, except when he enters a blank. Assign
-    /// a different method to change how user input gets validated.
-    /// </summary>
-    public static Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = ValidateUserInputDefault;
+    ///// <summary>
+    ///// ValidateUserInput gets called every time a user has keyed in a character, except when he enters a blank. Assign
+    ///// a different method to change how user input gets validated.
+    ///// </summary>
+    //public static Func<char /*inputChar*/, int /*inputPos*/, string /*partialPhoneNumber*/, bool> ValidateUserInput = ValidateUserInputDefault;
 
 
-    /// <summary>
-    /// Delegate for ValidatePhoneNumber, which validates that phoneNumber is a valid phone number. When returning, 
-    /// compactNumber might have been reformatted.
-    /// </summary>
-    public delegate bool ValidatePhoneNumberDelegate(string? phoneNumber, out string? compactNumber);
+    ///// <summary>
+    ///// Delegate for ValidatePhoneNumber, which validates that phoneNumber is a valid phone number. When returning, 
+    ///// compactNumber might have been reformatted.
+    ///// </summary>
+    //public delegate bool ValidatePhoneNumberDelegate(string? phoneNumber, out string? compactNumber);
 
 
-    /// <Summary>
-    /// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been updated.
-    /// </summary>
-    public static ValidatePhoneNumberDelegate ValidatePhoneNumber = ValidatePhoneNumberDefault;
+    ///// <Summary>
+    ///// Validates that phoneNumber is a valid phone number. When returning, compactNumber might have been updated.
+    ///// </summary>
+    //public static ValidatePhoneNumberDelegate ValidatePhoneNumber = ValidatePhoneNumberDefault;
     #endregion
 
 
@@ -157,7 +158,7 @@ namespace WpfWindowsLib {
 
     protected override void OnTextBoxInitialized() {
       //verify the values set in XAML
-      if (!ValidatePhoneNumber(Text, out var compactNumber)) {
+      if (!PhoneValidator.ValidatePhoneNumber(Text, out var compactNumber)) {
         throw new Exception($"Error PhoneTextBox: Text {Text} is not a valid phone number."); 
       }
       Text = CountryCode.Format(Text)??Text;
@@ -180,7 +181,7 @@ namespace WpfWindowsLib {
     /// If minDigits or maxDigits are null, MinDigits or MaxDigits value gets not changed.
     /// </summary>
     public virtual void Initialise(string? text, bool? isRequired = null, int? minDigits = null, int? maxDigits = null) {
-      if (!ValidatePhoneNumber(text, out var compactNumber)) {
+      if (!PhoneValidator.ValidatePhoneNumber(text, out var compactNumber)) {
         throw new Exception($"Error PhoneTextBox.Initialise(): Text {text} is not a valid phone number.");
       }
       var newMinDigits = minDigits??MinDigits;
@@ -217,7 +218,7 @@ namespace WpfWindowsLib {
 
         var inputChar = e.Text[0];
         var textWithoutSelection = GetTextWithoutSelection();
-        if (!ValidateUserInput(inputChar, CaretIndex, textWithoutSelection) ||
+        if (!PhoneValidator.ValidateUserInput(inputChar, CaretIndex, textWithoutSelection) ||
           (inputChar>='0' && inputChar<='9' && CountDigits()>=MaxDigits)) {
           e.Handled= true;
         }
@@ -229,7 +230,7 @@ namespace WpfWindowsLib {
 
     protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e) {
       var count = CountDigits();
-      if (!ValidatePhoneNumber(Text, out var compactNumber)) {
+      if (!PhoneValidator.ValidatePhoneNumber(Text, out var compactNumber)) {
         MessageBox.Show($"Illegal phone number '{Text}'.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
       } else if(count!=0 && count<MinDigits) { 
@@ -248,67 +249,67 @@ namespace WpfWindowsLib {
     #endregion
 
 
-    #region Validation
-    //      ----------
+    //#region Validation
+    ////      ----------
 
-    /// <summary>
-    /// Returns true if inputChar can be entered at inputPos into partialPhoneNumber, which is the phone 
-    /// number the user has entered so far.
-    /// </summary>
-    public static bool ValidateUserInputDefault(char inputChar, int inputPos, string partialPhoneNumber) {
-      //if user enters a blank, DefaultValidateUserInput does not get called
+    ///// <summary>
+    ///// Returns true if inputChar can be entered at inputPos into partialPhoneNumber, which is the phone 
+    ///// number the user has entered so far.
+    ///// </summary>
+    //public static bool ValidateUserInputDefault(char inputChar, int inputPos, string partialPhoneNumber) {
+    //  //if user enters a blank, DefaultValidateUserInput does not get called
 
-      if (inputChar>='0' && inputChar<='9') return true;
+    //  if (inputChar>='0' && inputChar<='9') return true;
 
-      if (inputChar=='+') return inputPos==0 && !partialPhoneNumber.Contains('+');
+    //  if (inputChar=='+') return inputPos==0 && !partialPhoneNumber.Contains('+');
 
-      foreach (var legalChar in LegalSpecialCharacters) {
-        if (legalChar==inputChar) return true;
-      }
+    //  foreach (var legalChar in LegalSpecialCharacters) {
+    //    if (legalChar==inputChar) return true;
+    //  }
 
-      return false;
-    }
+    //  return false;
+    //}
 
 
-    /// <Summary>
-    /// Validates that phoneNumber is a valid phone number. On returning, special characters like '+', ' ' and LegalSpecialCharacters
-    /// are removed from compactNumber
-    /// </summary>
-    public static bool ValidatePhoneNumberDefault(string? phoneNumber, out string? compactNumber) {
-      if (string.IsNullOrEmpty(phoneNumber)) {
-        compactNumber = null;
-        return true;
-      }
+    ///// <Summary>
+    ///// Validates that phoneNumber is a valid phone number. On returning, special characters like '+', ' ' and LegalSpecialCharacters
+    ///// are removed from compactNumber
+    ///// </summary>
+    //public static bool ValidatePhoneNumberDefault(string? phoneNumber, out string? compactNumber) {
+    //  if (string.IsNullOrEmpty(phoneNumber)) {
+    //    compactNumber = null;
+    //    return true;
+    //  }
 
-      var isFirstChar = true;
-      var compactNumberSB = new StringBuilder();
-      foreach (var phoneChar in phoneNumber) {
-        if (phoneChar==' ') {
-          continue;
-        }
-        if (phoneChar>='0' && phoneChar<='9'|| isFirstChar && phoneChar=='+') {
-          compactNumberSB.Append(phoneChar);
-        } else {
-          var isLegal = false;
-          foreach (var legalChar in LegalSpecialCharacters) {
-            if (legalChar==phoneChar) {
-              isLegal = true;
-              break;
-            }
-          }
-          if (!isLegal) {
-            compactNumber = null;
-            return false;
-          }
-        }
-        if (isFirstChar) {
-          isFirstChar = false;
-        }
-      }
-      compactNumber = compactNumberSB.ToString();
-      return true;
-    }
-    #endregion
+    //  var isFirstChar = true;
+    //  var compactNumberSB = new StringBuilder();
+    //  foreach (var phoneChar in phoneNumber) {
+    //    if (phoneChar==' ') {
+    //      continue;
+    //    }
+    //    if (phoneChar>='0' && phoneChar<='9'|| isFirstChar && phoneChar=='+') {
+    //      compactNumberSB.Append(phoneChar);
+    //    } else {
+    //      var isLegal = false;
+    //      foreach (var legalChar in LegalSpecialCharacters) {
+    //        if (legalChar==phoneChar) {
+    //          isLegal = true;
+    //          break;
+    //        }
+    //      }
+    //      if (!isLegal) {
+    //        compactNumber = null;
+    //        return false;
+    //      }
+    //    }
+    //    if (isFirstChar) {
+    //      isFirstChar = false;
+    //    }
+    //  }
+    //  compactNumber = compactNumberSB.ToString();
+    //  return true;
+    //}
+    //#endregion
 
 
     #region Methods

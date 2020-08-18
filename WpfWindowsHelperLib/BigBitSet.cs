@@ -3,7 +3,7 @@
 WpfWindowsLib.BigBitSet
 =======================
 
-BitSet with more than 32 bits
+BitSet with more than 32 bits. Does not require WPF.
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -17,14 +17,12 @@ This software is distributed without any warranty.
 **************************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace WpfWindowsLib {
 
   /// <summary>
-  /// BitSet with more than 32 bits
+  /// BitSet with more than 32 bits.  Does not require WPF.
   /// </summary>
   public class BigBitSet {
 
