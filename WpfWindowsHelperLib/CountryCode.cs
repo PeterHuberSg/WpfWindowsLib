@@ -490,8 +490,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Local phone number format for countries with 2 digits for area code (no leading '0'). Returns
-    /// null when digits has not 8 digits.
+    /// Local phone number format for countries with 2 digits for area code (no leading '0'). 
     /// </summary>
     public static string? LocalFormatNo0Area2(string digits) {
       if (digits.Length<8) return null;
@@ -503,8 +502,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Local phone number format for countries with '0' followed by 2 digits for area code. Returns
-    /// null when digits has not 8 digits.
+    /// Local phone number format for countries with '0' followed by 2 digits for area code. 
     /// </summary>
     public static string? LocalFormat0Area2(string digits) {
       if (digits.Length<8) return null;
@@ -516,8 +514,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Local phone number format for countries with 3 digits for area code (no leading '0'). Returns
-    /// null when digits has not 8 digits.
+    /// Local phone number format for countries with 3 digits for area code (no leading '0'). 
     /// </summary>
     public static string? LocalFormatNo0Area3(string digits) {
       if (digits.Length<9) return null;
@@ -529,8 +526,7 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Local phone number format for countries with '0' followed by 3 digits for area code. Returns
-    /// null when digits has not 8 digits.
+    /// Local phone number format for countries with '0' followed by 3 digits for area code. 
     /// </summary>
     public static string? LocalFormat0Area3(string digits) {
       if (digits.Length<9) return null;
@@ -543,10 +539,10 @@ namespace WpfWindowsLib {
 
     /// <summary>
     /// Local phone number format for countries with exactly 8 digits and no '0' as prefix for area code. Returns
-    /// null when digits has not 8 digits.
+    /// digits as it is if it has not MaxLengthLocalCode digits.
     /// </summary>
     public static string? LocalFormat8Digits(string digits) {
-      if (digits.Length!=MaxLengthLocalCode) return null;
+      if (digits.Length!=MaxLengthLocalCode) return digits;
 
       return digits.Insert(4, " ");
     }
