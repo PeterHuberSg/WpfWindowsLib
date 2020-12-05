@@ -13,12 +13,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="CheckedEditComboBoxWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PhoneTextBoxWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="CheckedEditComboBoxWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="PhoneTextBoxWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

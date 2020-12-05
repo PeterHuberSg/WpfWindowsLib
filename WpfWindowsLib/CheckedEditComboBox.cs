@@ -1,9 +1,9 @@
 ﻿/**************************************************************************************
 
-WpfWindowsLib.CheckedComboBox
-=============================
+WpfWindowsLib.CheckedEditComboBox
+=================================
 
-ComboBox with IsEditable==false, implementing ICheck
+ComboBox with IsEditable==true, implementing ICheck
 
 Written in 2020 by Jürgpeter Huber 
 Contact: PeterCode at Peterbox dot com
@@ -33,7 +33,7 @@ namespace WpfWindowsLib {
   /// Read SelectedIndexNull if int? is needed instead of int (SelectedIndex). NotSelectedIndex defines which
   /// SelectedIndex value represents null, usually 0.
   /// </summary>
-  public class CheckedComboBox: ComboBox {
+  public class CheckedEditComboBox: ComboBox {
 
     /***************************************************************************************************
     Comments WPF ComboBox:
@@ -61,20 +61,20 @@ namespace WpfWindowsLib {
     #region Properties
     //      ----------
 
-    /// <summary>
-    /// Same as SelectedIndex, but treats 0 as null
-    /// </summary>
-    public int? SelectedIndexNullable { 
-      get { return (SelectedIndex==0 ? (int?)null : SelectedIndex); } 
-      set { SelectedIndex = value??0; }
-    }
+    ///// <summary>
+    ///// Same as SelectedIndex, but treats 0 as null
+    ///// </summary>
+    //public int? SelectedIndexNullable { 
+    //  get { return (SelectedIndex==0 ? (int?)null : SelectedIndex); } 
+    //  set { SelectedIndex = value??0; }
+    //}
 
 
     #region IsRequired property
     public static readonly DependencyProperty IsRequiredProperty = DependencyProperty.Register(
       "IsRequired",
       typeof(bool),
-      typeof(CheckedComboBox),
+      typeof(CheckedEditComboBox),
       new FrameworkPropertyMetadata(false,
           FrameworkPropertyMetadataOptions.AffectsRender,
           new PropertyChangedCallback(onIsRequiredChanged)
@@ -83,12 +83,12 @@ namespace WpfWindowsLib {
 
 
     private static void onIsRequiredChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-      var checkedComboBox = (CheckedComboBox)d;
-      if (checkedComboBox.isInitialising) return;
+      var checkedEditComboBox = (CheckedEditComboBox)d;
+      if (checkedEditComboBox.isInitialising) return;
 
       //when IsRequired is set in XAML, it will not be handled here but in OnInitialized(), which
       //guarantees that the control's values and IsRequired are assigned, if both are used in XAML
-      checkedComboBox.IChecker.IsRequiredChanged(checkedComboBox.IsRequired, isAvailable: checkedComboBox.SelectedIndex!=0);
+      checkedEditComboBox.IChecker.IsRequiredChanged(checkedEditComboBox.IsRequired, isAvailable: checkedEditComboBox.Text!="");
     }
 
 
@@ -109,9 +109,9 @@ namespace WpfWindowsLib {
 
 
     /// <summary>
-    /// Provides the ICheck functionality to CheckedComboBox
+    /// Provides the ICheck functionality to CheckedEditComboBox
     /// </summary>
-    public IChecker<int> IChecker { get; }
+    public IChecker<string> IChecker { get; }
     #endregion
 
 
@@ -121,15 +121,15 @@ namespace WpfWindowsLib {
     /// <summary>
     /// Default constructor
     /// </summary>
-    public CheckedComboBox() {
-      IChecker = new IChecker<int>(this) {
+    public CheckedEditComboBox() {
+      IChecker = new IChecker<string>(this) {
         OnChangeBackground = onChangeBackground,
         OnClearBackground = onClearBackground,
         OnSetBackground = onSetBackground,
         OnResetBackground = onResetBackground
       };
 
-      LayoutUpdated += checkedComboBox_LayoutUpdated;
+      LayoutUpdated += checkedEditComboBox_LayoutUpdated;
     }
 
     #endregion
@@ -143,34 +143,39 @@ namespace WpfWindowsLib {
 
 
     protected override void OnInitialized(EventArgs e) {
-      if (SelectedIndex==-1) {
-        SelectedIndex = 0;
-      }
-
-      IChecker.OnInitialized(initValue: SelectedIndex, IsRequired, isAvailable: SelectedIndex!=0);
+      IChecker.OnInitialized(initValue: Text, IsRequired, isAvailable: Text!="");
       isInitialising = false;
       //add event handlers only once XAML values are processed, i.e in OnInitialized. 
-      SelectionChanged += checkedComboBox_SelectionChanged;
+      AddHandler(TextBoxBase.TextChangedEvent, new TextChangedEventHandler(checkedEditComboBox_TextChanged));
       base.OnInitialized(e);
     }
 
 
     /// <summary>
-    /// Sets SelectedIndex and IsRequired from code behind.<para/>
-    /// If selectedIndex is null, SelectedIndex is set to 0.<para/>
+    /// Sets Text, SelectedIndex and IsRequired from code behind. Text or SelectedIndex must be null.<para/>
     /// If isRequired is null, IsRequired keeps its value.
     /// </summary>
-    public virtual void Initialise(int? selectedIndex = 0, bool? isRequired = null) {
+    public virtual void Initialise(string? text, int? selectedIndex, bool? isRequired = null) {
       isInitialising = true;
-      if (selectedIndex.HasValue) {
-        SelectedIndex = selectedIndex.Value;
+      if (text is null) {
+        if (selectedIndex is null) {
+          Text = "";
+          SelectedIndex = -1;
+        } else {
+          SelectedIndex = selectedIndex.Value; //this sets also Text
+        }
       } else {
-        SelectedIndex = 0;
+        if (selectedIndex is null) {
+          Text = text; //this sets also SelectedIndex
+        } else {
+          throw new Exception($"CheckedEditComboBox.Initialise(): text '{text}' or selectedIndex '{selectedIndex}' must be null.");
+        }
       }
+
       if (isRequired.HasValue) {
         IsRequired = isRequired.Value;
       }
-      IChecker.Initialise(initValue: SelectedIndex, IsRequired, isAvailable: SelectedIndex!=0);
+      IChecker.Initialise(initValue: Text, IsRequired, isAvailable: Text!="");
       isInitialising = false;
     }
     #endregion
@@ -197,11 +202,10 @@ namespace WpfWindowsLib {
     Border? comboBoxBorder;
     
     
-    private void checkedComboBox_LayoutUpdated(object? sender, EventArgs e) {
+    private void checkedEditComboBox_LayoutUpdated(object? sender, EventArgs e) {
       //this is the only event I could find firing after OnApplyTemplate().
-
-      if (IsEditable==true) {
-        throw new Exception("CheckedCheckBox does not support IsEditable==true. Use CheckedEditComboBox instead.");
+      if (IsEditable==false) {
+        throw new Exception("CheckedEditComboBox does not support IsEditable==false. Use CheckedCheckBox instead.");
       }
 
       if (toggleButton==null || comboBoxBorder!=null) return;
@@ -213,10 +217,10 @@ namespace WpfWindowsLib {
     }
 
 
-    private void checkedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+    private void checkedEditComboBox_TextChanged(object sender, TextChangedEventArgs e) {
       if (isInitialising) return;
 
-      IChecker.ValueChanged(SelectedIndex, isAvailable: SelectedIndex!=0);
+      IChecker.ValueChanged(Text, isAvailable: Text!="");
     }
     #endregion
 

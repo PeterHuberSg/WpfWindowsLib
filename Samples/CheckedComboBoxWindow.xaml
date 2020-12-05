@@ -47,7 +47,7 @@ This software is distributed without any warranty.
     <Label Grid.Row="1" Grid.Column="0" Content="_IsRequried" Target="{Binding ElementName=IsRequriedCheckBox}"/>
     <CheckBox Grid.Row="1" Grid.Column="1" x:Name="IsRequriedCheckBox"
               IsChecked="{Binding ElementName=TestCheckedComboBox, Path=IsRequired, Mode=TwoWay}"/>
-    <Label Grid.Row="2" Grid.Column="0" Content="_SelectedIndexNullable" Target="{Binding ElementName=IsRequriedCheckBox}"/>
+    <Label Grid.Row="2" Grid.Column="0" Content="_SelectedIndexNullable" Target="{Binding ElementName=SelectedIndexNullableTextBox}"/>
     <TextBox Grid.Row="2" Grid.Column="1" x:Name="SelectedIndexNullableTextBox" IsEnabled="False"/>
     <Button Grid.Row="3" Grid.Column="0" Content="Initialise()" x:Name="InitialiseButton" ToolTip="Calls Initialise()"/>
     <Label Grid.Row="4" Grid.Column="0" Content="_Selected" Target="{Binding ElementName=InitialiseSelectedCheckBox}"/>
@@ -55,7 +55,7 @@ This software is distributed without any warranty.
       <ComboBoxItem Content="blank"/>
       <ComboBoxItem Content="Changed"/>
     </ComboBox>
-    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialisationIsRequriedCheckBox}"/>
+    <Label Grid.Row="5" Grid.Column="0" Content="I_sRequired" Target="{Binding ElementName=InitialiseIsRequriedComboBox}"/>
     <ComboBox Grid.Row="5" Grid.Column="1" x:Name="InitialiseIsRequriedComboBox" SelectedIndex="0">
       <ComboBoxItem Content="don't change"/>
       <ComboBoxItem Content="not required"/>

@@ -37,6 +37,7 @@ namespace Samples {
       ChangedCheckBox.IsChecked = true;
 
       CheckedComboBoxButton.Click += checkedComboBoxButton_Click;
+      CheckedEditComboBoxButton.Click += checkedEditComboBoxButton_Click;
       string[] comboBoxValues = {"", "Changed"};
       EmptyComboBox.ItemsSource = comboBoxValues;
       EmptyComboBox.Initialise(selectedIndex: null, isRequired: false);
@@ -45,6 +46,14 @@ namespace Samples {
       ChangedComboBox.ItemsSource = comboBoxValues;
       ChangedComboBox.Initialise(selectedIndex: null, isRequired: false);
       ChangedComboBox.SelectedIndex = 1;
+
+      EmptyEditComboBox.ItemsSource = comboBoxValues;
+      EmptyEditComboBox.Initialise(text: null, selectedIndex: null, isRequired: false);
+      RequiredEditComboBox.ItemsSource = comboBoxValues;
+      RequiredEditComboBox.Initialise(text: null, selectedIndex: null, isRequired: true);
+      ChangedEditComboBox.ItemsSource = comboBoxValues;
+      ChangedEditComboBox.Initialise(text: null, selectedIndex: null, isRequired: false);
+      ChangedEditComboBox.SelectedIndex = 1;
 
       CheckedDatePickerButton.Click += checkedDatePickerButton_Click;
       ChangedDatePicker.SelectedDate = DateTime.Now.Date;
@@ -85,6 +94,11 @@ namespace Samples {
 
     private void checkedComboBoxButton_Click(object sender, RoutedEventArgs e) {
       new CheckedComboBoxWindow { Owner=this }.Show();
+    }
+
+
+    private void checkedEditComboBoxButton_Click(object sender, RoutedEventArgs e) {
+      new CheckedEditComboBoxWindow { Owner=this }.Show();
     }
 
 

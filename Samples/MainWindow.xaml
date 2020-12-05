@@ -35,6 +35,7 @@ This software is distributed without any warranty.
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto"/>
@@ -58,6 +59,9 @@ This software is distributed without any warranty.
         <Setter Property="Margin" Value="4,2,4,2" />
       </Style>
       <Style TargetType="wwl:CheckedComboBox">
+        <Setter Property="Margin" Value="4,2,4,2" />
+      </Style>
+      <Style TargetType="wwl:CheckedEditComboBox">
         <Setter Property="Margin" Value="4,2,4,2" />
       </Style>
       <Style TargetType="wwl:CheckedDatePicker">
@@ -98,42 +102,47 @@ This software is distributed without any warranty.
     <wwl:CheckedComboBox Grid.Row="2" Grid.Column="2" x:Name="RequiredComboBox" IsRequired="True"/>
     <wwl:CheckedComboBox Grid.Row="2" Grid.Column="3" x:Name="ChangedComboBox" />
 
-    <Button Grid.Row="3" Grid.Column="0" Content="CheckedDatePicker" x:Name="CheckedDatePickerButton"/>
-    <wwl:CheckedDatePicker Grid.Row="3" Grid.Column="1" x:Name="EmptyDatePicker"/>
-    <wwl:CheckedDatePicker Grid.Row="3" Grid.Column="2" x:Name="RequiredDatePicker" IsRequired="True"/>
-    <wwl:CheckedDatePicker Grid.Row="3" Grid.Column="3" x:Name="ChangedDatePicker"/>
+    <Button Grid.Row="3" Grid.Column="0" Content="CheckedEditComboBox" x:Name="CheckedEditComboBoxButton"/>
+    <wwl:CheckedEditComboBox Grid.Row="3" Grid.Column="1" x:Name="EmptyEditComboBox" IsEditable="true"/>
+    <wwl:CheckedEditComboBox Grid.Row="3" Grid.Column="2" x:Name="RequiredEditComboBox" IsEditable="true" IsRequired="True"/>
+    <wwl:CheckedEditComboBox Grid.Row="3" Grid.Column="3" x:Name="ChangedEditComboBox" IsEditable="true"/>
 
-    <Button Grid.Row="4" Grid.Column="0" Content="CheckedTextBox" x:Name="CheckedTextBoxButton"/>
-    <wwl:CheckedTextBox Grid.Row="4" Grid.Column="1" x:Name="EmptyTextBox"/>
-    <wwl:CheckedTextBox Grid.Row="4" Grid.Column="2" x:Name="RequiredTextBox" IsRequired="True"/>
-    <wwl:CheckedTextBox Grid.Row="4" Grid.Column="3" x:Name="ChangedTextBox"/>
+    <Button Grid.Row="4" Grid.Column="0" Content="CheckedDatePicker" x:Name="CheckedDatePickerButton"/>
+    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="1" x:Name="EmptyDatePicker"/>
+    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="2" x:Name="RequiredDatePicker" IsRequired="True"/>
+    <wwl:CheckedDatePicker Grid.Row="4" Grid.Column="3" x:Name="ChangedDatePicker"/>
 
-    <Button Grid.Row="5" Grid.Column="0" Content="DecimalTextBox" x:Name="DecimalTextBoxButton"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="1" x:Name="EmptyDecimalTextBox"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="2" x:Name="RequiredDecimalTextBox" IsRequired="True"/>
-    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="3" x:Name="ChangedDecimalTextBox"/>
+    <Button Grid.Row="5" Grid.Column="0" Content="CheckedTextBox" x:Name="CheckedTextBoxButton"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="1" x:Name="EmptyTextBox"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="2" x:Name="RequiredTextBox" IsRequired="True"/>
+    <wwl:CheckedTextBox Grid.Row="5" Grid.Column="3" x:Name="ChangedTextBox"/>
 
-    <Button Grid.Row="6" Grid.Column="0" Content="EmailTextBox" x:Name="EmailTextBoxButton"/>
-    <wwl:EmailTextBox Grid.Row="6" Grid.Column="1" x:Name="EmptyEmailTextBox"/>
-    <wwl:EmailTextBox Grid.Row="6" Grid.Column="2" x:Name="RequiredEmailTextBox" IsRequired="True"/>
-    <wwl:EmailTextBox Grid.Row="6" Grid.Column="3" x:Name="ChangedEmailTextBox"/>
+    <Button Grid.Row="6" Grid.Column="0" Content="DecimalTextBox" x:Name="DecimalTextBoxButton"/>
+    <wwl:CheckedTextBox Grid.Row="6" Grid.Column="1" x:Name="EmptyDecimalTextBox"/>
+    <wwl:CheckedTextBox Grid.Row="6" Grid.Column="2" x:Name="RequiredDecimalTextBox" IsRequired="True"/>
+    <wwl:CheckedTextBox Grid.Row="6" Grid.Column="3" x:Name="ChangedDecimalTextBox"/>
 
-    <Button Grid.Row="7" Grid.Column="0" Content="IntTextBox" x:Name="IntTextBoxButton"/>
-    <wwl:IntTextBox Grid.Row="7" Grid.Column="1" x:Name="EmptyIntTextBox"/>
-    <wwl:IntTextBox Grid.Row="7" Grid.Column="2" x:Name="RequiredIntTextBox" IsRequired="True"/>
-    <wwl:IntTextBox Grid.Row="7" Grid.Column="3" x:Name="ChangedIntTextBox"/>
+    <Button Grid.Row="7" Grid.Column="0" Content="EmailTextBox" x:Name="EmailTextBoxButton"/>
+    <wwl:EmailTextBox Grid.Row="7" Grid.Column="1" x:Name="EmptyEmailTextBox"/>
+    <wwl:EmailTextBox Grid.Row="7" Grid.Column="2" x:Name="RequiredEmailTextBox" IsRequired="True"/>
+    <wwl:EmailTextBox Grid.Row="7" Grid.Column="3" x:Name="ChangedEmailTextBox"/>
 
-    <Button Grid.Row="8" Grid.Column="0" Content="PhoneTextBox" x:Name="PhoneTextBoxButton"/>
-    <wwl:IntTextBox Grid.Row="8" Grid.Column="1" x:Name="EmptyPhoneTextBox"/>
-    <wwl:IntTextBox Grid.Row="8" Grid.Column="2" x:Name="RequiredPhoneTextBox" IsRequired="True"/>
-    <wwl:IntTextBox Grid.Row="8" Grid.Column="3" x:Name="ChangedPhoneTextBox"/>
+    <Button Grid.Row="8" Grid.Column="0" Content="IntTextBox" x:Name="IntTextBoxButton"/>
+    <wwl:IntTextBox Grid.Row="8" Grid.Column="1" x:Name="EmptyIntTextBox"/>
+    <wwl:IntTextBox Grid.Row="8" Grid.Column="2" x:Name="RequiredIntTextBox" IsRequired="True"/>
+    <wwl:IntTextBox Grid.Row="8" Grid.Column="3" x:Name="ChangedIntTextBox"/>
 
-    <Rectangle Grid.Row="9" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="5" Fill="LightGray"/>
-    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Normal" TextWrapping="Wrap"
+    <Button Grid.Row="9" Grid.Column="0" Content="PhoneTextBox" x:Name="PhoneTextBoxButton"/>
+    <wwl:IntTextBox Grid.Row="9" Grid.Column="1" x:Name="EmptyPhoneTextBox"/>
+    <wwl:IntTextBox Grid.Row="9" Grid.Column="2" x:Name="RequiredPhoneTextBox" IsRequired="True"/>
+    <wwl:IntTextBox Grid.Row="9" Grid.Column="3" x:Name="ChangedPhoneTextBox"/>
+
+    <Rectangle Grid.Row="10" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="5" Fill="LightGray"/>
+    <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Normal" TextWrapping="Wrap"
                Text="">
       Save button is only enabled when all required controls have a value.<LineBreak/>
       User can only close Window when all changed data is "saved".
     </TextBlock>
-    <Button Grid.Row="9" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
+    <Button Grid.Row="10" Grid.Column="3" x:Name="SaveButton" Content="_Save"/>
   </Grid>
 </wwl:CheckedWindow>
