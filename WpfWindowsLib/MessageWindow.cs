@@ -29,7 +29,7 @@ namespace WpfWindowsLib {
     #region Constructor
     //      -----------
 
-    public static MessageWindow Show(Window ownerWindow, string message, Action? refreshOwner) {
+    public static MessageWindow Show(Window ownerWindow, string message, Action? refreshOwner = null) {
       var window = new MessageWindow(message, refreshOwner) { Owner = ownerWindow };
       window.Show();
       return window;

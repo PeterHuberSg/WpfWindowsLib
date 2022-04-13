@@ -50,6 +50,7 @@ namespace WpfWindowsLib {
       var checkBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin.
       var comboBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin.
       var datePickerMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to align text with TextBlocks
+      var radioButtonMargin = new Thickness(5, 3, 5, 3); //no labels, need left margin
       var textBoxMargin = new Thickness(0,5,5,3); //have labels, no left margin. Increase top margin a bit to align text with TextBlocks
 
       var buttonStyle = new Style(typeof(Button));
@@ -76,6 +77,11 @@ namespace WpfWindowsLib {
       labelStyle.Setters.Add(new Setter(Label.VerticalAlignmentProperty, VerticalAlignment.Center));
       //labels don't need a margin, because they have a padding of 5
       Resources.Add(typeof(Label), labelStyle);
+
+      var radioButtonStyle = new Style(typeof(RadioButton));
+      radioButtonStyle.Setters.Add(new Setter(Label.VerticalAlignmentProperty, VerticalAlignment.Center));
+      radioButtonStyle.Setters.Add(new Setter(RadioButton.MarginProperty, radioButtonMargin));
+      Resources.Add(typeof(RadioButton), radioButtonStyle);
 
       var textBlockStyle = new Style(typeof(TextBlock));
       textBlockStyle.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center));
