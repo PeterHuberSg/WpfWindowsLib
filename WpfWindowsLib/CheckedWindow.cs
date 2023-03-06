@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WpfWindowsLib {
 
@@ -39,6 +40,23 @@ namespace WpfWindowsLib {
 
     #region Properties
     //      ----------
+
+    public static readonly DependencyProperty IsNoCheckOnCLosingProperty = DependencyProperty.Register(
+      "IsNoCheckOnCLosing",
+      typeof(bool),
+      typeof(CheckedWindow),
+      new FrameworkPropertyMetadata(true)
+    );
+
+
+    /// <summary>
+    /// Should user get alerted when closing event detect that some data has not been saved yet ?
+    /// </summary>
+    public bool IsNoCheckOnCLosing {
+      get { return (bool)GetValue(IsNoCheckOnCLosingProperty); }
+      set { SetValue(IsNoCheckOnCLosingProperty, value); }
+    }
+
 
     //Data changed
     //------------
@@ -106,7 +124,7 @@ namespace WpfWindowsLib {
     //      -------
 
     private void checkedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-      if (HasICheckChanged) {
+      if (IsNoCheckOnCLosing && HasICheckChanged) {
         ShowChanged(true);
         e.Cancel = !AskUserIfNoSaving(this);
         ShowChanged(false);

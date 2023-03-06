@@ -40,7 +40,8 @@ window.
 
 A warning message shows him which data has changed and asks
 if he really wants to lose that change by closing or save it by clicking the Save
-button.
+button. This warning message can be surpressed by setting CheckedWindow.IsNoCheckOnCLosing = true.
+
 
 ### Coding
 
