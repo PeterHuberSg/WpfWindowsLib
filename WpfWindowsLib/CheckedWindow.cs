@@ -45,7 +45,7 @@ namespace WpfWindowsLib {
       "IsNoCheckOnCLosing",
       typeof(bool),
       typeof(CheckedWindow),
-      new FrameworkPropertyMetadata(true)
+      new FrameworkPropertyMetadata(false)
     );
 
 
@@ -56,6 +56,22 @@ namespace WpfWindowsLib {
       get { return (bool)GetValue(IsNoCheckOnCLosingProperty); }
       set { SetValue(IsNoCheckOnCLosingProperty, value); }
     }
+
+
+    //private static void onIsNoCheckOnCLosingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+    //  var decimalTextBox = (CheckedWindow)d;
+    //  if (decimalTextBox.isInitialising) return;
+
+    //  //when Min is set in XAML, it will not be handled here but in OnInitialized(), which
+    //  //guarantees that Text and Min are assigned, if both are used in XAML
+    //  if (decimalTextBox.Min>decimalTextBox.Max) {
+    //    throw new Exception($"Error DecimalTextBox: Min {decimalTextBox.Min} must be <= Max {decimalTextBox.Max}. " +
+    //      "Use Initialise() to change both at the same time.");
+    //  }
+    //  if (decimalTextBox.DecimalValue!=null && decimalTextBox.DecimalValue<decimalTextBox.Min) {
+    //    throw new Exception($"Error DecimalTextBox: DecimalValue {decimalTextBox.DecimalValue} must be >= {decimalTextBox.Min} (Min).");
+    //  }
+    //}
 
 
     //Data changed
@@ -124,7 +140,7 @@ namespace WpfWindowsLib {
     //      -------
 
     private void checkedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-      if (IsNoCheckOnCLosing && HasICheckChanged) {
+      if (!IsNoCheckOnCLosing && HasICheckChanged) {
         ShowChanged(true);
         e.Cancel = !AskUserIfNoSaving(this);
         ShowChanged(false);
