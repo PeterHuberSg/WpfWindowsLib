@@ -192,9 +192,6 @@ namespace WpfWindowsLib {
           e.Handled = true;
         }
       }
-
-      foreach (var c in e.Text) {
-      }
       base.OnPreviewTextInput(e);
     }
 
