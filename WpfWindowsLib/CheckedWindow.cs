@@ -123,7 +123,7 @@ namespace WpfWindowsLib {
     #region Methods
     //      -------
 
-    private void checkedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+    private void checkedWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {
       if (!IsNoCheckOnCLosing && HasICheckChanged) {
         ShowChanged(true);
         e.Cancel = !AskUserIfNoSaving(this);
