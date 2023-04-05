@@ -58,22 +58,6 @@ namespace WpfWindowsLib {
     }
 
 
-    //private static void onIsNoCheckOnCLosingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-    //  var decimalTextBox = (CheckedWindow)d;
-    //  if (decimalTextBox.isInitialising) return;
-
-    //  //when Min is set in XAML, it will not be handled here but in OnInitialized(), which
-    //  //guarantees that Text and Min are assigned, if both are used in XAML
-    //  if (decimalTextBox.Min>decimalTextBox.Max) {
-    //    throw new Exception($"Error DecimalTextBox: Min {decimalTextBox.Min} must be <= Max {decimalTextBox.Max}. " +
-    //      "Use Initialise() to change both at the same time.");
-    //  }
-    //  if (decimalTextBox.DecimalValue!=null && decimalTextBox.DecimalValue<decimalTextBox.Min) {
-    //    throw new Exception($"Error DecimalTextBox: DecimalValue {decimalTextBox.DecimalValue} must be >= {decimalTextBox.Min} (Min).");
-    //  }
-    //}
-
-
     //Data changed
     //------------
 
